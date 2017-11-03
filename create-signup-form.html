@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+ 
+<html lang="en">	
+<head>
+
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+  <meta name="viewport" content="width=1024, initial-scale=1">
+
+  <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon" />
+  <link rel="icon" href="/favicon.ico" type="image/x-icon" />
+
+  <script src="dist/vendor/jquery.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.11.0/umd/popper.min.js"></script>
+  <script src="dist/vendor/bootstrap.min.js"></script>
+  <script src="dist/vendor/knockout.js"></script>
+  <script src="dist/vendor/jquery-ui.min.js"></script>
+  <script src="dist/vendor/jquery.ui.touch-punch.min.js"></script>
+  <script src="dist/vendor/load-image.all.min.js"></script>
+  <script src="dist/vendor/canvas-to-blob.min.js"></script>
+  <script src="dist/vendor/jquery.iframe-transport.js"></script>
+  <script src="dist/vendor/jquery.fileupload.js"></script>
+  <script src="dist/vendor/jquery.fileupload-process.js"></script>
+  <script src="dist/vendor/jquery.fileupload-image.js"></script>
+  <script src="dist/vendor/jquery.fileupload-validate.js"></script>
+  <script src="dist/vendor/knockout-jqueryui.min.js"></script>
+  <script src="dist/vendor/tinymce.min.js"></script>
+
+	<title>
+   		Add signup form - STEDB
+	</title>
+
+	<link href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700" rel="stylesheet">
+	<link rel="stylesheet" href="dist/vendor/bootstrap.min.css" />
+  <link rel="stylesheet" href="dist/stedb.min.css?v=0.10" />
+
+  <script src="dist/stedb.min.js?v=0.16"></script>
+
+  <script>
+  	$(document).ready(function(){
+  		// Signup form tabs (bootstrap tabs are bugged for somereason)
+  		$('.signup-form-radio .custom-control').on('click', function(){
+  			var dataTarget = $(this).attr('data-target');
+  			$(dataTarget).show();
+  			$('.tab:not('+dataTarget+')').hide();
+  		});
+  	});
+  </script>
+</head>
+
+<body>
+
+<div class="container-main d-flex justify-content-between">
+	<div class="l-sidebar d-inline-flex flex-column">
+		<div class="l-sidebar__content">
+			<ul class="nav flex-column nav-user">
+				<li class="nav-item nav-title">
+					<a> User details </a>
+				</li>
+			  <li class="nav-item">
+			    <a class="nav-link nav-user-link">
+			    	<i class="nav-icon flaticon-user align-middle"></i>
+			    	<span class="align-middle">dennis.novac</span>
+			    </a>
+			  </li>
+			  <li class="nav-item">
+			    <a class="nav-link nav-user-settings" href="#">
+			    	<i class="nav-icon flaticon-tool align-middle"></i>
+			    	<span class="align-middle">Settings</span>
+			    </a>
+			  </li>
+			  <li class="nav-item">
+			    <a class="nav-link" href="#">
+			    	<i class="nav-icon flaticon-logout align-middle"></i>
+			    	<span class="align-middle">Log out</span>
+			    </a>
+			  </li>
+			</ul>
+
+			<ul class="nav nav-interface flex-column">
+				<li class="nav-item nav-title">
+					<a> Campaign interface </a>
+				</li>
+			  <li class="nav-item active">
+			    <a class="nav-link" href="index.html">
+			    	<i class="nav-icon flaticon-chart align-middle"></i>
+			    	<span class="align-middle">Simple</span>
+			    </a>
+			  </li>
+			  <li class="nav-item">
+			    <a class="nav-link" href="basic.html">
+			    	<i class="nav-icon flaticon-wand align-middle"></i>
+			    	<span class="align-middle">Basic</span>
+			    </a>
+			  </li>
+			  <li class="nav-item">
+			    <a class="nav-link" href="dashboard.html">
+			    	<i class="nav-icon flaticon-puzzle align-middle"></i>
+			    	<span class="align-middle">Advanced</span>
+			    </a>
+			  </li>
+			</ul>
+		</div>
+	</div>
+	<div class="m-content d-inline-flex flex-column" id="file-explorer-content">
+		<div class="header row">
+			<div class="col d-flex align-items-center">
+				<i class="flaticon-hamburger pointer collapse-sidebar"></i>
+			</div>
+			<div class="col d-flex align-items-center justify-content-center">
+				<img class="logo" src="dist/img/logo.png" alt="logo" />
+			</div>
+			<div class="col support-phone text-right d-flex align-items-center justify-content-end">
+				<i class="flaticon-support pointer support"></i>
+				<div class="phone d-flex align-items-center">
+					<i class="flaticon-phone"></i>
+					<div>
+						<div class="phone-number"> +1 561 228 5630 </div>
+						<div class="working-hours"> 9AM - 5PM (EST) </div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="content">
+			<div class="row">
+				<div class="col-8">
+					  <h2> Add a signup form </h2>
+					  <div class="custom-controls-stacked signup-form-radio">
+						  <label class="custom-control custom-radio" data-target=".simpleForm">
+						    <input name="radio-stacked" type="radio" class="custom-control-input" checked="">
+						    <span class="custom-control-indicator"></span>
+						    <span class="custom-control-description">Simple form</span>
+						  </label>
+						  <label class="custom-control custom-radio" data-target=".automaticPop">
+						    <input name="radio-stacked" type="radio" class="custom-control-input">
+						    <span class="custom-control-indicator"></span>
+						    <span class="custom-control-description">Automatic popunder</span>
+						  </label>
+						  <label class="custom-control custom-radio" data-target=".followPop">
+						    <input name="radio-stacked" type="radio" class="custom-control-input">
+						    <span class="custom-control-indicator"></span>
+						    <span class="custom-control-description">Follow popup div</span>
+						  </label>
+						</div>
+				</div>
+			</div>
+			<div class="spacing-xl"></div>
+			<form>
+				<div class="row">
+					<div class="form-group col-sm-6" >
+				    <label>Copy the below HTML and add it to your website.</label>
+				    <div class="tab-content">
+					    <textarea type="text" class="form-control tab simpleForm" style="height: 236px;"> Simple form (code will be here, didn't include it to keep the mockup a little cleaner)
+							</textarea>
+							<textarea type="text" class="form-control tab automaticPop" style="height: 236px; display: none"> Automatic popunder (code will be here, didn't include it to keep the mockup a little cleaner)
+							</textarea>
+							<textarea type="text" class="form-control tab followPop" style="height: 236px; display: none"> Follow popup div (code will be here, didn't include it to keep the mockup a little cleaner)
+							</textarea>
+						</div>
+					</div>
+					<div class="form-group col-sm-6">
+						<label>Preview</label>
+						<img src="https://opt4.stedb.com/dbm9x/images/opt_2/form1.jpg" style="width: 100%;" class="img-thumbnail simpleForm tab" alt="preview" />
+						<img src="https://opt4.stedb.com/dbm9x/images/opt_2/form2.jpg" style="width: 100%; display: none;" class="img-thumbnail automaticPop tab" alt="preview" />
+						<img src="https://opt4.stedb.com/dbm9x/images/opt_2/form3.jpg" style="width: 100%; display: none;" class="img-thumbnail followPop tab" alt="preview" />
+					</div>
+				</div>
+			</form>
+		</div>
+	</div>
+	<div class="r-sidebar r-sidebar-placeholder d-inline-flex flex-column"></div>
+	<div class="r-sidebar d-inline-flex flex-column">
+		<div class="sidebar-list mt-0">
+			<a href="simple-campaign.html" class="btn button-cta-sm button-create-campaign d-flex justify-content-between align-items-center">
+	      <span> Create a campaign </span>
+	      <i class="flaticon-rocket"></i>
+	    </a>
+	    <a href="view-reports.html" class="btn button-cta-sm button-view-reports d-flex justify-content-between align-items-center">
+	      <span> View reports </span>
+	      <i class="flaticon-stats"></i>
+	    </a>
+	    <a href="create-signup-form.html" class="btn button-cta-sm button-signup-form d-flex justify-content-between align-items-center active">
+	      <span> Create a signup form </span>
+	      <i class="flaticon-magic"></i>
+	    </a>
+	  </div>
+	</div>
+</div>
+</body>
+
+</html>

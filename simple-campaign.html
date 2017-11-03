@@ -1,0 +1,446 @@
+<!DOCTYPE html>
+ 
+<html lang="en">	
+<head>
+
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+  <meta name="viewport" content="width=1024, initial-scale=1">
+
+  <link rel="canonical" href="http://mosaico.io" />
+  <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon" />
+  <link rel="icon" href="/favicon.ico" type="image/x-icon" />
+
+  <script src="dist/vendor/jquery.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.11.0/umd/popper.min.js"></script>
+  <script src="dist/vendor/bootstrap.min.js"></script>
+  <script src="dist/vendor/knockout.js"></script>
+  <script src="dist/vendor/jquery-ui.min.js"></script>
+  <script src="dist/vendor/jquery.ui.touch-punch.min.js"></script>
+  <script src="dist/vendor/load-image.all.min.js"></script>
+  <script src="dist/vendor/canvas-to-blob.min.js"></script>
+  <script src="dist/vendor/jquery.iframe-transport.js"></script>
+  <script src="dist/vendor/jquery.fileupload.js"></script>
+  <script src="dist/vendor/jquery.fileupload-process.js"></script>
+  <script src="dist/vendor/jquery.fileupload-image.js"></script>
+  <script src="dist/vendor/jquery.fileupload-validate.js"></script>
+  <script src="dist/vendor/knockout-jqueryui.min.js"></script>
+  <script src="dist/vendor/tinymce.min.js"></script>
+  <script src="dist/vendor/intl-tel-input/js/intlTelInput.js"></script>
+
+	<title>
+   		Simple Campaign - STEDB
+	</title>
+
+	<link href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700" rel="stylesheet">
+	<link rel="stylesheet" href="dist/vendor/bootstrap.min.css" />
+	<link rel="stylesheet" href="dist/vendor/intl-tel-input/css/intlTelInput.css">
+  <link rel="stylesheet" href="dist/stedb.min.css?v=0.10" />
+
+  <script src="dist/stedb.min.js?v=0.16"></script>
+  <script type="text/javascript">
+		$(function() {
+		  if (!stedb.isCompatible()) {
+		    alert('Update your browser!');
+		    return;
+		  }
+		  // var basePath = window.location.href.substr(0, window.location.href.lastIndexOf('/')).substr(window.location.href.indexOf('/','https://'.length));
+		  var basePath = window.location.href;
+		  if (basePath.lastIndexOf('#') > 0) basePath = basePath.substr(0, basePath.lastIndexOf('#'));
+		  if (basePath.lastIndexOf('?') > 0) basePath = basePath.substr(0, basePath.lastIndexOf('?'));
+		  if (basePath.lastIndexOf('/') > 0) basePath = basePath.substr(0, basePath.lastIndexOf('/'));
+		  var plugins;
+		  // A basic plugin that expose the "viewModel" object as a global variable.
+		  // plugins = [function(vm) {window.viewModel = vm;}];
+		  var ok = stedb.init({
+		    imgProcessorBackend: basePath+'/img/',
+		    emailProcessorBackend: basePath+'/dl/',
+		    titleToken: "MOSAICO Responsive Email Designer",
+		    fileuploadConfig: {
+		      url: basePath+'/upload/',
+		      // messages??
+		    }
+		  }, plugins);
+		  if (!ok) {
+		    //console.log("Missing initialization hash, loading default template");
+		    var defaultTemplate = JSON.parse(localStorage.getItem('templates'));
+		    var defaultTemplateKey = defaultTemplate[0].key;
+		  	document.location = window.location.href+'#'+defaultTemplateKey;
+		  	location.reload();
+		  }
+		});
+
+		$(document).ready(function(){
+
+			// Check if first campaign to set address
+		  if (document.cookie.replace(/(?:(?:^|.*;\s*)firstCampaign\s*\=\s*([^;]*).*$)|^.*$/, "$1") !== "false"){
+		    var addressCheck = true;
+
+		    $("#send-simple-campaign").on('mouseenter', function(){
+			  	if(addressCheck){
+			    	$("#address-modal").modal('show');
+					} else {
+						return false;
+					}
+			  });
+
+				$("#first-login-address-form-save").on('click', function(){
+		  		addressCheck = false;
+		  		$("#address-modal").modal('toggle');
+		    });
+		    document.cookie = "firstCampaign=true; expires=Fri, 31 Dec 9999 23:59:59 GMT";
+		  }
+
+			$('.home-button').on('click', function(){
+				window.location = '/';
+			});
+
+			$('#send-simple-campaign').on('click', function(){
+				$('.campaign-ver').html($('#campaignName').val());
+				$('#campaign-sent-modal').modal('show');
+			});
+
+			$('#add-sub-user').on('click', function(){
+				$('#add-sub-user-table').show();
+				$('#sub-users-table').hide();
+			});
+
+			$('#add-sub-user-table button[type="reset"]').on('click', function(){
+				$('#add-sub-user-table').hide();
+				$('#sub-users-table').show();
+			});
+
+			$('#hidden-upload-text').on('click', function(){
+				$('#hidden-upload').trigger('click');
+			});
+
+			$("#countryPhone").intlTelInput({
+        utilsScript: "dist/vendor/intl-tel-input/js/utils.js"
+      });
+
+			// Wait for tinyMCE to be initialed and auto-populate it with blocks
+			var timeout = setInterval(function(){
+				if($('#main-wysiwyg-area').html().length){
+					
+					if($('#main-wysiwyg-area').find('.sortable-blocks-edit').hasClass('empty')){
+						// Populate the editor
+						$('#main-toolbox .block-list').find('img[alt="Block singleArticleBlock"]').parent().click();
+			  		$('#main-toolbox .block-list').find('img[alt="Block titleBlock"]').parent().click();
+			  		$('#main-toolbox .block-list').find('img[alt="Block textBlock"]').parent().click();
+			  		$('#main-toolbox .block-list').find('img[alt="Block socialBlock"]').parent().click();
+			  	}
+
+		  		// Autofocus tinyMCE as soon as the editors are loaded
+					var tinyMCEtimout = setInterval(function(){
+						if (tinymce.editors.length > 1){
+							tinymce.editors[0].focus();
+							// Prevent scrolling to focused editor
+							window.scrollTo(0, 0);
+		        	document.body.scrollTop = 0;
+							clearInterval(tinyMCEtimout);
+						}
+			    },400);
+			    clearInterval(timeout);
+				}
+			}, 300);
+
+		});
+  </script>
+</head>
+
+<body>
+
+<div class="container-main d-flex justify-content-between">
+	<div class="l-sidebar d-inline-flex flex-column">
+		<div class="l-sidebar__content">
+			<ul class="nav flex-column nav-user">
+				<li class="nav-item nav-title">
+					<a> User details </a>
+				</li>
+			  <li class="nav-item">
+			    <a class="nav-link nav-user-link">
+			    	<i class="nav-icon flaticon-user align-middle"></i>
+			    	<span class="align-middle">dennis.novac</span>
+			    </a>
+			  </li>
+			  <li class="nav-item">
+			    <a class="nav-link nav-user-settings" href="#">
+			    	<i class="nav-icon flaticon-tool align-middle"></i>
+			    	<span class="align-middle">Settings</span>
+			    </a>
+			  </li>
+			  <li class="nav-item">
+			    <a class="nav-link" href="#">
+			    	<i class="nav-icon flaticon-logout align-middle"></i>
+			    	<span class="align-middle">Log out</span>
+			    </a>
+			  </li>
+			</ul>
+
+			<ul class="nav nav-interface flex-column">
+				<li class="nav-item nav-title">
+					<a> Campaign interface </a>
+				</li>
+			  <li class="nav-item active">
+			    <a class="nav-link" href="index.html">
+			    	<i class="nav-icon flaticon-chart align-middle"></i>
+			    	<span class="align-middle">Simple</span>
+			    </a>
+			  </li>
+			  <li class="nav-item">
+			    <a class="nav-link" href="basic.html">
+			    	<i class="nav-icon flaticon-wand align-middle"></i>
+			    	<span class="align-middle">Basic</span>
+			    </a>
+			  </li>
+			  <li class="nav-item">
+			    <a class="nav-link" href="dashboard.html">
+			    	<i class="nav-icon flaticon-puzzle align-middle"></i>
+			    	<span class="align-middle">Advanced</span>
+			    </a>
+			  </li>
+			</ul>
+		</div>
+	</div>
+	<div class="m-content d-inline-flex flex-column">
+		<div class="header row">
+			<div class="col d-flex align-items-center">
+				<i class="flaticon-hamburger pointer collapse-sidebar"></i>
+			</div>
+			<div class="col d-flex align-items-center justify-content-center">
+				<img class="logo" src="dist/img/logo.png" alt="logo" />
+			</div>
+			<div class="col support-phone text-right d-flex align-items-center justify-content-end">
+				<i class="flaticon-support pointer support"></i>
+				<div class="phone d-flex align-items-center">
+					<i class="flaticon-phone"></i>
+					<div>
+						<div class="phone-number"> +1 561 228 5630 </div>
+						<div class="working-hours"> 9AM - 5PM (EST) </div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="content">
+			<div class="row">
+				<div class="col">
+				 <h2> New campaign ! </h2>
+				 <h4> This section allows you to create a customized campaign letter by filling the fields with required information. You may use one of our pre-designed templates to give your letter some style. </h4>
+				</div>
+			</div>
+			<div class="spacing-md"></div>
+			<div class="row">
+				<div class="col-6">
+					<form id="simple-campaign-form" class="baa">
+				  	<div class="row">
+							<div class="form-group col-sm-12">
+						    <label for="fromName">From name</label>
+						    <input type="text" class="form-control required" id="fromName" aria-describedby="fromNameHelp" placeholder="" required>
+						    <small id="fromNameHelp" class="form-text text-muted">The name will appear in the from field of your email.</small>
+							</div>
+							<div class="form-group col-sm-12">
+						    <label for="fromEmail">From email</label>
+						    <input type="email" class="form-control required" id="fromEmail" aria-describedby="fromEmailHelp" placeholder="">
+						    <small id="fromEmailHelp" class="form-text text-muted">This email address will appear in the from email field of 
+								your message.</small>
+							</div>
+							<div class="form-group col-sm-12">
+						    <label for="campaignSubject">Subject</label>
+						    <input type="text" class="form-control required" id="campaignSubject" aria-describedby="campaignSubjectHelp" placeholder="">
+						    <small id="campaignSubjectHelp" class="form-text text-muted">This is the email subject, the first thing impression recipients will get about your campaign.</small>
+							</div>
+					  </div>
+					</form>
+				</div>
+				<div class="col-6">
+					<div class="row">
+						<div class="form-group col-sm-12 mb-0">
+					    <label class="mb-0">Templates</label>
+					  </div>
+					</div>
+					<div class="d-flex align-content-around flex-wrap justify-content-between templates-container simple-templates-view" data-bind="foreach: templates">
+						<div class="template template-xx" data-bind="attr: { class: 'template-stripped template template-'+name }">
+							<div class="template-image">
+								<img data-bind="click: $root.newEdit.bind(undefined, name), attr: { href: 'advanced-campaign.html#templates/'+name+'/template-'+name+'.html', src: 'templates/'+name+'/edres/_full.png'}" />
+							</div>
+						</div>	
+					</div>
+				</div>
+			</div>
+			<div class="spacing-md"></div>
+			<ul class="nav nav-tabs" role="tablist">
+				<li class="nav-item">
+					<a class="nav-link active" href="#edit-area" role="tab" data-toggle="tab"><span class="fa fa-remove fa-code fa-lg fa-m-r"></span> HTML</a>
+				</li>
+				<li class="nav-item">
+					<a id="previewFrameToggle" data-bind="checked: $root.showPreviewFrame, button: { refreshOn: $root.showPreviewFrame }" class="nav-link " href="#preview-area" role="tab" data-toggle="tab"><span class="fa fa-remove fa-columns fa-lg fa-m-r"></span>Preview</a>
+				</li>
+			</ul>
+			<div class="tab-content">
+				<div id="edit-area" class="tab-pane active">
+					<div id="tinymce-area" class="simple-editor"></div>
+					<div class="spacing-xs"></div>
+					<h6> <i class="flaticon flaticon-hand"></i> &nbsp; Simply drag and drop any images you like, inside the image placeholders</h6>
+					<div class="spacing-sm"></div>
+				</div>
+				<div id="preview-area" class="tab-pane fade">
+					<div id="main-preview" class="mo">
+				    <div id="preview-toolbar">
+				      <div data-bind="visible: $root.showPreviewFrame, buttonset: { }">
+				        <input id="Desktop" type="radio" name="previewMode" value="desktop" data-bind="checked: $root.previewMode, button: { text: true, label: 'Desktop', icons: { primary: 'flaticon flaticon-imac' } }" />
+				        <label for="Desktop" title="Desktop" data-bind="attr: { title: $root.t('Large screen') }">Large screen</label>
+				        <input id="Tablet" type="radio" name="previewMode" value="tablet" data-bind="checked: $root.previewMode, button: { text: true, label: 'Tablet', icons: { primary: 'flaticon flaticon-ipad' } }" />
+				        <label for="Tablet" title="Tablet" data-bind="attr: { title: $root.t('Tablet') }">Tablet</label>
+				        <input id="Mobile" type="radio" name="previewMode" value="mobile" data-bind="checked: $root.previewMode, button: { text: true, label: 'Mobile', icons: { primary: 'flaticon flaticon-iphone' } }" />
+				        <label for="Mobile" title="Mobile" data-bind="attr: { title: $root.t('Mobile') }">Mobile</label>
+				      </div>
+				    </div>
+
+				    <div id="frame-container" data-bind="css: { desktop: $root.previewMode() == 'desktop', mobile: $root.previewMode() == 'mobile', tablet: $root.previewMode() == 'tablet' }">
+				      <iframe data-bind="bindIframe: $data" id="preview-frame"></iframe>
+				    </div>
+				  </div>
+				</div>
+			</div>
+			<div class="spacing-md"></div>
+			<div class="row">
+				<div class="col">
+				 <h2> Upload subscribers </h2>
+				</div>
+			</div>
+			<form>
+		  	<div class="row">
+					<div class="form-group col-sm-6">
+				    <label for="subscribers">Subscribers</label>
+				    <textarea type="text" class="form-control" id="subscribers" aria-describedby="subscribersHelp" placeholder=""></textarea>
+				    <small id="subscribersHelp" class="form-text text-muted">Enter email addresses of subribers or upload from a <a id="hidden-upload-text" class="text-primary">Desktop File</a> <input type="file" id="hidden-upload" style="display: none;"" /></small>
+					</div>
+			  </div>
+			</form>
+			<div class="button-actions">
+					<button class="btn btn-success btn-lg" id="send-simple-campaign" href="javascript:void(0)" data-bind="click: $root.sendCampaign.bind(undefined, name)" type="submit" disabled="">
+						<span class="ui-button-icon-primary ui-icon fa fa-fw fa-send-o fa-lg fa-m-r"> </span> 
+						<span class="ui-button-text"> Send</span>
+					</button>
+					<button class="btn btn-danger btn-lg pull-right" id="clear-inputs">
+						<span class="ui-button-icon-primary ui-icon fa fa-remove fa-lg"> </span> 
+					</button>
+			</div>
+		</div>
+	</div>
+	<div class="r-sidebar r-sidebar-placeholder d-inline-flex flex-column">
+	</div>
+	<div class="r-sidebar d-inline-flex flex-column">
+		<div class="r-sidebar-inner" id="r-sidebar">
+			<div class="sidebar-list mt-0">
+				<a href="create-campaign.html" class="btn button-cta-sm button-create-campaign d-flex justify-content-between align-items-center active">
+					<span> Create a campaign </span>
+					<i class="flaticon-rocket"></i>
+				</a>
+				<a href="view-reports.html" class="btn button-cta-sm button-view-reports d-flex justify-content-between align-items-center">
+					<span> View reports </span>
+					<i class="flaticon-stats"></i>
+				</a>
+				<a href="create-signup-form.html" class="btn button-cta-sm button-signup-form d-flex justify-content-between align-items-center">
+					<span> Create a signup form </span>
+					<i class="flaticon-magic"></i>
+				</a>
+			</div>
+			<div class="spacing-sm"></div>
+		</div>
+	</div>
+
+	<div class="modal" id="address-modal" data-backdrop="static" data-keyboard="false" >
+	  <div class="modal-dialog" role="document">
+	    <div class="modal-content">
+	      <div class="modal-header">
+	        <span class="modal-title">According to USA Law, CAN SPAM ACT of 2003, all emails must have a physical address. Your account currently does not have a physical address. Please complete the form below:</span>
+	      </div>
+	      <div class="modal-body">
+	        <form id="first-login-address-form">
+				  	<div class="row">
+					  	<div class="form-group col-sm-6">
+						    <label for="firstName">First name</label>
+						    <input type="text" class="form-control required" id="firstName" name="FirstName" placeholder="">
+							</div>
+							<div class="form-group col-sm-6">
+						    <label for="lastName">Last name</label>
+						    <input type="text" class="form-control required" id="lastName" name="lastName" placeholder="">
+							</div>
+							<div class="form-group col-sm-12">
+                <label for="countryPhone">Country &amp; Phone number</label>
+                <input type="tel" class="form-control required" id="countryPhone" name="countryPhone">
+              </div>
+							<div class="form-group col-sm-12">
+						    <label for="webAddress">Website address</label>
+						    <input type="text" class="form-control required" id="webAddress" name="webAddress" placeholder="">
+							</div>
+							<div class="form-group col-sm-12">
+						    <label for="streetAddress">Street address</label>
+						    <input type="text" class="form-control required" id="streetAddress" name="streetAddress" placeholder="">
+							</div>
+							<div class="form-group col-sm-12">
+						    <label for="streetAddressTwo">Street address 2</label>
+						    <input type="text" class="form-control" id="streetAddressTwo" name="streetAddressTwo" placeholder="">
+							</div>
+							<div class="form-group col-sm-5">
+						    <label for="city">City</label>
+						    <input type="text" class="form-control required" id="city" name="city" placeholder="">
+							</div>
+							<div class="form-group col-sm-5">
+						    <label for="stateProvince">State/Province</label>
+						    <input type="text" class="form-control required" id="stateProvince" name="stateProvince" placeholder="">
+							</div>
+							<div class="form-group col-sm-2">
+						    <label for="zipCode">Zip Code</label>
+						    <input type="text" class="form-control required" id="zipCode" name="zipCode" placeholder="">
+							</div>		
+						</div>
+	      </div>
+	      <div class="modal-footer">
+	        <button type="reset" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+	        <button type="button" class="btn btn-success" id="first-login-address-form-save" disabled>Save address</button>
+	      </div>
+	    </div>
+	  </div>
+	</div>
+	<div class="modal" id="DMARC-modal" data-backdrop="static" data-keyboard="false" >
+	  <div class="modal-dialog" role="document">
+	    <div class="modal-content modal-danger">
+	      <div class="modal-header">
+	        <span class="modal-title">Deliverability Warning !</span>
+	        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+	          <span aria-hidden="true">&times;</span>
+	        </button>
+	      </div>
+	      <div class="modal-body">
+	        <h5>Some of your suscribers will not accept your email because your main domain uses DMARC email authentification.</h5>
+	        <h5>To avoid the risk of delivery issues, use a FROM EMAIL address at your own custom domain. </h5>
+	        <h5> Don’t have a custome domain? Learn more or register one with Google Domains at  <a href="#"> https://domains.google/ </a></h5>
+	      </div>
+	      <div class="modal-footer">
+	        <button type="button" class="btn btn-secondary" data-dismiss="modal">No, I want to edit email</button>
+	        <button type="button" class="btn btn-danger" data-dismiss="modal">I will risk it !</button>
+	      </div>
+	    </div>
+	  </div>
+	</div>
+	<div class="modal" id="campaign-sent-modal" data-backdrop="static" data-keyboard="false" >
+	  <div class="modal-dialog" role="document">
+	    <div class="modal-content modal-success">
+	      <div class="modal-header">
+	        <span class="modal-title"> Campaign sent !</span>
+	      </div>
+	      <div class="modal-body">
+	        <h5>Your campaign <span class="campaign-ver text-success"></span> has been succesfully sent ! You can track it's progress from your personal dashboard. </h5>
+	      </div>
+	      <div class="modal-footer">
+	        <button type="button" class="btn btn-success home-button">Go to Dashboard</button>
+	      </div>
+	    </div>
+	  </div>
+	</div>
+</div>
+
+</body>
+
+</html>

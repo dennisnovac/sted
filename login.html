@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+ 
+<html lang="en">	
+<head>
+
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+  <meta name="viewport" content="width=1024, initial-scale=1">
+
+  <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon" />
+  <link rel="icon" href="/favicon.ico" type="image/x-icon" />
+
+  <script src="dist/vendor/jquery.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.11.0/umd/popper.min.js"></script>
+  <script src="dist/vendor/bootstrap.min.js"></script>
+  <script src="dist/vendor/knockout.js"></script>
+  <script src="dist/vendor/jquery-ui.min.js"></script>
+  <script src="dist/vendor/jquery.ui.touch-punch.min.js"></script>
+  <script src="dist/vendor/knockout-jqueryui.min.js"></script>
+
+
+	<title>
+   		SteDB
+	</title>
+
+	<link href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700" rel="stylesheet">
+	<link rel="stylesheet" href="dist/vendor/bootstrap.min.css" />
+  <link rel="stylesheet" href="dist/stedb.min.css?v=0.10" />
+  <link rel="stylesheet" href="dist/vendor/intl-tel-input/css/intlTelInput.css">
+
+  <script src="dist/vendor/intl-tel-input/js/intlTelInput.js"></script>
+  <script src="dist/stedb.min.js?v=0.16"></script>
+  <script>
+    $(document).ready(function(){
+      var telInput = $("#phone");
+      var phoneError = $("<h5 class='form-text invalid-feedback'>Please enter a valid phone number for selected country</a></h5>");
+      var phoneSuccess = $("<h5 class='form-text valid-feedback'>Phone number validated.</a></h5>");
+      var phoneValidated = false;
+      var termsValidated = false;
+      var codeReceived = false;
+
+      // initialise plugin
+      telInput.intlTelInput({
+        utilsScript: "dist/vendor/intl-tel-input/js/utils.js"
+      });
+
+      var reset = function() {
+        $('.valid-feedback').remove();
+        $('.invalid-feedback').remove();
+      };
+
+      // on blur: validate
+      telInput.on('blur', function() {
+        reset();
+        
+        if ($.trim(telInput.val())) {
+          if (telInput.intlTelInput("isValidNumber")) {
+            $(this).removeClass('is-invalid');
+            $(this).addClass('is-valid');
+            phoneSuccess.insertAfter($('.intl-tel-input'));
+            phoneValidated = true;
+
+            // if terms validated, allow to continue 
+            if (termsValidated){
+              $('#continue').prop('disabled', false);
+            }
+          } else {
+            $(this).removeClass('is-valid');
+            $(this).addClass('is-invalid');
+            phoneError.insertAfter($('.intl-tel-input'));
+            phoneValidated = false;
+            $('#continue').prop('disabled', true);
+          }
+        }
+      });
+
+      // on keyup / change flag: reset
+      telInput.on("keyup change", reset);
+
+      $('#terms-conditions').on('click', function(){
+        if($(this).is(':checked')){
+          termsValidated = true;
+          console.log(termsValidated);
+
+          // if phone validated, allow to continue
+          if (phoneValidated){
+            $('#continue').prop('disabled', false);
+          }
+        } else {
+          termsValidated = false;
+          console.log(termsValidated);
+          $('#continue').prop('disabled', true);
+        }
+      });
+
+      $('#continue').on('click', function(){
+        $('#code-from-sms').show('fast');
+        codeReceived = true;
+        if (codeReceived){
+          $(this).html('Complete verification')
+          $(this).on('click', function(){
+            $('#reg-modal').hide("slide", { direction: "left" }, 100);
+            $('#reg-completed-modal').show("slide", { direction: "right" }, 300);
+          })
+        }
+      });
+
+      $('#go-to-stedb').on('click', function(){
+        window.location = '/';
+      })
+    });
+  </script>
+  
+</head>
+
+<body style="background-color: #FCFCFD">
+  <div class="container-main d-flex justify-content-between">
+  <div class="m-content d-inline-flex flex-column" style="background-color: #FCFCFD; padding: 0">
+    <div class="header row" style="background-color: #FFFFFF;">
+      <div class="col d-flex align-items-center justify-content-center">
+        <img class="logo" src="dist/img/logo.png" alt="logo" />
+      </div>
+    </div>
+    <div class="content">
+      <div id="reg-modal">
+        <div class="modal-dialog" role="document">
+          <div class="modal-content modal-success modal-border">
+            <div class="modal-header">
+              <span class="modal-title text-center">Review and accept our Terms and Conditions</span>
+            </div>
+            <div class="modal-body">
+              <div class="scrollable-textarea">
+                <h5 class="text-muted">Shahwan Tech. Ent., LLC Hosting Service Agreement, Privacy Policy and Terms &amp; Conditions</h5><div class="spacing-xs"></div>
+                <h5>
+                  <b>1. Agreement</b>
+                  <br>
+                  Your use of use of the STEdb Website is subject to this End User License Agreement (EULA). Please read and review this entire EULA before indicating your acceptance of the terms by agreeing and clicking on "Continue". Use of STEdb, as well as services offered by STEdb is also subject to the terms and conditions of your customer agreement.
+                </h5>
+                <div class="spacing-xs"></div>
+                <h5>
+                  <b>2. Account and Password Security</b>
+                  <br>
+                  You are responsible for maintaining the security of your account and confidentiality of your password and/or Personal Identification Number (PIN) code. If your account or password is stolen or used without your permission, call to notify us immediately at +1-561-228-5630. If you disclose your password or PIN to a third party, will not relieve you of responsibility. You consent to delivery of PIN codes by text message to your phone, unless STEdb determines that your phone is not capable of receiving text messages.
+                </h5>
+              </div>
+              <form>
+                <div class="row">
+                  <div class="form-check col-sm-12">
+                      <label> </label>
+                      <label class="form-check-label col-sm-12">
+                        <input class="form-check-input" type="checkbox" id="terms-conditions" required>
+                        <h5 class="no-margin"> I have read the "Terms and Conditions" and agree to receive communcation via email, phone or mobile text message </h5>
+                      </label>
+                  </div>
+                </div>
+                <div class="spacing-xs"></div>
+                <div class="row">
+                  <div class="form-group col-sm-6">
+                    <label for="phone">Phone number</label>
+                    <input type="tel" class="form-control" id="phone">
+                  </div>
+                  <div class="form-group col-sm-6" id="code-from-sms" style="display: none;">
+                    <label for="phone">Code form SMS</label>
+                    <input type="text" class="form-control">
+                  </div>
+                </div>
+              </form>
+            </div>
+            <div class="modal-footer" style="justify-content: space-between;">
+              <h6 class="no-margin"> Please enter your mobile phone number to verify you are a REAL HUMAN </h6>
+              <button type="button" class="btn btn-success" id="continue" disabled>Continue</button>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div id="reg-completed-modal" style="display: none;">
+        <div class="modal-dialog" role="document">
+          <div class="modal-content modal-success modal-border">
+            <div class="modal-header">
+              <span class="modal-title text-center">Your subscription has been activated !</span>
+            </div>
+            <div class="modal-body">
+              <h5> Your subscription has been activate. Please add <a href="#"> support@stedbcorp.com</a> to your contacts to ensure emails reach your inbox folder and are not being accidentally filtered.</h5>
+              <div class="spacing-xs"></div>
+              <h5><a href="#">Click here, if not redirected after 10 seconds.</a></h5>
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-success" id="go-to-stedb" >Go to account</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+</body>

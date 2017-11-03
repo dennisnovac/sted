@@ -1,0 +1,408 @@
+<!DOCTYPE html>
+ 
+<html lang="en">	
+<head>
+
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+  <meta name="viewport" content="width=1024, initial-scale=1">
+
+  <link rel="shortcut icon" href="/favicon.png" type="image/x-icon" />
+  <link rel="icon" href="/favicon.png" type="image/x-icon" />
+
+  <script src="dist/vendor/jquery.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.11.0/umd/popper.min.js"></script>
+  <script src="dist/vendor/bootstrap.min.js"></script>
+  <script src="dist/vendor/knockout.js"></script>
+  <script src="dist/vendor/jquery-ui.min.js"></script>
+  <script src="dist/vendor/jquery.ui.touch-punch.min.js"></script>
+  <script src="dist/vendor/load-image.all.min.js"></script>
+  <script src="dist/vendor/canvas-to-blob.min.js"></script>
+  <script src="dist/vendor/jquery.iframe-transport.js"></script>
+  <script src="dist/vendor/jquery.fileupload.js"></script>
+  <script src="dist/vendor/jquery.fileupload-process.js"></script>
+  <script src="dist/vendor/jquery.fileupload-image.js"></script>
+  <script src="dist/vendor/jquery.fileupload-validate.js"></script>
+  <script src="dist/vendor/knockout-jqueryui.min.js"></script>
+  <script src="dist/vendor/moment.js"></script>
+  <script src="dist/vendor/bootstrap-datepicker/js/bootstrap-datepicker.min.js"></script>
+  <script src="dist/vendor/chart.js/Chart.min.js"></script>
+
+	<title>
+   		Emailings - STEDB
+	</title>
+
+	<link href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700" rel="stylesheet">
+	<link rel="stylesheet" href="dist/vendor/bootstrap.min.css" />
+	<link rel="stylesheet" href="dist/vendor/bootstrap-datepicker/css/bootstrap-datepicker3.standalone.min.css" />
+  <link rel="stylesheet" href="dist/stedb.min.css?v=0.10" />
+
+  <script src="dist/stedb.min.js?v=0.16"></script>
+  	<script>
+  	$(document).ready(function(){
+
+  		$("[data-toggle=popover]").popover();
+
+			$('.range').datepicker({
+			    inputs: $('.range-start, .range-end')
+			});
+
+			$('.range-start').datepicker('update', new Date(2017,09,1)).on('changeDate', function(e){
+	      $('.start-date').html(e.format('dd/mm/yyyy'));
+	    });
+
+			$('.range-end').datepicker('setDate', new Date(2017,09,31)).on('changeDate', function(e){
+	      $('.end-date').html(e.format('dd/mm/yyyy'));
+	    });
+
+
+			// Render chart
+      var ctx = $("#myLineChart");
+	    ctx.attr('height',110);
+	    var dataLine = {
+	        labels: ["1st", "3rd", "5th", "7th", "9th", "11th", "13th", "15th", "17th", "19th", "21st", "23rd", "25th", "27th", "29th", "31st"],
+	        datasets: [
+	            {
+	                label: "Clicks",
+	                fill: true,
+	                lineTension: 0.1,
+	                backgroundColor: "rgba(90,157,229,0.25)",
+	                borderColor: "#5A9DE5",
+	                borderCapStyle: 'butt',
+	                borderDash: [],
+	                borderDashOffset: 0.0,
+	                pointBorderColor: "#2da9e9",
+	                borderWidth: 1,
+	                pointBackgroundColor: "rgba(90,157,229,1)",
+	                pointBorderWidth: 1,
+	                pointHoverRadius: 5,
+	                pointHoverBackgroundColor: "#fff",
+	                pointHoverBorderColor: "rgba(90,157,229,1)",
+	                pointHoverBorderWidth: 2,
+	                pointRadius: 1,
+	                pointHitRadius: 10,
+	                data: [3, 6, 1, 3, 7, 3, 5, 3, 6, 1, 3, 7, 3, 5, 3, 6, 1, 3],
+	                spanGaps: false,
+	            },
+	            {
+	                label: "Open",
+	                fill: true,
+	                lineTension: 0.1,
+	                backgroundColor: "rgba(90,200,88,0.25)",
+	                borderColor: "#5AC858",
+	                borderCapStyle: 'butt',
+	                borderDash: [],
+	                borderDashOffset: 0.0,
+	                pointBorderColor: "rgba(90,200,88,1)",
+	                borderWidth: 1,
+	                pointBackgroundColor: "rgba(90,200,88,1)",
+	                pointBorderWidth: 1,
+	                pointHoverRadius: 5,
+	                pointHoverBackgroundColor: "#fff",
+	                pointHoverBorderColor: "rgba(90,200,88,1)",
+	                pointHoverBorderWidth: 2,
+	                pointRadius: 1,
+	                pointHitRadius: 10,
+	                data: [1, 15, 7, 3, 6, 1, 3, 7, 3, 5, 8, 13, 2, 5, 11, 6, 9],
+	                spanGaps: false,
+	            }
+	        ]
+	    };
+
+	    // Set timeou
+	    setTimeout(function(){
+	    	var myLineChart = new Chart(ctx, {
+	        type: 'line',
+	        data: dataLine,
+	        options: {
+	        	legend: {
+            position: 'right',
+            labels: {
+		          boxWidth: 13,
+		          padding: 20
+		        }
+          }
+	       }
+	    	});
+	    },180);
+  	});
+  </script>
+  </script>
+</head>
+
+<body>
+<div class="container-main d-flex justify-content-between">
+	<div class="l-sidebar d-inline-flex flex-column">
+		<div class="l-sidebar__content">
+			<ul class="nav flex-column nav-user">
+				<li class="nav-item nav-title">
+					<a> User details </a>
+				</li>
+			  <li class="nav-item">
+			    <a class="nav-link nav-user-link">
+			    	<i class="nav-icon flaticon-user align-middle"></i>
+			    	<span class="align-middle">dennis.novac</span>
+			    </a>
+			  </li>
+			  <li class="nav-item">
+			    <a class="nav-link nav-user-settings" href="#">
+			    	<i class="nav-icon flaticon-tool align-middle"></i>
+			    	<span class="align-middle">Settings</span>
+			    </a>
+			  </li>
+			  <li class="nav-item">
+			    <a class="nav-link" href="#">
+			    	<i class="nav-icon flaticon-logout align-middle"></i>
+			    	<span class="align-middle">Log out</span>
+			    </a>
+			  </li>
+			</ul>
+
+			<ul class="nav nav-interface flex-column">
+				<li class="nav-item nav-title">
+					<a> Campaign interface </a>
+				</li>
+			  <li class="nav-item">
+			    <a class="nav-link" href="index.html">
+			    	<i class="nav-icon flaticon-chart align-middle"></i>
+			    	<span class="align-middle">Simple</span>
+			    </a>
+			  </li>
+			  <li class="nav-item">
+			    <a class="nav-link" href="basic.html">
+			    	<i class="nav-icon flaticon-wand align-middle"></i>
+			    	<span class="align-middle">Basic</span>
+			    </a>
+			  </li>
+			  <li class="nav-item active">
+			    <a class="nav-link" href="dashboard.html">
+			    	<i class="nav-icon flaticon-puzzle align-middle"></i>
+			    	<span class="align-middle">Advanced</span>
+			    </a>
+			  </li>
+			</ul>
+
+			<ul class="nav nav-advanced flex-column">
+				<li class="nav-item nav-title">
+					<a> Advanced menu </a>
+				</li>
+			  <li class="nav-item">
+			    <a class="nav-link" href="dashboard.html">
+			    	<i class="nav-icon flaticon-dashboard align-middle"></i>
+			    	<span class="align-middle">Dashboard</span>
+			    </a>
+			  </li>
+			  <li class="nav-item">
+			    <a class="nav-link" data-toggle="collapse" href="#email-list">
+			    	<i class="nav-icon flaticon-mail align-middle"></i>
+			    	<span class="align-middle">Email list</span>
+			    </a>
+			    <ul class="list-unstyled nav-item-inner collapse" id="email-list">
+			    	<li class="nav-link-inner"><a href="advanced-list-management.html">List management</a></li>
+			    	<li class="nav-link-inner"><a href="#">List creation</a></li>
+			    	<li class="nav-link-inner"><a href="generate-counts.html">Generate counts</a></li>
+			    	<li class="nav-link-inner"><a href="#">Custom fields</a></li>
+			    	<li class="nav-link-inner"><a href="#">Signup forms</a></li>
+			    	<li class="nav-link-inner"><a href="#">Form storing rules</a></li>
+			    	<li class="nav-link-inner"><a href="#">Opt-in links</a></li>
+			    	<li class="nav-link-inner"><a href="#">Subscriber search</a></li>
+			    	<li class="nav-link-inner"><a href="#">Subscriber remove</a></li>
+			    	<li class="nav-link-inner"><a href="#">List manipulations</a></li>
+			    </ul>
+			  </li>
+			  <li class="nav-item">
+			    <a class="nav-link" data-toggle="collapse" href="#campaigns-list">
+			    	<i class="nav-icon flaticon-loud align-middle"></i>
+			    	<span class="align-middle">Campaigns</span>
+			    </a>
+			    <ul class="list-unstyled nav-item-inner collapse" id="campaigns-list">
+			    	<li class="nav-link-inner"><a href="campaign-management.html">Campaign management</a></li>
+			    	<li class="nav-link-inner"><a href="advanced-campaign.html">Campaign creation</a></li>
+			    	<li class="nav-link-inner"><a href="#">Content type</a></li>
+			    	<li class="nav-link-inner"><a href="#">Auto responders</a></li>
+			    	<li class="nav-link-inner"><a href="#">Emailing settings</a></li>
+			    	<li class="nav-link-inner"><a href="#">Form storing rules</a></li>
+			    	<li class="nav-link-inner"><a href="#">Unsubscribe list</a></li>
+			    </ul>
+			  </li>
+			  <li class="nav-item">
+			    <a class="nav-link" data-toggle="collapse" href="#reports-list">
+			    	<i class="nav-icon flaticon-report align-middle"></i>
+			    	<span class="align-middle">Reports</span>
+			    </a>
+			    <ul class="list-unstyled nav-item-inner collapse" id="reports-list">
+			    	<li class="nav-link-inner active"><a href="reports.html">Emailings</a></li>
+			    	<li class="nav-link-inner"><a href="#">Auto responders</a></li>
+			    	<li class="nav-link-inner"><a href="#">Subscribers creation</a></li>
+			    	<li class="nav-link-inner"><a href="#">Import status</a></li>
+			    </ul>
+			  </li>
+			</ul>
+		</div>
+	</div>
+	<div class="m-content d-inline-flex flex-column">
+		<div class="header row">
+			<div class="col d-flex align-items-center">
+				<i class="flaticon-hamburger pointer collapse-sidebar"></i>
+			</div>
+			<div class="col d-flex align-items-center justify-content-center">
+				<img class="logo" src="dist/img/logo.png" alt="logo" />
+			</div>
+			<div class="col support-phone text-right d-flex align-items-center justify-content-end">
+				<i class="flaticon-support pointer support"></i>
+				<div class="phone d-flex align-items-center">
+					<i class="flaticon-phone"></i>
+					<div>
+						<div class="phone-number"> +1 561 228 5630 </div>
+						<div class="working-hours"> 9AM - 5PM (EST) </div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="content">
+			<div class="row">
+				<div class="col">
+				 <h2> Reports </h2>
+				 <h4> Analyze the detailed reports below for your campaign between <b class="start-date">01/10/2017</b> and <b class="end-date">31/10/2017</b>.</h4>
+				 <div class="spacing-sm"></div>
+				</div>
+			</div>
+			<div class="col no-padding">
+				<canvas id="myLineChart"></canvas>
+			</div>
+			<div class="spacing-md"></div>
+			<table class="table table-striped table-responsive">
+			  <thead>
+			    <tr>
+			      <th>#</th>
+			      <th>Date</th>
+			      <th>
+			      	<span tabindex="0"
+			      	data-placement="top" 
+						  role="button" 
+						  data-html="true" 
+						  data-toggle="popover" 
+						  data-trigger="hover" 
+						  data-content='<div>Explanation goes here <div class="spacing-xs"></div> <div class="embed-responsive embed-responsive-16by9 rounded" style="width: 260px"> <iframe class="embed-responsive-item" src="https://www.youtube.com/embed/lCCWQ6ziAyc" allowfullscreen></iframe> </div></div>'>
+							Name *</span>
+						</th>
+			      <th>Sent</th>
+			      <th class="grayed-out">Opened</th>
+			      <th class="grayed-out">Clicks</th>
+			      <th>Bounce</th>
+			      <th>Unsub.</th>
+			      <th>Compl.</th>
+			      <th>Traps</th>
+			    </tr>
+			  </thead>
+			  <tbody>
+			    <tr>
+			      <th scope="row">21498</th>
+			      <td>06/26/17</td>
+			      <td><b>DrinkTell promocampaign very long name</b></td>
+			      <td>32815</td>
+			      <td>619 <small class="text-muted">(5.41%)</small></td>
+			      <td>371 <small class="text-muted">(3.22%)</small></td>
+			      <td>0.02%</td>
+			      <td>9</td>
+			      <td>0</td>
+			      <td>7</td>
+			    </tr>
+			    <tr>
+			      <th scope="row">21499</th>
+			      <td>06/26/17</td>
+			      <td><b>DrinkTell promo 2</b></td>
+			      <td>32411</td>
+			      <td>51 <small class="text-muted">(3.37%)</small></td>
+			      <td>551 <small class="text-muted">(7.23%)</small></td>
+			      <td>0.33%</td>
+			      <td>7</td>
+			      <td>0</td>
+			      <td>3</td>
+			    </tr>
+			    <tr>
+			      <th scope="row">21450</th>
+			      <td>06/26/17</td>
+			      <td><b>DrinkTell promo 3</b></td>
+			      <td>52356</td>
+			      <td>326 <small class="text-muted">(4.16%)</small></td>
+			      <td>231 <small class="text-muted">(1.62%)</small></td>
+			      <td>0.61%</td>
+			      <td>6</td>
+			      <td>0</td>
+			      <td>1</td>
+			    </tr>
+			    <tr>
+			      <th scope="row">21451</th>
+			      <td>06/26/17</td>
+			      <td><b>DrinkTell promo 4</b></td>
+			      <td>12345</td>
+			      <td>94 <small class="text-muted">(7.23%)</small></td>
+			      <td>467 <small class="text-muted">(3.66%)</small></td>
+			      <td>0.52%</td>
+			      <td>12</td>
+			      <td>0</td>
+			      <td>42</td>
+			    </tr>
+			    <tr>
+			      <th scope="row">21452</th>
+			      <td>06/26/17</td>
+			      <td><b>DrinkTell promo 5</b></td>
+			      <td>62611</td>
+			      <td>613 <small class="text-muted">(1.32%)</small></td>
+			      <td>451 <small class="text-muted">(4.61%)</small></td>
+			      <td>0.51%</td>
+			      <td>4</td>
+			      <td>0</td>
+			      <td>11</td>
+			    </tr>
+			  </tbody>
+			</table>
+		</div>
+	</div>
+	<div class="r-sidebar r-sidebar-placeholder d-inline-flex flex-column"></div>
+	<div class="r-sidebar d-inline-flex flex-column">
+		<div class="sidebar-list">
+			<div class="sidebar-list__title">
+				Define recipents
+			</div>
+			<div class="sidebar-list__content">
+				<div class="sidebar-list__item d-flex w-100 justify-content-between align-items-center">
+		      <h5>Opens rate:</h5>
+		      <small>3.07%</small>
+		    </div>
+		    <div class="sidebar-list__item d-flex w-100 justify-content-between align-items-center">
+		      <h5>Click-through rate:</h5>
+		      <small>1.14%</small>
+		    </div>
+		    <div class="sidebar-list__item d-flex w-100 justify-content-between align-items-center">
+		      <h5>Click to open:</h5>
+		      <small>55.22%</small>
+		    </div>
+		    <div class="sidebar-list__item d-flex w-100 justify-content-between align-items-center">
+		      <h5>Chum rate:</h5>
+		      <small>0.02%</small>
+		    </div>
+		    <div class="sidebar-list__item d-flex w-100 justify-content-between align-items-center">
+		      <h5>Sent:</h5>
+		      <small>301262</small>
+		    </div>
+	    </div>
+		</div>
+		<div class="sidebar-list">
+				<div class="sidebar-list__title">
+					Show by date range
+				</div>
+				<div class="sidebar-list__content">
+					<div class="spacing-xs"></div>
+					<div class="range" style="width: 100%">
+					    <div class="range-start" style="width: 100%"></div>
+					    <div class="spacing-xs"></div>
+					    <div class="range-end" style="width: 100%"></div>
+					</div>
+		    </div>
+		</div>
+	</div>
+</div>
+</body>
+
+</html>

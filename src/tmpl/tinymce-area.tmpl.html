@@ -1,0 +1,19 @@
+<div class="tinyMCE-card">
+  <div class="tinyMCE-card__content">
+    <div class="tinyMCE-header">
+      <span class="undo-redo" data-bind="buttonset: { }">
+        <a title="Undo last operation" href="javascript:void(0)" data-bind="attr: { title: $root.t('Undo last operation') }, click: $root.undo.execute, clickBubble: false, button: { disabled: !$root.undo.enabled(), icons: { primary: 'mce-ico mce-i-undo' }}"></a>
+        <a title="Redo last operation" href="javascript:void(0)" data-bind="attr: { title: $root.t('Redo last operation') }, click: $root.redo.execute, clickBubble: false, button: { disabled: !$root.redo.enabled(), icons: { primary: 'mce-ico mce-i-redo' }}"></a>
+      </span>
+    </div>
+    <div id="main-edit-area" data-bind="click: function(obj, evt) { $root.selectBlock(null); return true; }, clickBubble: false">
+      <!-- ko withProperties: { templateMode: 'wysiwyg', templateModeFallback: 'show' } -->
+      <div id="main-wysiwyg-area" data-bind="wysiwygScrollfix: true, scrollable: true, fudroppable: { active: draggingImage }, css: { isdragging: dragging, isdraggingimg: draggingImage }, block: content"></div>
+      <!-- /ko -->
+    </div>
+    <div id="fake-image-editor" title="Fake image editor" style="display: none" data-bind="attr: { title: $root.t('Fake image editor') }, html: $root.t('<p>Fake image editor</p>')">
+    <p>Fake image editor</p>
+  </div>
+  </div>
+
+</div>

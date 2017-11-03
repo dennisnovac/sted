@@ -1,0 +1,272 @@
+<!DOCTYPE html>
+ 
+<html lang="en">	
+<head>
+
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+  <meta name="viewport" content="width=1024, initial-scale=1">
+
+  <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon" />
+  <link rel="icon" href="/favicon.ico" type="image/x-icon" />
+
+  <script src="dist/vendor/jquery.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.11.0/umd/popper.min.js"></script>
+  <script src="dist/vendor/bootstrap.min.js"></script>
+  <script src="dist/vendor/knockout.js"></script>
+  <script src="dist/vendor/jquery-ui.min.js"></script>
+  <script src="dist/vendor/jquery.ui.touch-punch.min.js"></script>
+  <script src="dist/vendor/load-image.all.min.js"></script>
+  <script src="dist/vendor/canvas-to-blob.min.js"></script>
+  <script src="dist/vendor/jquery.iframe-transport.js"></script>
+  <script src="dist/vendor/jquery.fileupload.js"></script>
+  <script src="dist/vendor/jquery.fileupload-process.js"></script>
+  <script src="dist/vendor/jquery.fileupload-image.js"></script>
+  <script src="dist/vendor/jquery.fileupload-validate.js"></script>
+  <script src="dist/vendor/knockout-jqueryui.min.js"></script>
+  <script src="dist/vendor/moment.js"></script>
+  <script src="dist/vendor/bootstrap-datepicker/js/bootstrap-datepicker.min.js"></script>
+
+	<title>
+   		View reports - STEDB
+	</title>
+
+	<link href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700" rel="stylesheet">
+	<link rel="stylesheet" href="dist/vendor/bootstrap.min.css" />
+	<link rel="stylesheet" href="dist/vendor/bootstrap-datepicker/css/bootstrap-datepicker3.standalone.min.css" />
+  <link rel="stylesheet" href="dist/stedb.min.css?v=0.10" />
+
+  <script src="dist/stedb.min.js?v=0.16"></script>
+  <script>
+  	$(document).ready(function(){
+			$('.range').datepicker({
+			    inputs: $('.range-start, .range-end')
+			});
+
+			$('.range-start').datepicker('update', new Date(2017,08,11)).on('changeDate', function(e){
+	      $('.start-date').html(e.format('dd/mm/yyyy'));
+	    });
+
+			$('.range-end').datepicker('setDate', new Date(2017,09,13)).on('changeDate', function(e){
+	      $('.end-date').html(e.format('dd/mm/yyyy'));
+	    });
+  	});
+  </script>
+  </script>
+</head>
+
+<body>
+
+<div class="container-main d-flex justify-content-between">
+	<div class="l-sidebar d-inline-flex flex-column">
+		<div class="l-sidebar__content">
+			<ul class="nav flex-column nav-user">
+				<li class="nav-item nav-title">
+					<a> User details </a>
+				</li>
+			  <li class="nav-item">
+			    <a class="nav-link nav-user-link">
+			    	<i class="nav-icon flaticon-user align-middle"></i>
+			    	<span class="align-middle">dennis.novac</span>
+			    </a>
+			  </li>
+			  <li class="nav-item">
+			    <a class="nav-link nav-user-settings" href="#">
+			    	<i class="nav-icon flaticon-tool align-middle"></i>
+			    	<span class="align-middle">Settings</span>
+			    </a>
+			  </li>
+			  <li class="nav-item">
+			    <a class="nav-link" href="#">
+			    	<i class="nav-icon flaticon-logout align-middle"></i>
+			    	<span class="align-middle">Log out</span>
+			    </a>
+			  </li>
+			</ul>
+
+			<ul class="nav nav-interface flex-column">
+				<li class="nav-item nav-title">
+					<a> Campaign interface </a>
+				</li>
+			  <li class="nav-item active">
+			    <a class="nav-link" href="index.html">
+			    	<i class="nav-icon flaticon-chart align-middle"></i>
+			    	<span class="align-middle">Simple</span>
+			    </a>
+			  </li>
+			  <li class="nav-item">
+			    <a class="nav-link" href="basic.html">
+			    	<i class="nav-icon flaticon-wand align-middle"></i>
+			    	<span class="align-middle">Basic</span>
+			    </a>
+			  </li>
+			  <li class="nav-item">
+			    <a class="nav-link" href="dashboard.html">
+			    	<i class="nav-icon flaticon-puzzle align-middle"></i>
+			    	<span class="align-middle">Advanced</span>
+			    </a>
+			  </li>
+			</ul>
+		</div>
+	</div>
+	<div class="m-content d-inline-flex flex-column">
+		<div class="header row">
+			<div class="col d-flex align-items-center">
+				<i class="flaticon-hamburger pointer collapse-sidebar"></i>
+			</div>
+			<div class="col d-flex align-items-center justify-content-center">
+				<img class="logo" src="dist/img/logo.png" alt="logo" />
+			</div>
+			<div class="col support-phone text-right d-flex align-items-center justify-content-end">
+				<i class="flaticon-support pointer support"></i>
+				<div class="phone d-flex align-items-center">
+					<i class="flaticon-phone"></i>
+					<div>
+						<div class="phone-number"> +1 561 228 5630 </div>
+						<div class="working-hours"> 9AM - 5PM (EST) </div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="content">
+			<div class="row">
+				<div class="col">
+				 <h2> Reports </h2>
+				 <h4> Analyze the detailed reports below for your campaign between <b class="start-date">09/11/2017</b> and <b class="end-date">10/13/2017</b>.</h4>
+				 <div class="spacing-sm"></div>
+				</div>
+			</div>
+			<table class="table table-striped table-responsive">
+			  <thead>
+			    <tr>
+			      <th>Date</th>
+			      <th>Bounced</th>
+			      <th>Opened</th>
+			      <th>Clicks</th>
+			      <th>Subject</th>
+			    </tr>
+			  </thead>
+			  <tbody>
+			    <tr>
+			      <td>06/26/17</td>
+			      <td>24%</td>
+			      <td>14%</td>
+			      <td>8%</td>
+			      <td>Facebook new campaign for shoe store</td>
+			    </tr>
+			    <tr>
+			      <td>06/26/17</td>
+			      <td>27%</td>
+			      <td>52%</td>
+			      <td>32%</td>
+			      <td>Twitter new campaign to gain more millionaire followers</td>
+			    </tr>
+			    <tr>
+			      <td>06/26/17</td>
+			      <td>34%</td>
+			      <td>51%</td>
+			      <td>6%</td>
+			      <td>Twitter second campaign</td>
+			    </tr>
+			    <tr>
+			      <td>06/26/17</td>
+			      <td>66%</td>
+			      <td>12%</td>
+			      <td>44%</td>
+			      <td>Instagram Herbalife sales</td>
+			    </tr>
+			    <tr>
+			      <td>06/26/17</td>
+			      <td>24%</td>
+			      <td>14%</td>
+			      <td>8%</td>
+			      <td>Facebook new campaign for shoe store</td>
+			    </tr>
+			    <tr>
+			      <td>06/26/17</td>
+			      <td>61%</td>
+			      <td>11%</td>
+			      <td>3%</td>
+			      <td>Facebook new campaign for dog store</td>
+			    </tr>
+			    <tr>
+			      <td>06/26/17</td>
+			      <td>11%</td>
+			      <td>34%</td>
+			      <td>6%</td>
+			      <td>Facebook new campaign for watch store</td>
+			    </tr>
+			    <tr>
+			      <td>06/26/17</td>
+			      <td>27%</td>
+			      <td>52%</td>
+			      <td>32%</td>
+			      <td>Twitter new campaign to gain more  followers</td>
+			    </tr>
+			    <tr>
+			      <td>06/26/17</td>
+			      <td>34%</td>
+			      <td>51%</td>
+			      <td>6%</td>
+			      <td>Twitter third campaign</td>
+			    </tr>
+			    <tr>
+			      <td>06/26/17</td>
+			      <td>66%</td>
+			      <td>12%</td>
+			      <td>44%</td>
+			      <td>Facebook Herbalife sales</td>
+			    </tr>
+			    <tr>
+			      <td><b>Totals</b></td>
+			      <td><b class="text-primary">73%</b></td>
+			      <td><b class="text-primary">6%</b></td>
+			      <td><b class="text-primary">3%</b></td>
+			      <td></td>
+			    </tr>
+			  </tbody>
+			</table>
+		  <ul class="pagination pagination-sm justify-content-end">
+		    <li class="page-item disabled">
+		      <a class="page-link" href="#" tabindex="-1">Previous</a>
+		    </li>
+		    <li class="page-item"><a class="page-link" href="#">1</a></li>
+		    <li class="page-item"><a class="page-link" href="#">2</a></li>
+		    <li class="page-item"><a class="page-link" href="#">3</a></li>
+		    <li class="page-item">
+		      <a class="page-link" href="#">Next</a>
+		    </li>
+		  </ul>
+		</div>
+	</div>
+	<div class="r-sidebar r-sidebar-placeholder d-inline-flex flex-column"></div>
+	<div class="r-sidebar d-inline-flex flex-column">
+		<a href="simple-campaign.html" class="btn button-cta-sm button-create-campaign d-flex justify-content-between align-items-center">
+			<span> Create a campaign </span>
+			<i class="flaticon-rocket"></i>
+		</a>
+		<a href="view-reports.html" class="btn button-cta-sm button-view-reports d-flex justify-content-between align-items-center active">
+			<span> View reports </span>
+			<i class="flaticon-stats"></i>
+		</a>
+		<a href="create-signup-form.html" class="btn button-cta-sm button-signup-form d-flex justify-content-between align-items-center">
+			<span> Create a signup form </span>
+			<i class="flaticon-magic"></i>
+		</a>
+		<div class="sidebar-list">
+			<div class="sidebar-list__title">
+				Show by date range
+			</div>
+			<div class="sidebar-list__content">
+				<div class="spacing-xs"></div>
+				<div class="range" style="width: 100%">
+				    <div class="range-start" style="width: 100%"></div>
+				    <div class="spacing-xs"></div>
+				    <div class="range-end" style="width: 100%"></div>
+				</div>
+	    </div>
+		</div>
+	</div>
+</div>
+</body>
+
+</html>

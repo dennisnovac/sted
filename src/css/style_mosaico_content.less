@@ -1,0 +1,323 @@
+@import (inline) 'safarihack.css';
+
+#main-edit-area .editable {
+  position: relative;
+  // display: table;
+}
+
+/* minimum size for empty dropzones */
+#main-edit-area .sortable-blocks-edit.empty {
+  min-height: 200px;
+  // il solo min-height su IE non centra il flexbox
+  height: 200px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 10px 0px;
+  // flex-direction: column;
+  border: 1.9px dashed #E3E4E5;
+  border-radius: 3px;
+  position: relative;
+  left: -12px;
+  width: calc(~"100% + 24px");
+}
+
+#main-edit-area .sortable-blocks-edit.empty:after {
+  content: "Add a block from the sidebar";
+  font-size: 14px;
+  font-weight: normal;
+  text-decoration: none;
+  font-family: @font-family;
+}
+
+#main-edit-area .isdragging .sortable-blocks-edit.empty:after {
+  .makeDroppable();
+  height: auto;
+  bottom: -14px;
+}
+
+@keyframes pulse {
+    0% { left: -10px; right: -10px; opacity: .8; }
+  100% { left: -30px; right: -30px; opacity:  0; }
+}
+@keyframes slidein {
+    0% { transform: scale(1.5,1.5); opacity: 0; }
+  100% { transform: scale(  1,  1); opacity: 1; }
+}
+@keyframes slidein2 {
+    0% { margin-left: -30%; margin-right: 30%; opacity: 0; }
+  100% { margin-left: 0; margin-right: 0; opacity: 1; }
+}
+
+#main-edit-area .img-wysiwyg {
+  position: relative;
+  /* questo dovrebbe avere lo stesso stile dell'immagine rimpiazzata! */
+  /* display: inline-block; */
+  display: block;
+  width: auto;
+}
+#main-edit-area .isdraggingimg .ui-droppable.img-wysiwyg {
+  &:before {
+    .makeDroppable();
+    line-height: 45px;
+    height: auto;
+    top: -10px;
+    bottom: -10px;
+  }
+  &.ui-state-draghover:before {
+    background-color: fade(#5a9de5, 80%);
+    animation: none;
+  }
+}
+
+
+#main-edit-area #main-wysiwyg-area:not(.isdragging):not(.isdraggingimg) .editable {
+  .makeSelectable(10px, ~'.selected', 0, ~' .mo-blockselectionhelper');
+}
+
+#main-edit-area .isdragging .sortable-blocks-edit > div:not(.sortable-placeholder) + div:not(.sortable-placeholder):not(.ui-sortable-helper):not(.ui-draggable-dragging):before,
+#main-edit-area .isdragging .sortable-blocks-edit > div:not(.sortable-placeholder):not(.ui-sortable-helper):not(.ui-draggable-dragging):first-child:before,
+#main-edit-area .isdragging .sortable-blocks-edit > div:not(.sortable-placeholder):not(.ui-sortable-helper):not(.ui-draggable-dragging):last-child:after {
+  .makeDroppable();
+}
+
+#main-edit-area .isdragging .sortable-blocks-edit > div:not(.sortable-placeholder):not(.ui-sortable-helper):not(.ui-draggable-dragging):last-child:after {
+  bottom: -20px;
+  top: auto;
+}
+
+#main-edit-area .editable.sortable-placeholder:hover .tools {
+  // display: none;
+  visibility: hidden;
+}
+
+#main-edit-area .editable:hover .tools {
+  // display: block;
+  visibility: visible;
+}
+
+#main-edit-area .ui-sortable-helper > *,
+#main-edit-area .ui-sortable-helper .tools > * {
+  opacity: .3;
+}
+#main-edit-area .ui-sortable-helper .tools,
+#main-edit-area .ui-sortable-helper .tools .handle {
+  opacity: 1;
+}
+
+#main-edit-area .tool {
+  border-radius: 100%;
+  line-height: 32px !important;
+  padding: 5px;
+  text-align: center;
+  margin: -7px 5px 0;
+  box-shadow: none;
+  background-color: #5A9DE5;
+  color: #fff;
+  display: inline-block;
+  text-align: center;
+  width: 42px;
+  height: 42px;
+  font-size: 20px;
+  
+  cursor: pointer;
+
+  input.fileupload {
+    padding-top: 50px;
+  }
+}
+#main-edit-area .tool:hover {
+  background-color: #5294db;
+}
+#main-edit-area .tools .tool.handle {
+  float: left;
+  margin-left: 16px;
+  cursor: move;
+}
+#main-edit-area .tools .tool.moveup,
+#main-edit-area .tools .tool.movedown {
+  float: left;
+  margin-left: 3px;
+}
+
+#main-edit-area .tools .tool.delete,
+#main-edit-area .tools .tool.clone {
+  float: right;
+  margin-left: 3px;
+}
+
+#main-edit-area .tools .tool.delete {
+  margin-right: 16px;
+}
+
+#main-edit-area .midtools {
+  // display: none;
+  visibility: hidden;
+  z-index: 30; 
+  position: absolute; 
+  bottom: 16px;
+  width: 100%;
+  text-align: left;
+}
+#main-edit-area .img-wysiwyg:hover .midtools {
+  // display: block;
+  visibility: visible;
+}
+// nascondo un po' di cose durante l'upload
+#main-edit-area .uploading {
+  .midtools {
+    // display: none !important;
+    visibility: hidden !important;
+  }
+  .fileuploadtext {
+    // display: none !important;
+    visibility: hidden !important;
+  }
+  .fileupload.withfile {
+    // display: none;
+    visibility: hidden;
+  }
+}
+
+
+#main-edit-area .img-wysiwyg .img-size {
+  visibility: hidden;
+  position: absolute;
+  top: 0;
+  right: 0;
+  padding: 2px;
+  font-family: @font-family;
+  font-size: 12px;
+  background-color: rgba(128,128,128,.5);
+  color: white;  
+}
+
+#main-edit-area .img-wysiwyg:hover .img-size {
+  visibility: visible;
+}
+
+#main-edit-area .midtools .tool {
+  z-index: 20;
+  margin-left: 8px;
+}
+
+#main-edit-area .tools {
+  position: absolute;
+  // display: none;
+  visibility: hidden;
+  margin: 0;
+  top: -16px;
+  left: 0;
+  right: 0;
+  height: 1px;
+  z-index: 20;
+  text-align: center;
+  /* width: 100%;*/
+  /* padding: 0.25em; */
+}
+
+#main-wysiwyg-area {
+  backface-visibility: hidden;
+  background-color: white;
+}
+
+#main-edit-area, #main-toolbox, #main-preview {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+}
+
+#main-wysiwyg-area {
+  // Prevent images inside A tags to show "hand cursor"
+  a[href] {
+    cursor: default !important;
+  }
+  // The ruls above breaks the cursor in tinymce, so fix it:
+  a[contenteditable] {
+    cursor: text !important;
+  }
+
+  // prevent some contenteditable to collapse
+  // TODO maybe we should call this on every inline element
+  span, a {
+    &[contenteditable]:empty {
+      display: inline-block;
+      min-width: 50px;
+    }
+  }
+  div, p, td {
+    &[contenteditable] {
+      min-width: 50px;
+    }
+  }
+
+}
+
+#main-edit-area {
+  .mce-edit-focus {
+    outline: none;
+  }
+
+  #main-wysiwyg-area:not(.isdragging):not(.isdraggingimg) {
+    .mce-content-body {
+      .makeSelectable(5px, ~'.selecteditem', 1px);
+    }
+    .selectable-img {
+      .makeSelectable(5px, ~'.selecteditem', 1px, ~' .mo-imgselectionhelper');
+    }
+  }
+
+  .textMiddle {
+    text-shadow: none !important;
+    font-weight: 400 !important;
+    font-size: 13px;
+    background-color: rgba(0,0,0,0.05);
+    /* border-radius: 5px; */
+    padding: 5px;
+    color: #A3A6AD;
+    position: absolute;
+    top: 2px;
+    left: 2px;
+    right: 2px;
+  }
+}
+
+#main-wysiwyg-area replacedbody {
+  position: relative;
+  display: block;
+  min-height: 100%;
+  max-width: 700px;
+  margin: 0 auto !important;
+  padding: 16px 20px !important;
+  background-color: transparent !important;
+
+  @media (min-width: 1400px) {
+    max-width: 800px;
+  }
+  @media (min-width: 1600px) {
+    max-width: 900px;
+  }
+  .withPreviewFrame & {
+    @media (max-width: 1700px) {
+      max-width: 700px;
+    }
+    @media (min-width: 1700px) {
+      max-width: 800px;
+    }
+    @media (max-width: 1400px) {
+      &:before, &:after {
+        display: none;
+      }
+    }
+  }
+
+}
+
+// Add shadow to tinymce buttonbar buttons
+.mce-toolbar-grp.mce-panel .mce-btn-group {
+  box-shadow: none;
+}
+
+.vb-outer {
+  background-color: #fff !important;
+}

@@ -1,0 +1,850 @@
+<!DOCTYPE html>
+ 
+<html lang="en">	
+<head>
+
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+  <meta name="viewport" content="width=1024, initial-scale=1">
+
+  <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon" />
+  <link rel="icon" href="/favicon.ico" type="image/x-icon" />
+
+  <script src="dist/vendor/jquery.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.11.0/umd/popper.min.js"></script>
+  <script src="dist/vendor/bootstrap.min.js"></script>
+  <script src="dist/vendor/knockout.js"></script>
+  <script src="dist/vendor/jquery-ui.min.js"></script>
+  <script src="dist/vendor/jquery.ui.touch-punch.min.js"></script>
+  <script src="dist/vendor/load-image.all.min.js"></script>
+  <script src="dist/vendor/canvas-to-blob.min.js"></script>
+  <script src="dist/vendor/jquery.iframe-transport.js"></script>
+  <script src="dist/vendor/jquery.fileupload.js"></script>
+  <script src="dist/vendor/jquery.fileupload-process.js"></script>
+  <script src="dist/vendor/jquery.fileupload-image.js"></script>
+  <script src="dist/vendor/jquery.fileupload-validate.js"></script>
+  <script src="dist/vendor/knockout-jqueryui.min.js"></script>
+  <script src="dist/vendor/tinymce.min.js"></script>
+
+	<title>
+   		SteDB
+	</title>
+
+	<link href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700" rel="stylesheet">
+	<link rel="stylesheet" href="dist/vendor/bootstrap.min.css" />
+  <link rel="stylesheet" href="dist/stedb.min.css?v=0.10" />
+
+  <script src="dist/stedb.min.js?v=0.16"></script>
+  <script>
+      var initialEdits = [];
+      var initialTemplates = [];
+      var initialCampaigns = [];
+
+      // Our default templates (not created by users)
+      var defaultTemplates = [{
+          created: 'Default', key: '0000001', title: 'STEdb default', name: 'versafix-1', template: 'templates/versafix-1/template-versafix-1.html', desc: 'The versatile template'
+        },{
+          created: 'Default', key: '0000002', title: 'TEDC15', name: 'tedc15', template: 'templates/tedc15/template-tedc15.html', desc: 'The tedc15 template'
+        },{
+          created: 'Default', key: '0000003', title: 'Easy tutorial', name: 'tutorial', template: 'templates/tutorial/template-tutorial.html', desc: 'The tutorial template'
+        }];
+
+      // Get drafts
+      if (localStorage.getItem('edits')) {
+        var editKeys = JSON.parse(localStorage.getItem('edits'));
+        var md;
+        for (var i = 0; i < editKeys.length; i++) {
+          md = localStorage.getItem('metadata-'+editKeys[i]);
+          if (typeof md == 'string') {
+            initialEdits.push(JSON.parse(md));
+          } else {
+            console.log("Ignoring saved key", editKeys[i], "type", typeof md, md);
+          }
+        }
+
+        initialEdits.sort(function(a, b) {
+          var lastA = a.changed ? a.changed : a.created;
+          var lastB = b.changed ? b.changed : b.created;
+          if (lastA < lastB) return 1;
+          if (lastA > lastB) return -1;
+          return 0;
+        });
+      }
+
+      // Get campaigns
+      if (localStorage.getItem('campaigns')) {
+        var editKeys = JSON.parse(localStorage.getItem('campaigns'));
+        var md;
+        for (var i = 0; i < editKeys.length; i++) {
+          md = localStorage.getItem('metadata-'+editKeys[i]);
+          if (typeof md == 'string') {
+            initialCampaigns.push(JSON.parse(md));
+          } else {
+            console.log("Ignoring saved key", editKeys[i], "type", typeof md, md);
+          }
+        }
+
+        initialCampaigns.sort(function(a, b) {
+          var lastA = a.changed ? a.changed : a.created;
+          var lastB = b.changed ? b.changed : b.created;
+          if (lastA < lastB) return 1;
+          if (lastA > lastB) return -1;
+          return 0;
+        });
+      } 
+
+
+      // Get templates
+   		if (localStorage.getItem('templates') === null && initialTemplates.length == 0){
+   			for (i=0;i<defaultTemplates.length;i++){
+        	initialTemplates.push(defaultTemplates[i]);
+        	localStorage.setItem('metadata-'+defaultTemplates[i].key, JSON.stringify(defaultTemplates[i]));
+        	console.log(initialTemplates)
+        }
+        localStorage.setItem('templates', JSON.stringify(initialTemplates));
+
+        console.log(initialTemplates);
+   		} else {
+	   		console.log(JSON.parse(localStorage.getItem('templates')));
+	   		var templateObj = JSON.parse(localStorage.getItem('templates'));
+	      var md;
+	      for (var i = 0; i < templateObj.length; i++) {
+	      	var templateKeys = templateObj[i].key;
+	        md = localStorage.getItem('metadata-'+templateKeys);
+	        if (typeof md == 'string') {
+	          initialTemplates.push(JSON.parse(md));
+	        } else {
+	          console.log("Ignoring saved key", templateObj[i], "type", typeof md, md);
+	        }
+	      }
+
+	      initialTemplates.sort(function(a, b) {
+	        var lastA = a.changed ? a.changed : a.created;
+	        var lastB = b.changed ? b.changed : b.created;
+	        if (lastA < lastB) return 1;
+	        if (lastA > lastB) return -1;
+	        return 0;
+	      });
+	    }
+
+      // Set current date
+      var d = new Date();
+
+      var month = d.getMonth()+1;
+      var day = d.getDate();
+
+      var currentDate = d.getFullYear() + '/' +
+      ((''+month).length<2 ? '0' : '') + month + '/' +
+      ((''+day).length<2 ? '0' : '') + day;
+
+      var viewModel = {
+        showSaved: ko.observable(false),
+        campaigns: ko.observableArray(initialCampaigns),
+        edits: ko.observableArray(initialEdits),
+        templates: ko.observableArray(initialTemplates)
+      };
+
+      viewModel.edits.subscribe(function(newEdits) {
+        var keys = [];
+        for (var i = 0; i < newEdits.length; i++) {
+          keys.push(newEdits[i].key);
+          localStorage.setItem('metadata-'+newEdits[i].key, ko.toJSON(newEdits[i]));
+        }
+        localStorage.setItem('edits', ko.toJSON(keys));
+      });
+
+      viewModel.newEdit = function(shorttmplname, index) {
+        var rnd = Math.random().toString(36).substr(2, 7);
+        var template = 'templates/'+shorttmplname+'/template-'+shorttmplname+'.html';
+        viewModel.edits.push({ created: currentDate, title: index.title, key: rnd, name: shorttmplname, template: template, desc: 'Draft' });
+
+        // Check if template was saved by user
+        if (localStorage.getItem('template-' + index.key) != null ){
+        	localStorage.setItem('template-' + rnd, localStorage.getItem('template-' + index.key));
+        } 
+        document.location = 'simple-campaign.html#'+rnd;
+      };
+
+      viewModel.list = function(clean) {
+        for (var i = localStorage.length - 1; i >= 0; i--) {
+          var key = localStorage.key(i);
+          if (clean) {
+            console.log("removing ", key, localStorage.getItem(key));
+            localStorage.removeItem(key);
+          } else {
+            console.log("ls ", key, localStorage.getItem(key));
+          }
+        }
+      };
+
+      viewModel.deleteEdit = function(shorttmplname, index) {
+        $('#delete-template-modal').modal('show');   
+
+        $('#delete-template-modal .delete-template').on('click', function(){
+        	var loadEdits = JSON.parse(localStorage.getItem('edits'));
+          for(i=0; i < loadEdits.length; i++){
+	        	if(loadEdits[i].indexOf(index.key)){
+	        		newEdits = loadEdits.filter(function(a){return a !== index.key;});
+	        		localStorage.setItem('edits', JSON.stringify(newEdits));
+
+	        		console.log("removing template ", index.key);
+	            localStorage.removeItem('template-'+index.key);
+	        	}
+	        }
+	        
+          $('.sent-campaigns a[href="simple-campaign.html#'+index.key+'"]').parents('.template').remove();
+          $('#delete-template-modal').modal('hide');
+        });
+        return false;
+      };
+
+
+      $(document).ready(function(){
+        ko.applyBindings(viewModel);
+
+        // Check if first login (usign cookies to show functionlity)
+        if (document.cookie.replace(/(?:(?:^|.*;\s*)isFirstLogin\s*\=\s*([^;]*).*$)|^.*$/, "$1") !== "true") {
+          $('body').find('.campaigns').remove();
+          $('body').find('.r-sidebar .sidebar-list').remove();
+          $(".l-sidebar").removeClass("collapsed");
+          document.cookie = "isFirstLogin=true; expires=Fri, 31 Dec 9999 23:59:59 GMT";
+        }
+
+        // Favorite templates
+				$(".template .template-info .like").on('click', function(){
+					if($(this).hasClass("fa-heart-o")){
+						$(this).removeClass("fa-heart-o").addClass("fa-heart").addClass("liked");
+					}
+					else {
+						$(this).removeClass("fa-heart").removeClass("liked").addClass("fa-heart-o");
+					}
+				});
+
+				// Append drafts to campaigns (without this, layout gets broken)
+				$('.drafts').children().appendTo('.sent-campaigns');
+
+				// Add template placeholders, so the templates will be aligned properly
+				for(i=0; i<5; i++){
+					$('.campaigns .templates-container').append('<div class="template-placeholder"></div>');
+				}
+      });
+  </script>
+</head>
+
+<body>
+
+<div class="container-main d-flex justify-content-between">
+	<div class="l-sidebar d-inline-flex flex-column">
+		<div class="l-sidebar__content">
+			<ul class="nav flex-column nav-user">
+				<li class="nav-item nav-title">
+					<a> User details </a>
+				</li>
+			  <li class="nav-item">
+			    <a class="nav-link nav-user-link">
+			    	<i class="nav-icon flaticon-user align-middle"></i>
+			    	<span class="align-middle">dennis.novac</span>
+			    </a>
+			  </li>
+			  <li class="nav-item">
+			    <a class="nav-link nav-user-settings" href="#">
+			    	<i class="nav-icon flaticon-tool align-middle"></i>
+			    	<span class="align-middle">Settings</span>
+			    </a>
+			  </li>
+			  <li class="nav-item">
+			    <a class="nav-link" href="#">
+			    	<i class="nav-icon flaticon-logout align-middle"></i>
+			    	<span class="align-middle">Log out</span>
+			    </a>
+			  </li>
+			</ul>
+
+			<ul class="nav nav-interface flex-column">
+				<li class="nav-item nav-title">
+					<a> Campaign interface </a>
+				</li>
+			  <li class="nav-item">
+			    <a class="nav-link" href="index.html">
+			    	<i class="nav-icon flaticon-chart align-middle"></i>
+			    	<span class="align-middle">Simple</span>
+			    </a>
+			  </li>
+			  <li class="nav-item active">
+			    <a class="nav-link" href="basic.html">
+			    	<i class="nav-icon flaticon-wand align-middle"></i>
+			    	<span class="align-middle">Basic</span>
+			    </a>
+			  </li>
+			  <li class="nav-item">
+			    <a class="nav-link" href="dashboard.html">
+			    	<i class="nav-icon flaticon-puzzle align-middle"></i>
+			    	<span class="align-middle">Advanced</span>
+			    </a>
+			  </li>
+			</ul>
+		</div>
+	</div>
+	<div class="m-content d-inline-flex flex-column">
+		<div class="header row">
+			<div class="col d-flex align-items-center">
+				<i class="flaticon-hamburger pointer collapse-sidebar"></i>
+			</div>
+			<div class="col d-flex align-items-center justify-content-center">
+				<img class="logo" src="dist/img/logo.png" alt="logo" />
+			</div>
+			<div class="col support-phone text-right d-flex align-items-center justify-content-end">
+				<i class="flaticon-support pointer support"></i>
+				<div class="phone d-flex align-items-center">
+					<i class="flaticon-phone"></i>
+					<div>
+						<div class="phone-number"> +1 561 228 5630 </div>
+						<div class="working-hours"> 9AM - 5PM (EST) </div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="content">
+			<div class="row">
+				<div class="col campaign-start">
+				 <h2> Create and send your first email campaign ! </h2>
+				 <h4> All your campaign letters including their additional data will be saved here.<br> You can create a new one from ground or use one of our 150 email templates to speed up the process. </h4>
+				 <div class="spacing-md"></div>
+				 <a class="btn button-cta d-flex justify-content-between" href="simple-campaign.html">
+				 	<div class="text-left align-center">
+					 	<div class="button-title"> Create a campaign </div>
+					 	<div class="button-sec"> Start your new campaign </div>
+				 	</div>
+				 	<i class="flaticon-rocket"></i>
+				 </a>
+				</div>
+				<div class="col text-right">
+					<img src="dist/img/mail-illustration.png" alt="mail illustration" class="mail-illustration" />
+				</div>
+			</div>
+			<div class="spacing-xl"></div>
+      <!-- ko if: (campaigns().length > 0 || edits().length > 0) -->
+			<div class="campaigns my-templates">
+				<div class="campaigns-header d-flex align-items-center justify-content-between">
+					<div class="campaigns-title">
+						My campaigns
+					</div>
+				</div>
+				<div class="d-flex align-content-around flex-wrap justify-content-between templates-container sent-campaigns" data-bind="foreach: campaigns">
+					<div class="template template-xx" data-bind="attr: { class: 'template template-'+name }">
+						<div class="template-image">
+							<a data-bind="attr: {href: 'simple-campaign.html#'+key}">
+								<img data-bind="attr: {src: 'templates/'+name+'/edres/_full.png'}" />
+							</a>
+						</div>
+						<div class="template-info d-flex justify-content-between">
+							<div class="text-left align-center">
+								<h5 data-bind="text: title"></h5>
+								<h6 data-bind="text: desc"></h6>
+							</div>
+							<i class="like fa fa-heart-o"></i>
+						</div>
+					</div>
+				</div>
+				<div class="d-flex align-content-around flex-wrap justify-content-between templates-container drafts" data-bind="foreach: edits">
+					<div class="template template-draft template-xx" data-bind="attr: { class: 'template template-'+name }">
+						<div class="template-image">
+							<a data-bind="attr: {href: 'simple-campaign.html#'+key}">
+								<img data-bind="attr: {src: 'templates/'+name+'/edres/_full.png'}" />
+							</a>
+						</div>
+						<div class="template-info d-flex justify-content-between">
+							<div class="text-left align-center">
+								<h5 data-bind="text: title"></h5>
+								<h6> Draft </h6>
+							</div>
+							<i class="fa fa-trash-o" data-bind="click: $root.deleteEdit.bind(undefined, $index())"></i>
+						</div>
+					</div>
+				</div>
+			</div>
+      <!-- /ko -->
+			<div class="campaigns templates">
+				<div class="campaigns-header d-flex align-items-center justify-content-between">
+					<div class="campaigns-title">
+						Templates
+					</div>
+					<div class="sort campaigns-sort select-dropdown">
+						Sort by:
+						<select class="inline-select">
+						  <option value="camp-lat">Latest</option>
+						  <option value="camp-fav" selected="">Favorite</option>
+						  <option value="camp-alp">Alphabetical</option>
+						</select>
+					</div>
+				</div>
+				<div class="d-flex align-content-around flex-wrap justify-content-between templates-container" data-bind="foreach: templates">
+					<div class="template template-xx" data-bind="attr: { class: 'template template-'+name }">
+						<div class="template-image">
+							<img data-bind="click: $root.newEdit.bind(undefined, name), attr: { href: 'simple-campaign.html#templates/'+name+'/template-'+name+'.html', src: 'templates/'+name+'/edres/_full.png'}" />
+						</div>
+						<div class="template-info d-flex justify-content-between">
+							<div class="text-left align-center">
+								<h5 data-bind="text: title"></h5>
+								<h6 data-bind="text: desc"></h6>
+							</div>
+							<i class="like fa fa-heart-o"></i>
+						</div>
+					</div>	
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="r-sidebar r-sidebar-placeholder d-inline-flex flex-column"></div>
+	<div class="r-sidebar d-inline-flex flex-column">
+		<div class="sidebar-list mt-0">
+			<a href="simple-campaign.html" class="btn button-cta-sm button-create-campaign d-flex justify-content-between align-items-center active">
+	      <span> Create a campaign </span>
+	      <i class="flaticon-rocket"></i>
+	    </a>
+	    <a href="view-reports.html" class="btn button-cta-sm button-view-reports d-flex justify-content-between align-items-center">
+	      <span> View reports </span>
+	      <i class="flaticon-stats"></i>
+	    </a>
+	    <a href="create-signup-form.html" class="btn button-cta-sm button-signup-form d-flex justify-content-between align-items-center">
+	      <span> Create a signup form </span>
+	      <i class="flaticon-magic"></i>
+	    </a>
+	    <a href="list-management.html" class="btn button-cta-sm button-list-management d-flex justify-content-between align-items-center">
+	      <span> List management </span>
+	      <i class="flaticon-employee"></i>
+	    </a>
+	    <a href="create-fields.html" class="btn button-cta-sm button-create-fields d-flex justify-content-between align-items-center">
+	      <span> Create fields </span>
+	      <i class="flaticon-manage"></i>
+	    </a>
+	  </div>
+
+		<div class="sidebar-list">
+			<div class="sidebar-list__title">
+				Define recipents
+			</div>
+			<div class="sidebar-list__content">
+				<div class="sidebar-list__item d-flex w-100 justify-content-between align-items-center">
+		      <h5>Opens rate:</h5>
+		      <small>3.07%</small>
+		    </div>
+		    <div class="sidebar-list__item d-flex w-100 justify-content-between align-items-center">
+		      <h5>Click-through rate:</h5>
+		      <small>1.14%</small>
+		    </div>
+		    <div class="sidebar-list__item d-flex w-100 justify-content-between align-items-center">
+		      <h5>Click to open:</h5>
+		      <small>55.22%</small>
+		    </div>
+		    <div class="sidebar-list__item d-flex w-100 justify-content-between align-items-center">
+		      <h5>Chum rate:</h5>
+		      <small>0.02%</small>
+		    </div>
+		    <div class="sidebar-list__item d-flex w-100 justify-content-between align-items-center">
+		      <h5>Sent:</h5>
+		      <small>301262</small>
+		    </div>
+	    </div>
+		</div>
+	</div>
+	<div id="delete-template-modal" class="modal" data-backdrop="static" tabindex="0">
+	  <div class="modal-dialog" role="document">
+	    <div class="modal-content modal-danger">
+	      <div class="modal-header">
+	        <span class="modal-title">Confirm delete</span>
+	      </div>
+	      <div class="modal-body">
+	        <h5>Are you sure you want to delete the selected template?</h5>
+	      </div>
+	      <div class="modal-footer">
+	        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+	        <button type="button" class="btn btn-danger delete-template">Delete</button>
+	      </div>
+	    </div>
+	  </div>
+	</div>
+</div>
+<div class="modal" id="settings-modal" data-backdrop="static" data-keyboard="false">
+	  <div class="modal-dialog modal-wide">
+	    <div class="modal-content modal-primary">
+	      <div class="modal-header">
+	        <span class="modal-title"> Settings</span>
+	        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+	          <span aria-hidden="true">&times;</span>
+	        </button>
+	      </div>
+	      <div class="modal-body no-padding">
+	      	<div class="vertical-tabs-container row no-margin">
+		        <ul class="nav nav-tabs vertical-tabs col-3" role="tablist">
+		          <li class="nav-item">
+		          	<a href="#account-info" data-toggle="tab" role="tab">Account info</a>
+		          </li>
+		          <li class="nav-item">
+		          	<a href="#login-information" data-toggle="tab" role="tab">Login information</a>
+		          </li>
+		          <li class="nav-item">
+		          	<a href="#ui-options" data-toggle="tab" role="tab">UI options</a>
+		          </li>
+		          <li class="nav-item">
+		          	<a href="#email-signature" data-toggle="tab" role="tab">Email signature and personalization</a>
+		          </li>
+		          <li class="nav-item">
+		          	<a href="#default-settings" data-toggle="tab" role="tab">Default account settings</a>
+		          </li>
+		          <li class="nav-item">
+		          	<a href="#sending-options" data-toggle="tab" role="tab">Sending option for test campaign</a>
+		          </li>
+		          <li class="nav-item">
+		          	<a href="#change-password" data-toggle="tab" role="tab">Change password</a>
+		          </li>
+		          <li class="nav-item">
+		          	<a href="#sub-users" data-toggle="tab" role="tab">Sub users</a>
+		          </li>
+		        </ul>
+		        <div class="tab-content col-9" style="max-height: 600px;">
+		        	<div class="tab-pane" id="account-info" role="tabpanel">
+		        		<form id="settings-form">
+							  	<div class="row">
+								  	<div class="form-group col-sm-6">
+									    <label for="firstName">First name</label>
+									    <input type="text" class="form-control required" id="firstName" name="FirstName" placeholder="" value="Johny">
+										</div>
+										<div class="form-group col-sm-6">
+									    <label for="lastName">Last name</label>
+									    <input type="text" class="form-control required" id="lastName" name="lastName" placeholder="">
+										</div>
+										<div class="form-group col-sm-12">
+		                  <label for="countryPhone">Country &amp; Phone number</label>
+		                  <input type="tel" class="form-control required" id="countryPhone" name="countryPhone">
+		                </div>
+										<div class="form-group col-sm-12">
+									    <label for="webAddress">Website address</label>
+									    <input type="text" class="form-control required" id="webAddress" name="webAddress" placeholder="">
+										</div>
+										<div class="form-group col-sm-12">
+									    <label for="streetAddress">Street address</label>
+									    <input type="text" class="form-control required" id="streetAddress" name="streetAddress" placeholder="">
+										</div>
+										<div class="form-group col-sm-12">
+									    <label for="streetAddressTwo">Street address 2</label>
+									    <input type="text" class="form-control" id="streetAddressTwo" name="streetAddressTwo" placeholder="">
+										</div>
+										<div class="form-group col-sm-5">
+									    <label for="city">City</label>
+									    <input type="text" class="form-control required" id="city" name="city" placeholder="" value="Oklahoma">
+										</div>
+										<div class="form-group col-sm-5">
+									    <label for="stateProvince">State/Province</label>
+									    <input type="text" class="form-control required" id="stateProvince" name="stateProvince" placeholder="">
+										</div>
+										<div class="form-group col-sm-2">
+									    <label for="zipCode">Zip Code</label>
+									    <input type="text" class="form-control required" id="zipCode" name="zipCode" placeholder="">
+										</div>		
+									</div>
+									<div class="spacing-xs"></div>
+									<div class="text-right">
+										<button class="btn btn-secondary btn-m-r-md" type="reset"> Cancel </button>
+										<button class="btn btn-primary" type="submit" id="settings-form-save" disabled> Save </button>
+									</div>
+								</form>
+		        	</div>
+		        	<div class="tab-pane" id="login-information" role="tabpanel">
+		        		<h5> <b>Dashboard:</b> https://opt4.stedb.com/dbm9x/ </h5>
+		        		<h5> <b>Login email:</b> myemail@gmail.com </h5>
+		        		<h5> <b>Password:</b> CZkc29E </h5>
+		        	</div>
+		        	<div class="tab-pane" id="ui-options" role="tabpanel">
+		        		<div class="row">
+		        			<div class="form-group col-sm-6">
+								    <label >Count of record's showed by one page</label>
+								    <input type="text" class="form-control" placeholder="" value="25">
+									</div>
+									<div class="form-group col-6">
+			        			<label>Sort record's by alphabetical order</label>
+			        			<div>
+										  <label class="custom-control custom-radio">
+										    <input name="radio-stacked" type="radio" class="custom-control-input" checked="">
+										    <span class="custom-control-indicator"></span>
+										    <span class="custom-control-description">Yes</span>
+										  </label>
+										  <label class="custom-control custom-radio">
+										    <input name="radio-stacked" type="radio" class="custom-control-input">
+										    <span class="custom-control-indicator"></span>
+										    <span class="custom-control-description">No</span>
+										  </label>
+										</div>
+									</div>
+			        		<div class="form-group col-6">
+			        			<label>Additional headers</label>
+			        			<div>
+										  <label class="custom-control custom-radio">
+										    <input name="radio-stacked0" type="radio" class="custom-control-input" checked="">
+										    <span class="custom-control-indicator"></span>
+										    <span class="custom-control-description">Show</span>
+										  </label>
+										  <label class="custom-control custom-radio">
+										    <input name="radio-stacked0" type="radio" class="custom-control-input">
+										    <span class="custom-control-indicator"></span>
+										    <span class="custom-control-description">Hide</span>
+										  </label>
+										</div>
+									</div>
+									<div class="form-group col-6">
+			        			<label>Target soft bounces</label>
+			        			<div >
+										  <label class="custom-control custom-radio">
+										    <input name="radio-stacked2" type="radio" class="custom-control-input">
+										    <span class="custom-control-indicator"></span>
+										    <span class="custom-control-description">Show</span>
+										  </label>
+										  <label class="custom-control custom-radio">
+										    <input name="radio-stacked2" type="radio" class="custom-control-input" checked="">
+										    <span class="custom-control-indicator"></span>
+										    <span class="custom-control-description">Hide</span>
+										  </label>
+										</div>
+									</div>
+									<div class="form-group col-6">
+			        			<label>Exclude subscribers that soft bounced</label>
+			        			<div>
+										  <label class="custom-control custom-radio">
+										    <input name="radio-stacked3" type="radio" class="custom-control-input" checked="">
+										    <span class="custom-control-indicator"></span>
+										    <span class="custom-control-description">Show</span>
+										  </label>
+										  <label class="custom-control custom-radio">
+										    <input name="radio-stacked3" type="radio" class="custom-control-input">
+										    <span class="custom-control-indicator"></span>
+										    <span class="custom-control-description">Hide</span>
+										  </label>
+										</div>
+									</div>
+									<div class="form-group col-6">
+			        			<label>Exclude delivered emails</label>
+			        			<div>
+										  <label class="custom-control custom-radio">
+										    <input name="radio-stacked4" type="radio" class="custom-control-input" checked="">
+										    <span class="custom-control-indicator"></span>
+										    <span class="custom-control-description">Show</span>
+										  </label>
+										  <label class="custom-control custom-radio">
+										    <input name="radio-stacked4" type="radio" class="custom-control-input">
+										    <span class="custom-control-indicator"></span>
+										    <span class="custom-control-description">Hide</span>
+										  </label>
+										</div>
+									</div>
+									<div class="form-group col-6">
+			        			<label>Periodical emailing</label>
+			        			<div >
+										  <label class="custom-control custom-radio">
+										    <input name="radio-stacked5" type="radio" class="custom-control-input">
+										    <span class="custom-control-indicator"></span>
+										    <span class="custom-control-description">Show</span>
+										  </label>
+										  <label class="custom-control custom-radio">
+										    <input name="radio-stacked5" type="radio" class="custom-control-input" checked="">
+										    <span class="custom-control-indicator"></span>
+										    <span class="custom-control-description">Hide</span>
+										  </label>
+										</div>
+									</div>
+									<div class="form-group col-6">
+			        			<label>Creation priority</label>
+			        			<div>
+										  <label class="custom-control custom-radio">
+										    <input name="radio-stacked6" type="radio" class="custom-control-input">
+										    <span class="custom-control-indicator"></span>
+										    <span class="custom-control-description">Show</span>
+										  </label>
+										  <label class="custom-control custom-radio">
+										    <input name="radio-stacked6" type="radio" class="custom-control-input" checked="">
+										    <span class="custom-control-indicator"></span>
+										    <span class="custom-control-description">Hide</span>
+										  </label>
+										</div>
+									</div>
+								</div>
+		        	</div>
+		        	
+		        	<div class="tab-pane" id="email-signature" role="tabpanel">
+								<form id="settings-email-signature-form">
+							  	<div class="row">
+								  	<div class="form-group col-sm-6">
+									    <label for="firstNameES">First name</label>
+									    <input type="text" class="form-control" id="firstNameES" name="firstNameES" placeholder="" value="Johny">
+										</div>
+										<div class="form-group col-sm-6">
+									    <label for="lastNameES">Last name</label>
+									    <input type="text" class="form-control" id="lastNameES" name="lastNameES" placeholder="">
+										</div>
+										<div class="form-group col-sm-12">
+		                  <label for="companyPhoneES">Company phone</label>
+		                  <input type="tel" class="form-control" id="companyPhoneES" name="companyPhoneES">
+		                </div>
+									</div>
+							  	<div class="row">
+										<div class="form-group col-sm-12">
+									    <label for="unsubscribePhrasesES">Unsubscribe Phrases</label>
+									    <textarea type="text" class="form-control" id="unsubscribePhrasesES" name="unsubscribePhrasesES" placeholder=""></textarea>
+										</div>
+										<div class="form-group col-sm-12">
+									    <label for="bouncePhrasesES">Bounce phrases</label>
+									    <textarea type="text" class="form-control" id="bouncePhrasesES" name="bouncePhrasesES" placeholder=""></textarea>
+										</div>
+										<div class="form-group col-sm-12">
+									    <label for="ignorePhrasesES">Ignore phrases</label>
+									    <textarea type="text" class="form-control" id="ignorePhrasesES" name="ignorePhrasesES" placeholder=""></textarea>
+										</div>
+									</div>
+								</form>
+								<div class="spacing-xs"></div>
+								<div class="text-right mr-2">
+									<button class="btn btn-secondary btn-m-r-md" type="reset"> Cancel </button>
+									<button class="btn btn-primary" type="submit" id="settings-email-signature-form-save"> Save </button>
+								</div>
+		        	</div>
+		        	<div class="tab-pane" id="default-settings" role="tabpanel">
+		        	</div>
+		        	<div class="tab-pane" id="sending-options" role="tabpanel">
+		        	</div>
+		        	<div class="tab-pane" id="change-password" role="tabpanel">
+		        	</div>
+		        	<div class="tab-pane" id="sub-users" role="tabpanel">
+		        		<div id="sub-users-table">
+			        		<div class="table-responsive">
+										<table class="table table-striped">
+										  <thead>
+										    <tr>
+										      <th>Sub User name</th>
+										      <th>Last IP</th>
+										      <th>Last seen</th>
+										    </tr>
+										  </thead>
+										  <tbody>
+										    <tr>
+										      <th> <a class="regular">Johny Depp</a></th>
+										      <td>56.123.51.99</td>
+										      <td>2017/08/08</td>
+										    </tr>
+										    <tr>
+										      <th> <a class="regular">Maggy Gray</a></th>
+										      <td>123.128.91.23</td>
+										      <td>2017/08/08</td>
+										    </tr>
+										  </tbody>
+										</table>
+									</div>
+									<div class="spacing-xs"></div>
+									<button class="btn btn-primary pull-right" id="add-sub-user">Add a new Sub User</button>
+								</div>
+								<div id="add-sub-user-table" style="display: none;">
+									<form id="s-u-set-form">
+								  	<div class="row">
+									  	<div class="form-group col-sm-6">
+										    <label for="usernameSU">Username</label>
+										    <input type="text" class="form-control" id="usernameSU" name="usernameSU" placeholder="">
+											</div>
+											<div class="form-group col-sm-6">
+										    <label for="passwordSU">Password</label>
+										    <input type="password" class="form-control" id="passwordSU" name="passwordSU" placeholder="">
+											</div>
+										</div>
+									</form>
+
+									<div id="accordion">
+									  <div class="card">
+									    <div class="card-header" id="headingOne">
+									      <h5 class="mb-0">
+									        <a data-toggle="collapse" data-parent="#accordion" href="#collapseOne" aria-expanded="true" aria-controls="collapseOne" class="regular">
+									          Home
+									        </a>
+									      </h5>
+									    </div>
+
+									    <div id="collapseOne" class="collapse show" aria-labelledby="headingOne">
+									      <div class="card-block">
+									      	<div class="spacing-xs"></div>
+									        <form>
+									        	<div class="form-check col">
+														  <label class="form-check-label col-sm-12">
+														    <input class="form-check-input" type="checkbox" checked>
+														    <h6 class="no-margin"> Right of group </h6>
+															</label>
+														</div>
+									        </form>
+									      </div>
+									    </div>
+									  </div>
+									  <div class="card">
+									    <div class="card-header" id="headingTwo">
+									      <h5 class="mb-0">
+									        <a data-toggle="collapse" data-parent="#accordion" href="#collapseTwo" aria-expanded="true" aria-controls="collapseTwo" class="regular">
+									          Email lists
+									        </a>
+									      </h5>
+									    </div>
+
+									    <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo">
+									      <div class="card-block">
+									      	<div class="spacing-xs"></div>
+									        <form>
+									        	<div class="form-check col">
+														  <label class="form-check-label col-sm-12">
+														    <input class="form-check-input" type="checkbox" checked>
+														    <h6 class="no-margin"> Right of group </h6>
+															</label>
+														</div>
+														<div class="form-check col">
+														  <label class="form-check-label col-sm-12">
+														    <input class="form-check-input" type="checkbox" checked>
+														    <h6 class="no-margin"> List </h6>
+															</label>
+														</div>
+														<div class="form-check col">
+														  <label class="form-check-label col-sm-12">
+														    <input class="form-check-input" type="checkbox">
+														    <h6 class="no-margin"> Create list </h6>
+															</label>
+														</div>
+														<div class="form-check col">
+														  <label class="form-check-label col-sm-12">
+														    <input class="form-check-input" type="checkbox" checked>
+														    <h6 class="no-margin"> Rules </h6>
+															</label>
+														</div>
+														<div class="form-check col">
+														  <label class="form-check-label col-sm-12">
+														    <input class="form-check-input" type="checkbox" checked>
+														    <h6 class="no-margin"> Datafields </h6>
+															</label>
+														</div>
+														<div class="form-check col">
+														  <label class="form-check-label col-sm-12">
+														    <input class="form-check-input" type="checkbox">
+														    <h6 class="no-margin"> Add form </h6>
+															</label>
+														</div>
+									        </form>
+									      </div>
+									    </div>
+									  </div>
+									</div>
+	
+									<div class="spacing-xs"></div>
+									<div class="text-right mr-2">
+										<button class="btn btn-secondary btn-m-r-md" type="reset"> Cancel </button>
+										<button class="btn btn-primary" type="submit" id=""> Save </button>
+									</div>
+								</div>
+		        	</div>
+		        </div>
+		      </div>
+	      </div>
+	    </div>
+	  </div>
+</div>
+</body>
+
+</html>
