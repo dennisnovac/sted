@@ -1,6 +1,7 @@
 # [STEDB](https://sted.herokuapp.com)
 All available pages:
 
+ - [Some re-usable elements](https://sted.herokuapp.com/view-reports%20copy.html)
  - [Login](https://sted.herokuapp.com/login.html)
  - [Index - Simple dashboard](https://sted.herokuapp.com)
  - [Basic dashboard](https://sted.herokuapp.com/basic.html)
@@ -8,7 +9,7 @@ All available pages:
  - [View reports](https://sted.herokuapp.com/view-reports.html)
  - [Create a signup form](https://sted.herokuapp.com/create-signup-form.html)
  - [List management](https://sted.herokuapp.com/list-management.html)
- - [Create fields](https://sted.herokuapp.com/create-fields.hmtl)
+ - [Create fields](https://sted.herokuapp.com/create-fields.html)
  --
  - [Advanced dashboard](https://sted.herokuapp.com/dashboard.html)
  - [Advanced list management](https://sted.herokuapp.com/advanced-list-management.html)
@@ -76,7 +77,7 @@ It's basically bootstrap with a couple additions, so just in case I didn't inclu
 
 
 ### Default page layout
-A portion of re-usable elements (which need some JS to be shown): [https://sted.herokuapp.com/examples.html](https://sted.herokuapp.com/examples.com)
+A portion of re-usable elements (which need some JS to be shown): [Here](https://sted.herokuapp.com/view-reports%20copy.html)
 
 Another portion is here down below, but first a couple of classes that need to be know:
 
