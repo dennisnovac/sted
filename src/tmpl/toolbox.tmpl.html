@@ -59,7 +59,10 @@
   <div id="toolimagestab" class="tabs_horizontal" data-bind="tabs: { active: $root.selectedImageTab }">
     <ul>
       <li data-bind="tooltips: {}"><a title="Session images" data-local="true" href="#toolimagesrecent" data-bind="attr: { title: $root.t('Session images') }, text: $root.t('Recents')">Recents</a></li>
-      <li data-bind="tooltips: {}"><a title="Remote gallery" data-local="true" href="#toolimagesgallery" data-bind="attr: { title: $root.t('Remote gallery') }, text: $root.t('Gallery')">Gallery</a></li>
+      <li data-bind="tooltips: {}"><a title="Remote images" data-local="true" href="#toolimagesgallery" data-bind="attr: { title: $root.t('Remote gallery') }, text: $root.t('My Images')">My Images</a></li>
+      <li data-bind="tooltips: {}"><a title="Remote gallery" data-local="true" href="#toolholidaygallery" data-bind="attr: { title: $root.t('Nature images') }, text: $root.t('Holidays')">Holidays</a></li>
+      <li data-bind="tooltips: {}"><a title="Remote gallery" data-local="true" href="#toolnaturegallery" data-bind="attr: { title: $root.t('Nature images') }, text: $root.t('Nature')">Nature</a></li>
+      <li data-bind="tooltips: {}"><a title="Remote gallery" data-local="true" href="#toolpromotiongallery" data-bind="attr: { title: $root.t('Promotion images') }, text: $root.t('Promotion')">Promotion</a></li>
     </ul>
 
     <div id="toolimagesrecent">
@@ -74,6 +77,31 @@
     <!-- ko if: $root.galleryLoaded() === 'loading' --><div class="galleryEmpty" data-bind="text: $root.t('Loading gallery...')">Loading gallery...</div><!-- /ko -->
     <!-- ko if: $root.galleryLoaded() === 0 --><div class="galleryEmpty" data-bind="text: $root.t('The gallery is empty')">The gallery is empty</div><!-- /ko -->
     <!-- ko template: {name: 'gallery-images', data: { items: galleryRemote } } --># remote gallery #<!-- /ko -->
+    </div>
+
+
+    <div id="toolholidaygallery" style="text-align: center">
+    <!-- ko if: $root.galleryHolidayLoaded() === false --><a class="loadbutton" title="Show images from the gallery" href="javascript:void(0)" data-bind="attr: { title: $root.t('Show images from the nature gallery') }, click: $root.loadHolidayGallery, button: { disabled: $root.galleryHolidayLoaded, icons: { primary: 'fa fa-fw fa-picture-o' }, label: $root.galleryHolidayLoaded() == 'loading' ? $root.t('Loading...') : $root.t('Load gallery'), text: true }"># load gally #</a><!-- /ko -->
+
+    <!-- ko if: $root.galleryHolidayLoaded() === 'loading' --><div class="galleryEmpty" data-bind="text: $root.t('Loading gallery...')">Loading gallery...</div><!-- /ko -->
+    <!-- ko if: $root.galleryHolidayLoaded() === 0 --><div class="galleryEmpty" data-bind="text: $root.t('The gallery is empty')">The gallery is empty</div><!-- /ko -->
+    <!-- ko template: {name: 'gallery-images', data: { items: galleryHolidayRemote } } --># remote gallery #<!-- /ko -->
+    </div>
+
+    <div id="toolnaturegallery" style="text-align: center">
+    <!-- ko if: $root.galleryNatureLoaded() === false --><a class="loadbutton" title="Show images from the gallery" href="javascript:void(0)" data-bind="attr: { title: $root.t('Show images from the nature gallery') }, click: $root.loadNatureGallery, button: { disabled: $root.galleryNatureLoaded, icons: { primary: 'fa fa-fw fa-picture-o' }, label: $root.galleryNatureLoaded() == 'loading' ? $root.t('Loading...') : $root.t('Load gallery'), text: true }"># load gally #</a><!-- /ko -->
+
+    <!-- ko if: $root.galleryNatureLoaded() === 'loading' --><div class="galleryEmpty" data-bind="text: $root.t('Loading gallery...')">Loading gallery...</div><!-- /ko -->
+    <!-- ko if: $root.galleryNatureLoaded() === 0 --><div class="galleryEmpty" data-bind="text: $root.t('The gallery is empty')">The gallery is empty</div><!-- /ko -->
+    <!-- ko template: {name: 'gallery-images', data: { items: galleryNatureRemote } } --># remote gallery #<!-- /ko -->
+    </div>
+
+    <div id="toolpromotiongallery" style="text-align: center">
+    <!-- ko if: $root.galleryPromotionLoaded() === false --><a class="loadbutton" title="Show images from the gallery" href="javascript:void(0)" data-bind="attr: { title: $root.t('Show images from the nature gallery') }, click: $root.loadPromotionGallery, button: { disabled: $root.galleryPromotionLoaded, icons: { primary: 'fa fa-fw fa-picture-o' }, label: $root.galleryPromotionLoaded() == 'loading' ? $root.t('Loading...') : $root.t('Load gallery'), text: true }"># load gally #</a><!-- /ko -->
+
+    <!-- ko if: $root.galleryPromotionLoaded() === 'loading' --><div class="galleryEmpty" data-bind="text: $root.t('Loading gallery...')">Loading gallery...</div><!-- /ko -->
+    <!-- ko if: $root.galleryPromotionLoaded() === 0 --><div class="galleryEmpty" data-bind="text: $root.t('The gallery is empty')">The gallery is empty</div><!-- /ko -->
+    <!-- ko template: {name: 'gallery-images', data: { items: galleryPromotionRemote } } --># remote gallery #<!-- /ko -->
     </div>
   </div>
 

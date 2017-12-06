@@ -4,7 +4,7 @@
 <head>
 
 	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-  <meta name="viewport" content="width=1024, initial-scale=1">
+  <meta name="viewport" content="initial-scale=1">
 
   <link rel="shortcut icon" href="/favicon.png" type="image/x-icon" />
   <link rel="icon" href="/favicon.png" type="image/x-icon" />
@@ -42,15 +42,13 @@
 
   		$("[data-toggle=popover]").popover();
 
-			$('.range').datepicker({
-			    inputs: $('.range-start, .range-end')
-			});
+			$('.input-daterange').datepicker({});
 
-			$('.range-start').datepicker('update', new Date(2017,09,1)).on('changeDate', function(e){
+			$('.input-daterange input[name="start"]').datepicker('update', new Date(2017,08,11)).on('changeDate', function(e){
 	      $('.start-date').html(e.format('dd/mm/yyyy'));
 	    });
 
-			$('.range-end').datepicker('setDate', new Date(2017,09,31)).on('changeDate', function(e){
+			$('.input-daterange input[name="end"]').datepicker('setDate', new Date(2017,09,13)).on('changeDate', function(e){
 	      $('.end-date').html(e.format('dd/mm/yyyy'));
 	    });
 
@@ -125,7 +123,6 @@
 	    	});
 	    },180);
   	});
-  </script>
   </script>
 </head>
 
@@ -250,7 +247,7 @@
 			<div class="col support-phone text-right d-flex align-items-center justify-content-end">
 				<i class="flaticon-support pointer support"></i>
 				<div class="phone d-flex align-items-center">
-					<i class="flaticon-phone"></i>
+					<a href="tel://+15612285630" class="no-dec"><i class="flaticon-phone"></i></a>
 					<div>
 						<div class="phone-number"> +1 561 228 5630 </div>
 						<div class="working-hours"> 9AM - 5PM (EST) </div>
@@ -273,8 +270,6 @@
 			<table class="table table-striped table-responsive">
 			  <thead>
 			    <tr>
-			      <th>#</th>
-			      <th>Date</th>
 			      <th>
 			      	<span tabindex="0"
 			      	data-placement="top" 
@@ -282,23 +277,104 @@
 						  data-html="true" 
 						  data-toggle="popover" 
 						  data-trigger="hover" 
-						  data-content='<div>Explanation goes here <div class="spacing-xs"></div> <div class="embed-responsive embed-responsive-16by9 rounded" style="width: 260px"> <iframe class="embed-responsive-item" src="https://www.youtube.com/embed/lCCWQ6ziAyc" allowfullscreen></iframe> </div></div>'>
-							Name *</span>
+						  data-content='Campaign number generated automatically by STEdb'>#</span>
 						</th>
-			      <th>Sent</th>
-			      <th class="grayed-out">Opened</th>
-			      <th class="grayed-out">Clicks</th>
-			      <th>Bounce</th>
-			      <th>Unsub.</th>
-			      <th>Compl.</th>
-			      <th>Traps</th>
+			      <th><span tabindex="0"
+			      	data-placement="top" 
+						  role="button" 
+						  data-html="true" 
+						  data-toggle="popover" 
+						  data-trigger="hover" 
+						  data-content='The date the campaign was sent'>Date</span>
+						</th>
+			      <th>
+			      	<span tabindex="0"
+			      	data-placement="top" 
+						  role="button" 
+						  data-html="true" 
+						  data-toggle="popover" 
+						  data-trigger="hover" 
+						  data-content='What you named your campaign'>Name</span>
+						</th>
+			      <th>
+			      	<span tabindex="0"
+			      	data-placement="top" 
+						  role="button" 
+						  data-html="true" 
+						  data-toggle="popover" 
+						  data-trigger="hover" 
+						  data-content='Quantity of active emails sent'>Sent</span>
+						</th>
+			      <th class="grayed-out">
+			      	<span tabindex="0"
+			      	data-placement="top" 
+						  role="button" 
+						  data-html="true" 
+						  data-toggle="popover" 
+						  data-trigger="hover" 
+						  data-content='Subscribers that loaded image in their email client'>Opened</span>
+						</th>
+			      <th class="grayed-out">
+			      	<span tabindex="0"
+			      	data-placement="top" 
+						  role="button" 
+						  data-html="true" 
+						  data-toggle="popover" 
+						  data-trigger="hover" 
+						  data-content='Non-unique total clicks from your email'>Clicks</span>
+						</th>
+			      <th>
+			      	<span tabindex="0"
+			      	data-placement="top" 
+						  role="button" 
+						  data-html="true" 
+						  data-toggle="popover" 
+						  data-trigger="hover" 
+						  data-content='Total emails that came back as unknown which are auto suppressed on future campaigns'>Bounce</span>
+						</th>
+			      <th>
+			      	<span tabindex="0"
+			      	data-placement="top" 
+						  role="button" 
+						  data-html="true" 
+						  data-toggle="popover" 
+						  data-trigger="hover" 
+						  data-content='Total emails of users choosing to be removed from your list. Which are auto suppressed on future campaigns'>Unsub.</span>
+						</th>
+			      <th>
+			      	<span tabindex="0"
+			      	data-placement="top" 
+						  role="button" 
+						  data-html="true" 
+						  data-toggle="popover" 
+						  data-trigger="hover" 
+						  data-content='Total subscribers clicking the message was Junk in their email client. Which are auto suppressed on future campaigns'>Compl.</span>
+						</th>
+			      <th class="grayed-out">
+			      	<span tabindex="0"
+			      	data-placement="top" 
+						  role="button" 
+						  data-html="true" 
+						  data-toggle="popover" 
+						  data-trigger="hover" 
+						  data-content='Delete this column for now. We will add it in the future or per user. For our admins we need to see this'>Traps</span>
+						</th>
+						<th>
+			      	<span tabindex="0"
+			      	data-placement="top" 
+						  role="button" 
+						  data-html="true" 
+						  data-toggle="popover" 
+						  data-trigger="hover" 
+						  data-content='Unsubscribe total / sent total'>Chum rate</span>
+						</th>
 			    </tr>
 			  </thead>
 			  <tbody>
 			    <tr>
 			      <th scope="row">21498</th>
 			      <td>06/26/17</td>
-			      <td><b>DrinkTell promocampaign very long name</b></td>
+			      <td><b>DrinkTell promo long name</b></td>
 			      <td>32815</td>
 			      <td>619 <small class="text-muted">(5.41%)</small></td>
 			      <td>371 <small class="text-muted">(3.22%)</small></td>
@@ -306,6 +382,7 @@
 			      <td>9</td>
 			      <td>0</td>
 			      <td>7</td>
+			      <td>35%</td>
 			    </tr>
 			    <tr>
 			      <th scope="row">21499</th>
@@ -318,6 +395,7 @@
 			      <td>7</td>
 			      <td>0</td>
 			      <td>3</td>
+			      <td>22%</td>
 			    </tr>
 			    <tr>
 			      <th scope="row">21450</th>
@@ -330,6 +408,7 @@
 			      <td>6</td>
 			      <td>0</td>
 			      <td>1</td>
+			      <td>8%</td>
 			    </tr>
 			    <tr>
 			      <th scope="row">21451</th>
@@ -342,6 +421,7 @@
 			      <td>12</td>
 			      <td>0</td>
 			      <td>42</td>
+			      <td>6%</td>
 			    </tr>
 			    <tr>
 			      <th scope="row">21452</th>
@@ -354,6 +434,7 @@
 			      <td>4</td>
 			      <td>0</td>
 			      <td>11</td>
+			      <td>48%</td>
 			    </tr>
 			  </tbody>
 			</table>
@@ -394,10 +475,12 @@
 				</div>
 				<div class="sidebar-list__content">
 					<div class="spacing-xs"></div>
-					<div class="range" style="width: 100%">
-					    <div class="range-start" style="width: 100%"></div>
-					    <div class="spacing-xs"></div>
-					    <div class="range-end" style="width: 100%"></div>
+					<div class="input-daterange" id="datepicker">
+						<small class="form-text text-muted mb-1"> Starting date: </small>
+				    <input type="text" class="form-control form-control-sm" name="start" />
+				    <div class="spacing-xs"></div>
+				    <small class="form-text text-muted mb-1"> Ending date: </small>
+				    <input type="text" class="form-control form-control-sm" name="end" />
 					</div>
 		    </div>
 		</div>

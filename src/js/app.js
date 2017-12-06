@@ -18,6 +18,7 @@ var inlinerPlugin = require("./ext/inliner.js");
 
 var localStorageLoader = require("./ext/localstorage.js");
 
+
 if (typeof ko == 'undefined') throw "Cannot find knockout.js library!";
 if (typeof $ == 'undefined') throw "Cannot find jquery library!";
 

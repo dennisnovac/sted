@@ -4,7 +4,7 @@
 <head>
 
 	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-  <meta name="viewport" content="width=1024, initial-scale=1">
+  <meta name="viewport" content="initial-scale=1">
 
   <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon" />
   <link rel="icon" href="/favicon.ico" type="image/x-icon" />
@@ -38,15 +38,13 @@
   <script src="dist/stedb.min.js?v=0.16"></script>
   <script>
   	$(document).ready(function(){
-			$('.range').datepicker({
-			    inputs: $('.range-start, .range-end')
-			});
+  		$('.input-daterange').datepicker({});
 
-			$('.range-start').datepicker('update', new Date(2017,08,11)).on('changeDate', function(e){
+			$('.input-daterange input[name="start"]').datepicker('update', new Date(2017,08,11)).on('changeDate', function(e){
 	      $('.start-date').html(e.format('dd/mm/yyyy'));
 	    });
 
-			$('.range-end').datepicker('setDate', new Date(2017,09,13)).on('changeDate', function(e){
+			$('.input-daterange input[name="end"]').datepicker('setDate', new Date(2017,09,13)).on('changeDate', function(e){
 	      $('.end-date').html(e.format('dd/mm/yyyy'));
 	    });
   	});
@@ -119,7 +117,7 @@
 			<div class="col support-phone text-right d-flex align-items-center justify-content-end">
 				<i class="flaticon-support pointer support"></i>
 				<div class="phone d-flex align-items-center">
-					<i class="flaticon-phone"></i>
+					<a href="tel://+15612285630" class="no-dec"><i class="flaticon-phone"></i></a>
 					<div>
 						<div class="phone-number"> +1 561 228 5630 </div>
 						<div class="working-hours"> 9AM - 5PM (EST) </div>
@@ -258,10 +256,12 @@
 			</div>
 			<div class="sidebar-list__content">
 				<div class="spacing-xs"></div>
-				<div class="range" style="width: 100%">
-				    <div class="range-start" style="width: 100%"></div>
-				    <div class="spacing-xs"></div>
-				    <div class="range-end" style="width: 100%"></div>
+				<div class="input-daterange" id="datepicker">
+					<small class="form-text text-muted mb-1"> Starting date: </small>
+			    <input type="text" class="form-control form-control-sm" name="start" />
+			    <div class="spacing-xs"></div>
+			    <small class="form-text text-muted mb-1"> Ending date: </small>
+			    <input type="text" class="form-control form-control-sm" name="end" />
 				</div>
 	    </div>
 		</div>

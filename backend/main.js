@@ -1,6 +1,7 @@
 "use strict";
 /* global module: false, console: false, __dirname: false, process: false */
 
+var cors = require('cors');
 var express = require('express');
 var upload = require('jquery-file-upload-middleware');
 var bodyParser = require('body-parser');
@@ -12,15 +13,36 @@ var gm = gmagic.subClass({imageMagick: true});
 var config = require('../server-config.js');
 var extend = require('util')._extend;
 var url = require('url');
+var request = require('request');
+
+app.use(cors({credentials: true, origin: true}));
 
 app.use(require('connect-livereload')({ ignore: [/^\/dl/, /^\/img/] }));
 // app.use(require('morgan')('dev'));
 
-app.use(bodyParser.json({limit: '5mb'}));
+app.use(bodyParser.json({limit: '10mb'}));
 app.use(bodyParser.urlencoded({     // to support URL-encoded bodies
-  limit: '5mb',
+  limit: '10mb',
   extended: true
 })); 
+
+
+// Save edited images using aviary
+app.post('/savie', function(req, res){
+
+    var newUrl = req.body.link;
+    var newUrlMin = 'http://process.filestackapi.com/AhTgLagciQByzXpFGRI0Az/resize=width:90/'+newUrl;
+    var newName = 'uploads/' + newUrl.substr(newUrl.lastIndexOf('/') + 1);
+    var newNameThumb = 'uploads/thumbnail/' + newUrl.substr(newUrl.lastIndexOf('/') + 1);
+
+    request(newUrl, {encoding: 'binary'}, function(error, response, body) {
+      fs.writeFile(newName, body, 'binary', function (err) {});
+    });
+    request(newUrlMin, {encoding: 'binary'}, function(error, response, body) {
+      fs.writeFile(newNameThumb, body, 'binary', function (err) {});
+    });
+
+});
 
 var listFiles = function (req, options, callback) {
 
@@ -64,13 +86,55 @@ var uploadOptions = {
   imageVersions: { thumbnail: { width: 90, height: 90 } }
 };
 
+var uploadHolidayOptions = {
+  tmpDir: '.tmp',
+  uploadDir: './uploads/holiday',
+  uploadUrl: '/uploads/holiday',
+  imageVersions: { thumbnail: { width: 90, height: 90 } }
+};
+
+var uploadNatureOptions = {
+  tmpDir: '.tmp',
+  uploadDir: './uploads/nature',
+  uploadUrl: '/uploads/nature',
+  imageVersions: { thumbnail: { width: 90, height: 90 } }
+};
+
+var uploadPromotionOptions = {
+  tmpDir: '.tmp',
+  uploadDir: './uploads/promotion',
+  uploadUrl: '/uploads/promotion',
+  imageVersions: { thumbnail: { width: 90, height: 90 } }
+};
+
 app.get('/upload/', function(req, res) {
     listFiles(req, uploadOptions, function (files) {
       res.json({ files: files });
     }); 
 });
 
+app.get('/holiday/', function(req, res) {
+    listFiles(req, uploadHolidayOptions, function (files) {
+      res.json({ files: files });
+    }); 
+});
+
+app.get('/nature/', function(req, res) {
+    listFiles(req, uploadNatureOptions, function (files) {
+      res.json({ files: files });
+    }); 
+});
+
+app.get('/promotion/', function(req, res) {
+    listFiles(req, uploadPromotionOptions, function (files) {
+      res.json({ files: files });
+    }); 
+});
+
 app.use('/upload/', upload.fileHandler(uploadOptions));
+app.use('/holiday/', upload.fileHandler(uploadHolidayOptions));
+app.use('/nature/', upload.fileHandler(uploadNatureOptions));
+app.use('/promotion/', upload.fileHandler(uploadPromotionOptions));
 
 // imgProcessorBackend + "?src=" + encodeURIComponent(src) + "&method=" + encodeURIComponent(method) + "&params=" + encodeURIComponent(width + "," + height);
 app.get('/img/', function(req, res) {

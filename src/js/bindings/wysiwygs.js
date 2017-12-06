@@ -6,6 +6,7 @@ var $ = require("jquery");
 var ko = require("knockout");
 var console = require("console");
 require("./eventable.js");
+var clicks = 0;
 
 ko.bindingHandlers.wysiwygOrHtml = {
   init: function(element, valueAccessor, allBindingsAccessor, viewModel, bindingContext) {
@@ -169,7 +170,7 @@ ko.bindingHandlers.wysiwyg = {
     toolbar1: "fontselect fontsizeselect hr charmap sourcecode link unlink removeformat code",
     toolbar2: 'formatselect bold italic underline forecolor backcolor outdent indent alignleft aligncenter alignright alignjustify bullist numlist ',
     //toolbar1: "bold italic | forecolor backcolor | link unlink | hr | pastetext code", // | newsletter_profile newsletter_optlink newsletter_unsubscribe newsletter_showlink";
-    plugins: "link hr paste lists textcolor colorpicker code image charmap spellchecker",
+    plugins: "link hr paste lists textcolor colorpicker code image charmap spellchecker imagetools",
   },
   init: function(element, valueAccessor, allBindingsAccessor, viewModel, bindingContext) {
     // TODO ugly, but works...
@@ -208,7 +209,7 @@ ko.bindingHandlers.wysiwyg = {
       menubar: false,
       fixed_toolbar_container: '.tinyMCE-header',
       toolbar1: "formatselect bold italic underline forecolor alignleft aligncenter alignright alignjustify bullist link removeformat",
-      plugins: "link hr paste lists textcolor colorpicker code image charmap spellchecker",
+      plugins: "link hr paste lists textcolor colorpicker code image charmap spellchecker imagetools",
       // we have to disable preview_styles otherwise tinymce push inline every style he things will be applied and this makes the style menu to inherit color/font-family and more.
       preview_styles: false,
       paste_as_text: true,
@@ -243,6 +244,13 @@ ko.bindingHandlers.wysiwyg = {
           // Remove focus from all other selectors
           $('.tinyMCE-header .mce-tinymce-inline.mce-panel').removeClass('lastFocused');
           headerHeight();
+        });
+
+        editor.on('click', function(){
+          clicks++;
+          if(clicks > 1){
+            $('#main-toolbox').addClass('visible');
+          }
         });
 
         // Keep last focused selector, so the header won't disappear

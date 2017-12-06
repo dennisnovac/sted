@@ -137,6 +137,15 @@ var strings = {
     galleryRemote: ko.observableArray([]).extend({
       paging: 16
     }),
+    galleryHolidayRemote: ko.observableArray([]).extend({
+      paging: 16
+    }),
+    galleryNatureRemote: ko.observableArray([]).extend({
+      paging: 16
+    }),
+    galleryPromotionRemote: ko.observableArray([]).extend({
+      paging: 16
+    }),
     selectedBlock: ko.observable(null),
     selectedItem: ko.observable(null),
     selectedTool: ko.observable(0),
@@ -144,6 +153,9 @@ var strings = {
     dragging: ko.observable(false),
     draggingImage: ko.observable(false),
     galleryLoaded: ko.observable(false),
+    galleryHolidayLoaded: ko.observable(false),
+    galleryNatureLoaded: ko.observable(false),
+    galleryPromotionLoaded: ko.observable(false),
     showPreviewFrame: ko.observable(false),
     previewMode: ko.observable('desktop'),
     showToolbox: ko.observable(true),
@@ -219,10 +231,67 @@ var strings = {
     });
   };
 
+  viewModel.loadHolidayGallery = function() {
+    viewModel.galleryHolidayLoaded('loading');
+    var url = '/holiday/';
+    // retrieve the full list of remote files
+    $.getJSON(url, function(data) {
+      console.log(data);
+      for (var i = 0; i < data.files.length; i++) data.files[i] = viewModel.remoteFileProcessor(data.files[i]);
+      viewModel.galleryHolidayLoaded(data.files.length);
+      // TODO do I want this call to return relative paths? Or just absolute paths?
+      viewModel.galleryHolidayRemote(data.files.reverse());
+    }).fail(function() {
+      viewModel.galleryHolidayLoaded(false);
+      viewModel.notifier.error(viewModel.t('Unexpected error listing files'));
+    });
+  };
+
+  viewModel.loadNatureGallery = function() {
+    viewModel.galleryNatureLoaded('loading');
+    var url = '/nature/';
+    // retrieve the full list of remote files
+    $.getJSON(url, function(data) {
+      console.log(data);
+      for (var i = 0; i < data.files.length; i++) data.files[i] = viewModel.remoteFileProcessor(data.files[i]);
+      viewModel.galleryNatureLoaded(data.files.length);
+      // TODO do I want this call to return relative paths? Or just absolute paths?
+      viewModel.galleryNatureRemote(data.files.reverse());
+    }).fail(function() {
+      viewModel.galleryNatureLoaded(false);
+      viewModel.notifier.error(viewModel.t('Unexpected error listing files'));
+    });
+  };
+
+  viewModel.loadPromotionGallery = function() {
+    viewModel.galleryPromotionLoaded('loading');
+    var url = '/promotion/';
+    // retrieve the full list of remote files
+    $.getJSON(url, function(data) {
+      console.log(data);
+      for (var i = 0; i < data.files.length; i++) data.files[i] = viewModel.remoteFileProcessor(data.files[i]);
+      viewModel.galleryPromotionLoaded(data.files.length);
+      // TODO do I want this call to return relative paths? Or just absolute paths?
+      viewModel.galleryPromotionRemote(data.files.reverse());
+    }).fail(function() {
+      viewModel.galleryPromotionLoaded(false);
+      viewModel.notifier.error(viewModel.t('Unexpected error listing files'));
+    });
+  };
+
   // img-wysiwyg.tmpl.html
   viewModel.fileToImage = function(obj, event, ui) {
     // console.log("fileToImage", obj);
     return obj.url;
+  };
+
+
+  viewModel.editImage = function(src, done) {
+    var imgSrc = $(this).parents('.uploadzone').find('img.mobile-full').attr('src');
+    $(this).parents('.uploadzone').find('img.mobile-full').prop('id', imgSrc);
+    $('#trigger-editor').attr('data-src', imgSrc);
+
+    $('#trigger-editor').trigger('click');
   };
 
   // block-wysiwyg.tmpl.html
@@ -615,6 +684,24 @@ var strings = {
   viewModel.selectedImageTab.subscribe(function(newValue) {
     if (newValue == 1 && viewModel.galleryLoaded() === false) {
       viewModel.loadGallery();
+    }
+  }, viewModel, 'change');
+
+  viewModel.selectedImageTab.subscribe(function(newValue) {
+    if (newValue == 2 && viewModel.galleryHolidayLoaded() === false) {
+      viewModel.loadHolidayGallery();
+    }
+  }, viewModel, 'change');
+
+  viewModel.selectedImageTab.subscribe(function(newValue) {
+    if (newValue == 3 && viewModel.galleryNatureLoaded() === false) {
+      viewModel.loadNatureGallery();
+    }
+  }, viewModel, 'change');
+
+  viewModel.selectedImageTab.subscribe(function(newValue) {
+    if (newValue == 4 && viewModel.galleryPromotionLoaded() === false) {
+      viewModel.loadPromotionGallery();
     }
   }, viewModel, 'change');
 

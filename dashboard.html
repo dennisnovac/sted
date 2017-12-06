@@ -4,7 +4,7 @@
 <head>
 
 	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-  <meta name="viewport" content="width=1024, initial-scale=1">
+  <meta name="viewport" content="initial-scale=1">
 
   <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon" />
   <link rel="icon" href="/favicon.ico" type="image/x-icon" />
@@ -348,7 +348,7 @@
 			<div class="col support-phone text-right d-flex align-items-center justify-content-end">
 				<i class="flaticon-support pointer support"></i>
 				<div class="phone d-flex align-items-center">
-					<i class="flaticon-phone"></i>
+					<a href="tel://+15612285630" class="no-dec"><i class="flaticon-phone"></i></a>
 					<div>
 						<div class="phone-number"> +1 561 228 5630 </div>
 						<div class="working-hours"> 9AM - 5PM (EST) </div>
@@ -366,7 +366,7 @@
 			</div>
 			<div class="spacing-xs"></div>
 			<div class="table-responsive">
-				<table class="table table-striped table-short">
+				<table class="table table-striped table-short secondary">
 				  <thead>
 				    <tr>
 				      <th>List name</th>
@@ -404,7 +404,8 @@
 				</table>
 			</div>
 			<div class="spacing-md"></div>
-			<!-- ko if: (campaigns().length > 0 || edits().length > 0) -->
+			<div class="spacing-xs"></div>
+			
 			<div class="col d-flex justify-content-between align-items-center no-padding">
 				<h3 class="no-margin"> Recent campaigns </h3>
 				<a class="btn btn-secondary" href="campaign-management.html">
@@ -414,7 +415,7 @@
 			</div>
 			<div class="spacing-xs"></div>
 			<div class="table-responsive">
-				<table class="table table-striped table-short sent-campaigns">
+				<table class="table table-striped table-short sent-campaigns success">
 				  <thead>
 				    <tr>
 				      <th>Campaign name</th>
@@ -425,6 +426,7 @@
 				      <th style="width: 100px;">Options</th>
 				    </tr>
 				  </thead>
+				  <!-- ko if: (campaigns().length > 0 || edits().length > 0) -->
 				  <tbody data-bind="foreach: campaigns" class="campaigns">
 				    <tr class="template-row">
 				      <th> <a data-bind="click: $root.newEdit.bind(undefined, name), attr: {href: 'advanced-campaign.html#'+key}, text: title" class="pointer"></a></th>
@@ -453,11 +455,12 @@
 				      </td>
 				    </tr>
 				  </tbody>
+				  <!-- /ko -->
 				</table>
 			</div>
 
 			<div class="spacing-md"></div>
-			<!-- /ko -->
+			<div class="spacing-xs"></div>
 
 			<ul class="nav nav-tabs" role="tablist">
 				<li class="nav-item">
@@ -556,7 +559,7 @@
 		</div>
 		<div class="sidebar-list">
 			<div class="sidebar-list__title">
-				Complaints
+				Subscriber Overview
 			</div>
 			<div class="sidebar-list__content">
 				<div class="sidebar-list__item d-flex w-100 justify-content-between align-items-center">

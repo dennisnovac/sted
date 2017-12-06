@@ -1,5 +1,5 @@
 {
-  "name": "stedb",
+  "name": "stedb-live",
   "version": "1.0.0",
   "description": "Email Template Editor",
   "main": "./src/js/app.js",
@@ -8,7 +8,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git://github.com/dennisnovac/stedb.git"
+    "url": "git://github.com/dennisnovac/stedb-live.git"
   },
   "aliasify": {
     "aliases": {
@@ -59,6 +59,7 @@
     "express": "4.14.0",
     "gm": "1.23.0",
     "grunt": "1.0.1",
+    "cors": "2.8.4",
     "grunt-bowercopy": "1.2.4",
     "grunt-browserify": "5.2.0",
     "grunt-contrib-connect": "1.0.2",
@@ -74,8 +75,10 @@
     "grunt-parallel": "0.5.1",
     "grunt-postcss": "0.8.0",
     "jasmine-core": "2.5.2",
+    "request": "2.83.0",
     "jquery-file-upload-middleware": "0.1.8",
     "jshint-stylish": "2.2.1",
+    "fs": "0.0.1-security",
     "load-grunt-tasks": "3.5.2",
     "lodash": "4.16.4",
     "mockery": "2.0.0",
