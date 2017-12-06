@@ -4,7 +4,7 @@
 <head>
 
 	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-  <meta name="viewport" content="width=1024, initial-scale=1">
+  <meta name="viewport" content="initial-scale=1">
 
   <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon" />
   <link rel="icon" href="/favicon.ico" type="image/x-icon" />
@@ -174,7 +174,7 @@
 			<div class="col support-phone text-right d-flex align-items-center justify-content-end">
 				<i class="flaticon-support pointer support"></i>
 				<div class="phone d-flex align-items-center">
-					<i class="flaticon-phone"></i>
+					<a href="tel://+15612285630" class="no-dec"><i class="flaticon-phone"></i></a>
 					<div>
 						<div class="phone-number"> +1 561 228 5630 </div>
 						<div class="working-hours"> 9AM - 5PM (EST) </div>
@@ -184,9 +184,8 @@
 		</div>
 		<div class="content">
 			<div class="row">
-				<div class="col-7">
-				 <h2> What is List Management ?! </h2>
-				 <h4> Group targeted lists into industry or interest-based segments using drag and drop. Folders make it easy to send emails to multiple lists without the hassle of checking every single list individually.</h4>
+				<div class="col-sm-7">
+				 <h2> List Management </h2>
 				 <div class="spacing-sm"></div>
 				 <div class="dropdown" style="display: inline-block;">
 				  <button class="btn btn-success btn-m-r-md" type="button" id="listDropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -195,11 +194,12 @@
 				  </button>
 				  <div class="dropdown-menu" aria-labelledby="listDropdown">
 				    <h5 class="dropdown-item add-new-folder pointer no-margin" data-bind="click: addNewFolder"><i class="fa fa-folder fa-m-r"></i>New Folder</h5>
-						<h5 class="dropdown-item upload-new-file pointer no-margin" data-bind="click: addNewFile"><i class="fa fa-file fa-m-r"></i>New File</h5>
+						<h5 class="dropdown-item upload-new-file pointer no-margin" data-bind="click: addNewFile"><i class="fa fa-list-ul fa-m-r"></i>New List</h5>
 				  </div>
+				  <div class="spacing-sm"></div>
 				</div>
 				</div>
-				<div class="col-5">
+				<div class="col-sm-5">
 					<div class="embed-responsive embed-responsive-16by9 rounded">
 					  <iframe class="embed-responsive-item" src="https://www.youtube.com/embed/lCCWQ6ziAyc" allowfullscreen></iframe>
 					</div>
@@ -226,7 +226,7 @@
 			    <thead>
 			    	<tr>
 				    	<th style="padding-left: 13px;"><input type="checkbox" class="all-remove-checkboxes"></th>
-							<th>File Name</th>
+							<th>List Name</th>
 							<th>Last Modified</th>
 							<th>Options</th>
 						</tr>
@@ -261,7 +261,7 @@
 						</tr>
 					</tbody>
 					<!-- Actual tbody -->
-					<tbody data-bind="foreach: items" class="exp-item-container">
+					<tbody data-bind="foreach: items" class="exp-item-container list-management-container">
 						<tr data-bind="css: rowClassNames()">
 							<td class="remove-checkboxes">
 								<input type="checkbox" class="remove-checkbox" data-bind="click: checkItem.bind($data, $parent, 'a', 'b    ')">

@@ -4,7 +4,7 @@
 <head>
 
 	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-  <meta name="viewport" content="width=1024, initial-scale=1">
+  <meta name="viewport" content="initial-scale=1">
 
   <link rel="canonical" href="http://mosaico.io" />
   <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon" />
@@ -26,6 +26,8 @@
   <script src="dist/vendor/knockout-jqueryui.min.js"></script>
   <script src="dist/vendor/tinymce.min.js"></script>
   <script src="dist/vendor/intl-tel-input/js/intlTelInput.js"></script>
+  <script src="dist/vendor/bootstrap-datepicker/js/bootstrap-datepicker.min.js"></script>
+  <script type="text/javascript" src="dist/vendor/aviary.js"></script>
 
 	<title>
    		Advanced Campaign - STEDB
@@ -35,6 +37,7 @@
 	<link href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700" rel="stylesheet">
 	<link rel="stylesheet" href="dist/vendor/bootstrap.min.css" />
 	<link rel="stylesheet" href="dist/vendor/intl-tel-input/css/intlTelInput.css">
+	<link rel="stylesheet" href="dist/vendor/bootstrap-datepicker/css/bootstrap-datepicker3.standalone.min.css" />
   <link rel="stylesheet" href="dist/stedb.min.css?v=0.10" />
 
   <script src="dist/stedb.min.js?v=0.16"></script>
@@ -71,8 +74,21 @@
 		});
 
 		$(document).ready(function(){
+
+			// Dateranges
+			$('.input-daterange').datepicker({});
+
+			$('.input-daterange input[name="start"]').datepicker('update', new Date(2017,08,11)).on('changeDate', function(e){
+	      // whatever you need to do with this date
+	    });
+
+			$('.input-daterange input[name="end"]').datepicker('setDate', new Date(2017,09,13)).on('changeDate', function(e){
+	      // whatever you need to do with this date
+	    });
+
+
 			$('.home-button').on('click', function(){
-				window.location = '/';
+				window.location = '/dashboard.html';
 			});
 
 			$('#send-campaign').on('click', function(){
@@ -88,6 +104,10 @@
 			$('.load-templates-button').on('click', function(){
 				$('#load-templates').modal('show');
 			});
+
+			$('#save-draft').on('click', function(){
+				$('#draft-saved-modal').modal('show');
+			})
 
 			$("#countryPhone").intlTelInput({
         utilsScript: "dist/vendor/intl-tel-input/js/utils.js"
@@ -121,6 +141,54 @@
 
 		});
   </script>
+
+  <script>
+  	$(document).ready(function(){
+  	/* replace the privew image with the new uploaded image, then send it to aviary javascript code */
+	  $('#trigger-editor').on('click', function() {
+	  	
+		  var url = $(this).attr("data-src");
+		  return launchEditor(url, url); 
+		});   
+
+		/* after upload call read image function*/
+	  $(document).on('change', '#Image', function() {
+	     readImage(this);
+	  });
+	                            
+		/* edit Images using aviray */
+	  var featherEditor = new Aviary.Feather({
+	    apiKey: '',
+	    apiVersion: 3, // the api version . 3 is the last one so far
+	    theme: 'light', // there are 'light' and 'dark' themes
+	    tools: 'all', // you can specify the tools from here, you can include/exclude what ever you want
+	    appendTo: '',
+	    onSave: function(imageID, newURL) {
+	      var img = document.getElementById(imageID);
+	      img.src = newURL; // after save, replacs the image with the new one from aviary.com
+				$.ajax({
+					type: 'POST',
+					url: 'http://127.0.0.1:9006/savie',
+					data: JSON.stringify({
+						'link': newURL}),
+					contentType:"application/json; charset=utf-8",
+					dataType:"json"
+				});    
+	    },
+	    onError: function(errorObj) { 
+	        alert(errorObj.message);
+	    }
+	  });
+	  function launchEditor(id, src) {
+	    featherEditor.launch({
+	        image: id,
+	        url: src
+	    });
+	    return false;
+	  }
+		   	});
+	            
+	</script>
 </head>
 
 <body>
@@ -245,7 +313,7 @@
 			<div class="col support-phone text-right d-flex align-items-center justify-content-end">
 				<i class="flaticon-support pointer support"></i>
 				<div class="phone d-flex align-items-center">
-					<i class="flaticon-phone"></i>
+					<a href="tel://+15612285630" class="no-dec"><i class="flaticon-phone"></i></a>
 					<div>
 						<div class="phone-number"> +1 561 228 5630 </div>
 						<div class="working-hours"> 9AM - 5PM (EST) </div>
@@ -263,44 +331,38 @@
 			<div class="spacing-md"></div>
 			<form id="advanced-campaign-form">
 		  	<div class="row">
-			  	<div class="form-group col-sm-6">
+			  	<div class="form-group col-sm-12">
 				    <label for="campaignName">Campaign name</label>
 				    <input type="text" class="form-control required" id="campaignName" aria-describedby="campaignNameHelp" placeholder="">
-				    <small id="campaignNameHelp" class="form-text text-muted">Specify a unique name for your campaign. It will be used
-						for internal records and will not appear in the email.</small>
+				    <small id="campaignNameHelp" class="form-text text-muted"> Specify a unique name for your campaign. It will be used for your eyes online. It will not appear in the email. </small>
 					</div>
-					<div class="form-group col-sm-6">
+					<div class="form-group col-sm-12">
 				    <label for="campaignSubject">Subject</label>
 				    <input type="text" class="form-control required" id="campaignSubject" aria-describedby="campaignSubjectHelp" placeholder="">
-				    <small id="campaignSubjectHelp" class="form-text text-muted">This is the email subject, the first thing impression recipients will get about your campaign.</small>
+				    <small id="campaignSubjectHelp" class="form-text text-muted"> Enter the subject of your email. To test multiple subjects just press the enter key on your keyboard. We will rotate and report. </small>
 					</div>
 				</div>
 				<div class="spacing-sm"></div>
 				<div class="row">
-					<div class="form-group col-sm-6">
+					<div class="form-group col-lg-4 col-md-12">
 				    <label for="fromName">From name</label>
 				    <input type="text" class="form-control required" id="fromName" aria-describedby="fromNameHelp" placeholder="">
 				    <small id="fromNameHelp" class="form-text text-muted">The name will appear in the from field of your email.</small>
 					</div>
-					<div class="form-group col-sm-6">
+					<div class="form-group col-lg-4 col-md-12">
 				    <label for="fromEmail">From email</label>
 				    <input type="email" class="form-control required" id="fromEmail" aria-describedby="fromEmailHelp" placeholder="">
 				    <small id="fromEmailHelp" class="form-text text-muted">This email address will appear in the from email field of 
 						your message.</small>
 					</div>
-			  </div>
-			  <div class="spacing-sm"></div>
-			  <div class="row">
-			  	<div class="form-group col-sm-6">
+			  	<div class="form-group col-lg-4 col-md-12">
 				    <label for="replyToEmail"> Reply to email</label>
 				    <input type="text" class="form-control required" id="replyToEmail" aria-describedby="replyToEmailHelp" placeholder="">
-				    <small id="replyToEmailHelp" class="form-text text-muted">Specify Reply To email address for campaign.</small>
-					</div>
-					<div class="form-check col-sm-6">
-						<label for="dbm">DBM</label>
+				    <small id="replyToEmailHelp" class="form-text text-muted"> Use a real reply to email address. These are your clients! By continuing the conversation via email is key for maintaining high inbox ratio. </small>
+						<div class="spacing-xs"></div>
 					  <label class="form-check-label col-sm-12">
 					    <input class="form-check-input" type="checkbox" id="dbm">
-					    <h5 class="no-margin"> Use DMB reply </h5>
+					    <h6 class="no-margin"> Use STEd'b generic reply to email </h6>
 						</label>
 					</div>
 				</div>
@@ -340,12 +402,6 @@
 				  </div>
 				</div>
 			</div>
-			<div class="form-check">
-			  <label class="form-check-label col-sm-12">
-			    <input class="form-check-input" type="checkbox" value="" required>
-			    <h5> Generate count </h5>
-				</label>
-			</div>
 			<div class="spacing-md"></div>
 			<div class="button-actions">
 					<button class="btn btn-success btn-lg" id="send-campaign" href="javascript:void(0)" data-bind="click: $root.sendCampaign.bind(undefined, name)" type="submit" disabled="">
@@ -353,10 +409,10 @@
 						<span class="ui-button-text"> Send</span>
 					</button>
 					<button class="btn btn-secondary btn-lg" id="save-draft" title="Save draft" href="javascript:void(0)" data-bind="attr: { title: $root.t('Save as draft') }, click: $root.save.execute, clickBubble: false"> 
-						<span class="ui-button-text"> Save as draft</span>
+						<span class="ui-button-text"> Save Draft</span>
 					</button>
-					<button class="btn btn-secondary btn-lg" id="draft-precreated" >
-						<span class="ui-button-text"> Draft (precreated)</span>
+					<button class="btn btn-secondary btn-lg" id="generate-count" >
+						<span class="ui-button-text"> Generate Count </span>
 					</button>
 					<button class="btn btn-secondary btn-lg" id="save-template"  >
 						<span class="ui-button-text"> Save template</span>
@@ -446,10 +502,13 @@
 							  <div class="d-flex w-100">
 								  <div class="form-group w-100">
 								  	<label class="no-margin"> Opened during specific period </label>
-								  	<small class="form-text text-muted"> From </small>
-								    <input class="form-control form-control-sm" type="datetime-local" value="2012-08-19T13:45:00" id="example-datetime-local-input">
-								    <small class="form-text text-muted"> to </small>
-				          	<input class="form-control form-control-sm" type="datetime-local" value="2017-08-19T13:45:00" id="example-datetime-local-input">
+								  	<div class="input-daterange" id="datepicker1">
+											<small class="form-text text-muted mb-1"> Starting date: </small>
+									    <input type="text" class="form-control form-control-sm" name="start" />
+									    <div class="spacing-xs"></div>
+									    <small class="form-text text-muted mb-1"> Ending date: </small>
+									    <input type="text" class="form-control form-control-sm" name="end" />
+										</div>
 				          	<div class="spacing-xs"></div>
 								  </div>
 							  </div>
@@ -477,10 +536,13 @@
 							  <div class="d-flex w-100">
 								  <div class="form-group w-100">
 								  	<small> Clicked during specific period </small>
-								  	<small class="form-text text-muted"> From </small>
-								    <input class="form-control form-control-sm" type="datetime-local" value="2012-08-19T13:45:00" id="example-datetime-local-input">
-								    <small class="form-text text-muted"> to </small>
-				          	<input class="form-control form-control-sm" type="datetime-local" value="2017-08-19T13:45:00" id="example-datetime-local-input">
+								  	<div class="input-daterange" id="datepicker2">
+											<small class="form-text text-muted mb-1"> Starting date: </small>
+									    <input type="text" class="form-control form-control-sm" name="start" />
+									    <div class="spacing-xs"></div>
+									    <small class="form-text text-muted mb-1"> Ending date: </small>
+									    <input type="text" class="form-control form-control-sm" name="end" />
+										</div>
 				          	<div class="spacing-xs"></div>
 								  </div>
 							  </div>
@@ -819,6 +881,21 @@
 	    </div>
 	  </div>
 	</div>
+	<div class="modal" id="draft-saved-modal" data-backdrop="static" data-keyboard="false" >
+	  <div class="modal-dialog" role="document">
+	    <div class="modal-content modal-success">
+	      <div class="modal-header">
+	        <span class="modal-title"> Draft saved !</span>
+	      </div>
+	      <div class="modal-body">
+	        <h5>A draft has been succesfully saved ! You can access it anytime from your personal dashboard.</h5>
+	      </div>
+	      <div class="modal-footer">
+	        <button type="button" class="btn btn-success home-button">Go to Dashboard</button>
+	      </div>
+	    </div>
+	  </div>
+	</div>
 	<div class="modal" id="template-saved-modal" data-backdrop="static" data-keyboard="false" >
 	  <div class="modal-dialog" role="document">
 	    <div class="modal-content modal-success">
@@ -826,7 +903,7 @@
 	        <span class="modal-title"> Template saved !</span>
 	      </div>
 	      <div class="modal-body">
-	        <h5>Your template <span class="campaign-ver text-success"></span> has been succesfully sent ! You can access it anytime from your personal dashboard.</h5>
+	        <h5>Your template <span class="campaign-ver text-success"></span> has been succesfully saved ! You can access it anytime from your personal dashboard.</h5>
 	      </div>
 	      <div class="modal-footer">
 	        <button type="button" class="btn btn-success home-button">Go to Dashboard</button>
@@ -1231,6 +1308,7 @@
 	    </div>
 	  </div>
 </div>
+<button id="trigger-editor" style="display: none;"></button>
 </body>
 
 </html>

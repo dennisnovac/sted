@@ -1,22 +1,16 @@
 // Switch to mobile/desktop view
-function renderLogo(){
-	if($('.l-sidebar').hasClass('collapsed')){
-		$('.logo').css('left', ($('.m-content').outerWidth() / 2) - 62);
-	} else {
-		$('.logo').css('left', ($('.m-content').outerWidth() / 2) - 62 + 230);
-	}
-}
-
 function renderView(){
 	var sidebarToggle = '<div class="r-sidebar-toggle"><i class="fa fa-spin fa-gear"></i></div>';
 	if($(window).width() < 980){
+		$('.collapse-sidebar').prependTo('body');
+		$('.l-sidebar').css('width', '0');
 		$('body').addClass('mobile-view');
 		$('.r-sidebar').not('.r-sidebar-placeholder').prepend(sidebarToggle);
 	} else {
+		$('.collapse-sidebar').prependTo('.header > .col:first-child');
 		$('body').removeClass('mobile-view');
 		$('.r-sidebar').find('.r-sidebar-toggle').remove();
 	}
-	renderLogo();
 }
 
 // Toggle support icon
@@ -209,6 +203,14 @@ $(document).ready(function(){
 
 	setTimeout(resizeTemplates, 180);
 
+	if($('body').hasClass('mobile-view')){
+		$('.l-sidebar .nav-item > .nav-link:not([data-toggle="collapse"]), .l-sidebar .nav-link-inner > a').on('click', function(){
+			$('.l-sidebar').addClass('collapsed');
+			document.cookie = "sidebarCollapsed=false; expires=Fri, 31 Dec 9999 23:59:59 GMT";
+			console.log('bl');
+		});
+	}
+
 	$(".collapse-sidebar").on('click', function(){
 		if($('.l-sidebar').hasClass('collapsed')){
 			document.cookie = "sidebarCollapsed=true; expires=Fri, 31 Dec 9999 23:59:59 GMT";
@@ -216,7 +218,6 @@ $(document).ready(function(){
 			document.cookie = "sidebarCollapsed=false; expires=Fri, 31 Dec 9999 23:59:59 GMT";
 		}
 		$(".l-sidebar").toggleClass('collapsed');
-		renderLogo();
 		setTimeout(resizeTemplates, 210);
 	});
 
@@ -245,6 +246,10 @@ $(document).ready(function(){
 		$('#sub-users-table').show();
 	});
 
+	//Show main-toolbox only when started editing 
+	$("#edit-area").on('click', '*', function(){
+		$('#main-toolbox').addClass('visible');
+	});
 
 	//Sidebar checkbox depency for dropdowns & caret rotate
 	$(".r-sidebar .checkbox-dependency").on('click', function(evt){
@@ -405,7 +410,6 @@ $(document).ready(function(){
 			}
 		}
 	});
-
 });
 
 // File explorer key controll
@@ -454,4 +458,15 @@ $(document).keydown(function(e){
       deleteCheckedButton();
     }
    }
+});
+
+$(window).scroll(function() {    
+  var scroll = $(window).scrollTop();
+
+  if ($('#main-toolbox').length && scroll >= 75) {
+  	$('#edit-area').on('mouseenter', function(){
+  		$(this).addClass('hovered');
+			$('#main-toolbox').addClass('visible');
+		});
+  }
 });
