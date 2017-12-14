@@ -223,7 +223,6 @@ app.post('/dl/', function(req, res) {
 var PORT = process.env.PORT || 3000;
 
 app.use(express.static(__dirname + '/../'));
-app.use('/dist/vendor', express.static(__dirname + '/node_modules/bootstrap/dist/'));
 
 var server = app.listen( PORT, function() {
     var check = gm(100, 100, '#000000');

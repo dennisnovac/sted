@@ -11,7 +11,7 @@
 
   <script src="dist/vendor/jquery.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.11.0/umd/popper.min.js"></script>
-  <script src="dist/vendor/bootstrap.min.js"></script>
+  <script src="dist/vendor/bootstrap/bootstrap.min.js"></script>
   <script src="dist/vendor/knockout.js"></script>
   <script src="dist/vendor/jquery-ui.min.js"></script>
   <script src="dist/vendor/jquery.ui.touch-punch.min.js"></script>
@@ -31,7 +31,7 @@
 	</title>
 
 	<link href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700" rel="stylesheet">
-	<link rel="stylesheet" href="dist/vendor/bootstrap.min.css" />
+	<link rel="stylesheet" href="dist/vendor/bootstrap/bootstrap.min.css" />
 	<link rel="stylesheet" href="dist/vendor/bootstrap-datepicker/css/bootstrap-datepicker3.standalone.min.css" />
   <link rel="stylesheet" href="dist/stedb.min.css?v=0.10" />
 
@@ -112,7 +112,7 @@
 				<i class="flaticon-hamburger pointer collapse-sidebar"></i>
 			</div>
 			<div class="col d-flex align-items-center justify-content-center">
-				<img class="logo" src="dist/img/logo.png" alt="logo" />
+				<img class="logo" src="logo.png" alt="logo" />
 			</div>
 			<div class="col support-phone text-right d-flex align-items-center justify-content-end">
 				<i class="flaticon-support pointer support"></i>
@@ -133,96 +133,98 @@
 				 <div class="spacing-sm"></div>
 				</div>
 			</div>
-			<table class="table table-striped table-responsive">
-			  <thead>
-			    <tr>
-			      <th>Date</th>
-			      <th>Bounced</th>
-			      <th>Opened</th>
-			      <th>Clicks</th>
-			      <th>Subject</th>
-			    </tr>
-			  </thead>
-			  <tbody>
-			    <tr>
-			      <td>06/26/17</td>
-			      <td>24%</td>
-			      <td>14%</td>
-			      <td>8%</td>
-			      <td>Facebook new campaign for shoe store</td>
-			    </tr>
-			    <tr>
-			      <td>06/26/17</td>
-			      <td>27%</td>
-			      <td>52%</td>
-			      <td>32%</td>
-			      <td>Twitter new campaign to gain more millionaire followers</td>
-			    </tr>
-			    <tr>
-			      <td>06/26/17</td>
-			      <td>34%</td>
-			      <td>51%</td>
-			      <td>6%</td>
-			      <td>Twitter second campaign</td>
-			    </tr>
-			    <tr>
-			      <td>06/26/17</td>
-			      <td>66%</td>
-			      <td>12%</td>
-			      <td>44%</td>
-			      <td>Instagram Herbalife sales</td>
-			    </tr>
-			    <tr>
-			      <td>06/26/17</td>
-			      <td>24%</td>
-			      <td>14%</td>
-			      <td>8%</td>
-			      <td>Facebook new campaign for shoe store</td>
-			    </tr>
-			    <tr>
-			      <td>06/26/17</td>
-			      <td>61%</td>
-			      <td>11%</td>
-			      <td>3%</td>
-			      <td>Facebook new campaign for dog store</td>
-			    </tr>
-			    <tr>
-			      <td>06/26/17</td>
-			      <td>11%</td>
-			      <td>34%</td>
-			      <td>6%</td>
-			      <td>Facebook new campaign for watch store</td>
-			    </tr>
-			    <tr>
-			      <td>06/26/17</td>
-			      <td>27%</td>
-			      <td>52%</td>
-			      <td>32%</td>
-			      <td>Twitter new campaign to gain more  followers</td>
-			    </tr>
-			    <tr>
-			      <td>06/26/17</td>
-			      <td>34%</td>
-			      <td>51%</td>
-			      <td>6%</td>
-			      <td>Twitter third campaign</td>
-			    </tr>
-			    <tr>
-			      <td>06/26/17</td>
-			      <td>66%</td>
-			      <td>12%</td>
-			      <td>44%</td>
-			      <td>Facebook Herbalife sales</td>
-			    </tr>
-			    <tr>
-			      <td><b>Totals</b></td>
-			      <td><b class="text-primary">73%</b></td>
-			      <td><b class="text-primary">6%</b></td>
-			      <td><b class="text-primary">3%</b></td>
-			      <td></td>
-			    </tr>
-			  </tbody>
-			</table>
+			<div class="table-responsive">
+				<table class="table table-striped">
+				  <thead>
+				    <tr>
+				      <th>Date</th>
+				      <th>Bounced</th>
+				      <th>Opened</th>
+				      <th>Clicks</th>
+				      <th>Subject</th>
+				    </tr>
+				  </thead>
+				  <tbody>
+				    <tr>
+				      <td>06/26/17</td>
+				      <td>24%</td>
+				      <td>14%</td>
+				      <td>8%</td>
+				      <td>Facebook new campaign for shoe store</td>
+				    </tr>
+				    <tr>
+				      <td>06/26/17</td>
+				      <td>27%</td>
+				      <td>52%</td>
+				      <td>32%</td>
+				      <td>Twitter new campaign to gain more millionaire followers</td>
+				    </tr>
+				    <tr>
+				      <td>06/26/17</td>
+				      <td>34%</td>
+				      <td>51%</td>
+				      <td>6%</td>
+				      <td>Twitter second campaign</td>
+				    </tr>
+				    <tr>
+				      <td>06/26/17</td>
+				      <td>66%</td>
+				      <td>12%</td>
+				      <td>44%</td>
+				      <td>Instagram Herbalife sales</td>
+				    </tr>
+				    <tr>
+				      <td>06/26/17</td>
+				      <td>24%</td>
+				      <td>14%</td>
+				      <td>8%</td>
+				      <td>Facebook new campaign for shoe store</td>
+				    </tr>
+				    <tr>
+				      <td>06/26/17</td>
+				      <td>61%</td>
+				      <td>11%</td>
+				      <td>3%</td>
+				      <td>Facebook new campaign for dog store</td>
+				    </tr>
+				    <tr>
+				      <td>06/26/17</td>
+				      <td>11%</td>
+				      <td>34%</td>
+				      <td>6%</td>
+				      <td>Facebook new campaign for watch store</td>
+				    </tr>
+				    <tr>
+				      <td>06/26/17</td>
+				      <td>27%</td>
+				      <td>52%</td>
+				      <td>32%</td>
+				      <td>Twitter new campaign to gain more  followers</td>
+				    </tr>
+				    <tr>
+				      <td>06/26/17</td>
+				      <td>34%</td>
+				      <td>51%</td>
+				      <td>6%</td>
+				      <td>Twitter third campaign</td>
+				    </tr>
+				    <tr>
+				      <td>06/26/17</td>
+				      <td>66%</td>
+				      <td>12%</td>
+				      <td>44%</td>
+				      <td>Facebook Herbalife sales</td>
+				    </tr>
+				    <tr>
+				      <td><b>Totals</b></td>
+				      <td><b class="text-primary">73%</b></td>
+				      <td><b class="text-primary">6%</b></td>
+				      <td><b class="text-primary">3%</b></td>
+				      <td></td>
+				    </tr>
+				  </tbody>
+				</table>
+			</div>
 		  <ul class="pagination pagination-sm justify-content-end">
 		    <li class="page-item disabled">
 		      <a class="page-link" href="#" tabindex="-1">Previous</a>

@@ -145,12 +145,59 @@ module.exports = function(grunt) {
     },
 
     copy: {
-      res: {
-        expand: true,
-        cwd: 'res',
-        src: '**',
-        dest: 'dist/'
-      }
+        main: {
+          files: [ 
+            {expand: true, cwd: 'src/img', src: ['*'], dest: 'dist/img'},
+            {expand: true, cwd: 'src/css/flaticon', src: ['*'], dest: 'dist/flaticon'},
+            {expand: true, cwd: 'src/tinymce-skin/stedb', src: ['*'], dest: 'dist/vendor/skins/stedb'},
+            {expand: true, cwd: 'src/tinymce-skin/stedb/fonts', src: ['*'], dest: 'dist/vendor/skins/stedb/fonts'},
+            {expand: true, cwd: 'src/tinymce-skin/stedb/img', src: ['*'], dest: 'dist/vendor/skins/stedb/img'},
+            {expand: true, cwd: 'node_modules/intl-tel-input/build/img/', src: ['*'], dest: 'dist/vendor/intl-tel-input/img'}
+          ]
+        },
+        js: {
+            files: [
+              { expand: true,
+                cwd: 'node_modules',
+                flatten: true,
+                filter: 'isFile', 
+                src: 'bootstrap/dist/js/bootstrap.min.js', 
+                dest: 'dist/vendor/bootstrap/' 
+              },
+              { expand: true,
+                cwd: 'node_modules',
+                flatten: true,
+                filter: 'isFile', 
+                src: 'intl-tel-input/build/js/intlTelInput.js',
+                dest: 'dist/vendor/intl-tel-input/js/'
+              },
+              { expand: true,
+                cwd: 'node_modules',
+                flatten: true,
+                filter: 'isFile', 
+                src: 'intl-tel-input/build/js/utils.js',
+                dest: 'dist/vendor/intl-tel-input/js/'
+              }
+            ]
+        },
+        css: {
+            files: [
+              { expand: true,
+                cwd: 'node_modules',
+                flatten: true,
+                filter: 'isFile', 
+                src: 'bootstrap/dist/css/bootstrap.min.css', 
+                dest: 'dist/vendor/bootstrap/' 
+              },
+              { expand: true,
+                cwd: 'node_modules',
+                flatten: true,
+                filter: 'isFile', 
+                src: 'intl-tel-input/build/css/intlTelInput.css',
+                dest: 'dist/vendor/intl-tel-input/css/'
+              }
+            ]
+        }
     },
 
     bowercopy: {
@@ -177,10 +224,9 @@ module.exports = function(grunt) {
           'themes': 'tinymce/themes',
           'skins': 'tinymce/skins',
           'plugins': 'tinymce/plugins',
-          'popper.js': 'popper.js/dist/umd/popper.js',
-          'intl-tel-input': 'intl-tel-input/build',
           'bootstrap-datepicker': 'bootstrap-datepicker/dist',
-          'chart.js': 'chart.js/dist'
+          'chart.js': 'chart.js/dist',
+          'moment.js': 'moment/moment.js'
         }
       },
       fontawesome: {
