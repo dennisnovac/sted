@@ -38,7 +38,6 @@ module.exports = function(grunt) {
       css: {
         files: {
           "build/stedb.css": "src/css/app_standalone.less",
-          "build/stedb-material.css": "src/css/app_standalone_material.less"
         }
       }
     },
@@ -59,10 +58,6 @@ module.exports = function(grunt) {
       dist: {
         src: 'build/stedb.css',
         dest: 'dist/stedb.min.css'
-      },
-      material: {
-        src: 'build/stedb-material.css',
-        dest: 'dist/stedb-material.min.css'
       }
     },
 

@@ -785,7 +785,14 @@ var strings = {
     var thisTemplateSrc = thisTemplate.template;
     var rnd = Math.random().toString(36).substr(2, 7);
     var template = 'templates/'+thisName+'/template-'+thisName+'.html';
-    var newEntry = { created: currentDate, key: rnd, title: $('#templateName').val(), name: thisName, template: thisTemplateSrc, desc: $('#templateDesc').val() };
+
+    // Check if "code your own" or "regular template"
+    var newEntry;
+    if($('#main-wysiwyg-area').html().length && $('.code-editor').length){
+      newEntry = { created: currentDate, key: rnd, title: $('#templateName').val(), name: thisName, template: thisTemplateSrc, desc: 'Code your own' };
+    } else {
+      newEntry = { created: currentDate, key: rnd, title: $('#templateName').val(), name: thisName, template: thisTemplateSrc, desc: $('#templateDesc').val() };
+    }
 
     var savedContent = global.localStorage.getItem("template-" + thisKey);
     var newContent = viewModel.exportJSON();
@@ -807,6 +814,16 @@ var strings = {
         global.localStorage.setItem("edits", JSON.stringify(edits));
         global.localStorage.removeItem("metadata-" + thisKey);
         }
+      }
+
+      // Check if one of the default templates (may need to add more keys)
+      if(thisKey == '0000001' || thisKey == '0000002' || thisKey == '0000003'){
+        console.log(thisKey);
+        thisKey = rnd;
+        console.log(thisKey);
+      } else {
+        console.log(thisKey);
+        console.log('nu');
       }
       
       // Store template
@@ -920,8 +937,14 @@ var strings = {
 
     console.log(thisKey);
 
-    var newEntry = { created: currentDate, key: thisKey, title: campaignTitle, name: thisName, template: thisTemplateSrc, desc: $('#campaignSubject').val() };
-    console.log(newEntry);
+    // Check if "code your own" or "regular template"
+    var newEntry;
+    if($('#main-wysiwyg-area').html().length && $('.code-editor').length){
+      newEntry = { created: currentDate, key: thisKey, title: campaignTitle, name: thisName, template: thisTemplateSrc, desc: 'Code your own' };
+    } else {
+      newEntry = { created: currentDate, key: thisKey, title: campaignTitle, name: thisName, template: thisTemplateSrc, desc: $('#campaignSubject').val() };
+    }
+    
     global.localStorage.setItem("campaigns", JSON.stringify(campaigns));
 
     // Store campaign

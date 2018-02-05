@@ -164,7 +164,13 @@ ko.virtualElements.allowedBindings['wysiwygImg'] = true;
 ko.bindingHandlers.wysiwyg = {
   currentIndex: 0,
   standardOptions: {
-  	toolbar1: "formatselect bold italic underline forecolor alignleft aligncenter alignright alignjustify bullist link removeformat"
+    toolbar1: "formatselect bold italic underline forecolor alignleft aligncenter alignright alignjustify bullist link removeformat"
+  },
+  codeOptions: {
+    selector: '.code-editor',
+    inline: false,
+    visual: false,
+    toolbar1: "formatselect alignright alignjustify bullist link removeformat code"
   },
   fullOptions: {
     toolbar1: "fontselect fontsizeselect hr charmap sourcecode link unlink removeformat code",
@@ -192,10 +198,11 @@ ko.bindingHandlers.wysiwyg = {
     }
 
     var headerHeight = function(){
-    	$('.tinyMCE-header').height($('.mce-tinymce.mce-container').outerHeight());};
+      $('.tinyMCE-header').height($('.mce-tinymce.mce-container').outerHeight());};
 
     var simpleEditor = $(element).parents('#tinymce-area').hasClass('simple-editor');
     var fullEditor = $(element).parents('#tinymce-area').hasClass('advanced-editor');
+    var codeEditor = $(element).parents('#tinymce-area').hasClass('code-editor');
     var isSubscriberChange = false;
     var thisEditor;
     var isEditorChange = false;
@@ -255,7 +262,7 @@ ko.bindingHandlers.wysiwyg = {
 
         // Keep last focused selector, so the header won't disappear
         editor.on('blur', function(){
-        	$('.tinyMCE-header .mce-tinymce-inline.mce-panel:visible').addClass('lastFocused');
+          $('.tinyMCE-header .mce-tinymce-inline.mce-panel:visible').addClass('lastFocused');
         });
         // NOTE: this fixes issue with "leading spaces" in default content that were lost during initialization.
         editor.on('BeforeSetContent', function(args) {
@@ -279,6 +286,7 @@ ko.bindingHandlers.wysiwyg = {
 
     if (simpleEditor) ko.utils.extend(options, ko.bindingHandlers.wysiwyg.standardOptions);
     if (fullEditor) ko.utils.extend(options, ko.bindingHandlers.wysiwyg.fullOptions);
+    if (codeEditor) ko.utils.extend(options, ko.bindingHandlers.wysiwyg.codeOptions);
 
     // we have to put initialization in a settimeout, otherwise switching from "1" to "2" columns blocks
     // will start the new editors before disposing the old ones and IDs get temporarily duplicated.

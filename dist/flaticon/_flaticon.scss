@@ -1,0 +1,89 @@
+    /*
+    Flaticon icon font: Flaticon
+    Creation date: 19/10/2017 00:08
+    */
+
+    @font-face {
+  font-family: "Flaticon";
+  src: url("./Flaticon.eot");
+  src: url("./Flaticon.eot?#iefix") format("embedded-opentype"),
+       url("./Flaticon.woff") format("woff"),
+       url("./Flaticon.ttf") format("truetype"),
+       url("./Flaticon.svg#Flaticon") format("svg");
+  font-weight: normal;
+  font-style: normal;
+}
+
+@media screen and (-webkit-min-device-pixel-ratio:0) {
+  @font-face {
+    font-family: "Flaticon";
+    src: url("./Flaticon.svg#Flaticon") format("svg");
+  }
+}
+
+    .fi:before{
+        display: inline-block;
+  font-family: "Flaticon";
+  font-style: normal;
+  font-weight: normal;
+  font-variant: normal;
+  line-height: 1;
+  text-decoration: inherit;
+  text-rendering: optimizeLegibility;
+  text-transform: none;
+  -moz-osx-font-smoothing: grayscale;
+  -webkit-font-smoothing: antialiased;
+  font-smoothing: antialiased;
+    }
+
+    .flaticon-hand:before { content: "\f100"; }
+.flaticon-ipad:before { content: "\f101"; }
+.flaticon-iphone:before { content: "\f102"; }
+.flaticon-imac:before { content: "\f103"; }
+.flaticon-support:before { content: "\f104"; }
+.flaticon-hamburger:before { content: "\f105"; }
+.flaticon-phone:before { content: "\f106"; }
+.flaticon-cross:before { content: "\f107"; }
+.flaticon-add:before { content: "\f108"; }
+.flaticon-edit:before { content: "\f109"; }
+.flaticon-manage:before { content: "\f10a"; }
+.flaticon-magic:before { content: "\f10b"; }
+.flaticon-employee:before { content: "\f10c"; }
+.flaticon-stats:before { content: "\f10d"; }
+.flaticon-rocket:before { content: "\f10e"; }
+.flaticon-report:before { content: "\f10f"; }
+.flaticon-loud:before { content: "\f110"; }
+.flaticon-mail:before { content: "\f111"; }
+.flaticon-dashboard:before { content: "\f112"; }
+.flaticon-puzzle:before { content: "\f113"; }
+.flaticon-wand:before { content: "\f114"; }
+.flaticon-chart:before { content: "\f115"; }
+.flaticon-logout:before { content: "\f116"; }
+.flaticon-tool:before { content: "\f117"; }
+.flaticon-user:before { content: "\f118"; }
+    
+    $font-Flaticon-hand: "\f100";
+    $font-Flaticon-ipad: "\f101";
+    $font-Flaticon-iphone: "\f102";
+    $font-Flaticon-imac: "\f103";
+    $font-Flaticon-support: "\f104";
+    $font-Flaticon-hamburger: "\f105";
+    $font-Flaticon-phone: "\f106";
+    $font-Flaticon-cross: "\f107";
+    $font-Flaticon-add: "\f108";
+    $font-Flaticon-edit: "\f109";
+    $font-Flaticon-manage: "\f10a";
+    $font-Flaticon-magic: "\f10b";
+    $font-Flaticon-employee: "\f10c";
+    $font-Flaticon-stats: "\f10d";
+    $font-Flaticon-rocket: "\f10e";
+    $font-Flaticon-report: "\f10f";
+    $font-Flaticon-loud: "\f110";
+    $font-Flaticon-mail: "\f111";
+    $font-Flaticon-dashboard: "\f112";
+    $font-Flaticon-puzzle: "\f113";
+    $font-Flaticon-wand: "\f114";
+    $font-Flaticon-chart: "\f115";
+    $font-Flaticon-logout: "\f116";
+    $font-Flaticon-tool: "\f117";
+    $font-Flaticon-user: "\f118";

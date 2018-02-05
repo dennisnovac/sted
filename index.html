@@ -181,17 +181,36 @@
 
         $('#delete-template-modal .delete-template').on('click', function(){
         	var loadEdits = JSON.parse(localStorage.getItem('edits'));
+        	var loadCampaigns = JSON.parse(localStorage.getItem('campaigns'));
+
           for(i=0; i < loadEdits.length; i++){
-	        	if(loadEdits[i].indexOf(index.key)){
+          	if(loadEdits[i].indexOf(index.key)){
 	        		newEdits = loadEdits.filter(function(a){return a !== index.key;});
 	        		localStorage.setItem('edits', JSON.stringify(newEdits));
+	        	} else if(loadEdits.length == 1 && i == 0){
+							newEdits = [];
+	        		localStorage.setItem('edits', JSON.stringify(newEdits));
+          	}
+          	localStorage.removeItem('template-'+index.key);
+		        localStorage.removeItem('metadata-'+index.key);
+	        }
 
-	        		console.log("removing template ", index.key);
-	            localStorage.removeItem('template-'+index.key);
-	        	}
+	        if (loadCampaigns !== null ){
+	        	for(i=0; i < loadCampaigns.length; i++){
+	          	if(loadCampaigns[i].indexOf(index.key)){
+		        		newCampaigns = loadCampaigns.filter(function(a){return a !== index.key;});
+		        		localStorage.setItem('campaigns', JSON.stringify(newCampaigns));
+		        	} else if(loadCampaigns.length == 1 && i == 0){
+								newCampaigns = [];
+		        		localStorage.setItem('campaigns', JSON.stringify(newCampaigns));
+	          	}
+		        }
+		        localStorage.removeItem('template-'+index.key);
+		        localStorage.removeItem('metadata-'+index.key);
 	        }
 
           $('.sent-campaigns a[href="simple-campaign.html#'+index.key+'"]').parents('.template').remove();
+          $('.sent-campaigns a[href="code-campaign.html#'+index.key+'"]').parents('.template').remove();
           $('#delete-template-modal').modal('hide');
         });
         return false;
@@ -226,6 +245,17 @@
 				for(i=0; i<5; i++){
 					$('.campaigns .templates-container').append('<div class="template-placeholder"></div>');
 				}
+
+				$('.template').each(function(){
+					if($(this).find('h6[data-bind="text: desc"]').html() == "Code your own"){
+						$(this).addClass('codeyourown');
+						var defaultLink = $(this).find('.template-image a').attr('href');
+						var middleLink = defaultLink.substr(0, defaultLink.indexOf('-'));
+						var finalLink = defaultLink.replace(middleLink, 'code');
+						console.log(finalLink);
+						$(this).find('.template-image a').attr('href', finalLink);
+					}
+				});
       });
   </script>
 </head>
@@ -355,7 +385,7 @@
 						<div class="template-info d-flex justify-content-between">
 							<div class="text-left align-center">
 								<h5 data-bind="text: title"></h5>
-								<h6> Draft </h6>
+								<h6 data-bind="text: desc"></h6>
 							</div>
 							<i class="fa fa-trash-o" data-bind="click: $root.deleteEdit.bind(undefined, $index())"></i>
 						</div>

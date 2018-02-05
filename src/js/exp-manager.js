@@ -270,6 +270,7 @@ function ListViewModel() {
         var newItem = new ItemViewModel(self, isFolder);
         newItem.folderId = self.folderId();
         newItem.date(currentDate);
+        newItem.value(0);
 
         // Set item as active (editable)
         newItem.isActive(true);
@@ -391,7 +392,7 @@ function ListViewModel() {
 */
 var toDelete = [];
 
-function ItemViewModel(parent, isFolder, id, title, date, folderId) {
+function ItemViewModel(parent, isFolder, id, title, date, value, folderId) {
   var self = this;
 
   // Observable properties
@@ -404,6 +405,9 @@ function ItemViewModel(parent, isFolder, id, title, date, folderId) {
 
   // Creaet date
   self.date = ko.observable().extend({ required: true });
+
+  // Creaet value
+  self.value = ko.observable().extend({ required: false });
 
   // Properties, that never changes dinamically, can be created non-observable
   self.parent = parent;
@@ -604,7 +608,7 @@ function ItemViewModel(parent, isFolder, id, title, date, folderId) {
   };
 
   // Set properties with chain syntax
-  self.id(id).title(title).date(date);
+  self.id(id).title(title).date(date).value(value);
   self.folderId = folderId;}
 
 // -------- Initialize
@@ -624,7 +628,7 @@ function initializeexpData(expData) {
   if (expData.Folders) {
       for (var j = 0; j < expData.Folders.length; j++) {
           var folder = expData.Folders[j],
-                  folderViewModel = new ItemViewModel(listViewModel, true, folder.Id, folder.Title, folder.Date, folder.ParentId);
+                  folderViewModel = new ItemViewModel(listViewModel, true, folder.Id, folder.Title, folder.Date, folder.Value, folder.ParentId);
 
           listViewModel.allItems.push(folderViewModel);
       }
@@ -634,7 +638,7 @@ function initializeexpData(expData) {
   if (expData.Files) {
       for (var k = 0; k < expData.Files.length; k++) {
           var file = expData.Files[k],
-                  fileViewModel = new ItemViewModel(listViewModel, false, file.Id, file.Title, file.Date, file.FolderId);
+                  fileViewModel = new ItemViewModel(listViewModel, false, file.Id, file.Title, file.Date, file.Value, file.FolderId);
 
           listViewModel.allItems.push(fileViewModel);
       }

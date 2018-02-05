@@ -1,11 +1,12 @@
-@import "../../bower_components/font-awesome/less/font-awesome.less";
+@import "@{bower-path}font-awesome/less/font-awesome.less";
 @import 'style_mosaico.less';
-@import (less) "stedb-src.css";
+@import "stedb-src.less";
 
-@import (less) "../../bower_components/toastr/toastr.css";
-@import (less) "../../bower_components/evol-colorpicker/css/evol.colorpicker.css";
-@import (less) "flaticon/flaticon.css";
-
+@import (less) "@{bower-path}toastr/toastr.css";
+@import (less) "@{bower-path}evol-colorpicker/css/evol.colorpicker.css";
+@import (less) "@{flaticon-font-path}/flaticon.css";
 
 @fa-font-path: "fa/fonts";
 @flaticon-font-path: "flaticon";
+@bower-path: '../../bower_components/';
+

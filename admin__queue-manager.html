@@ -1,0 +1,356 @@
+<!DOCTYPE html>
+ 
+<html lang="en">	
+<head>
+
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+  <meta name="viewport" content="initial-scale=1">
+
+  <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon" />
+  <link rel="icon" href="/favicon.ico" type="image/x-icon" />
+
+  <script src="dist/vendor/jquery.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.11.0/umd/popper.min.js"></script>
+  <script src="dist/vendor/bootstrap/bootstrap.min.js"></script>
+  <script src="dist/vendor/knockout.js"></script>
+  <script src="dist/vendor/jquery-ui.min.js"></script>
+  <script src="dist/vendor/jquery.ui.touch-punch.min.js"></script>
+  <script src="dist/vendor/load-image.all.min.js"></script>
+  <script src="dist/vendor/canvas-to-blob.min.js"></script>
+  <script src="dist/vendor/jquery.iframe-transport.js"></script>
+  <script src="dist/vendor/jquery.fileupload.js"></script>
+  <script src="dist/vendor/jquery.fileupload-process.js"></script>
+  <script src="dist/vendor/jquery.fileupload-image.js"></script>
+  <script src="dist/vendor/jquery.fileupload-validate.js"></script>
+  <script src="dist/vendor/knockout-jqueryui.min.js"></script>
+
+	<title>
+   		Queue manager - SteDB
+	</title>
+
+	<link href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700" rel="stylesheet">
+	<link rel="stylesheet" href="dist/vendor/bootstrap/bootstrap.min.css" />
+  <link rel="stylesheet" href="dist/stedb.min.css?v=0.10" />
+
+  <script src="dist/stedb.min.js?v=0.16"></script>
+</head>
+
+<body>
+
+<div class="container-main d-flex justify-content-between">
+	<div class="l-sidebar d-inline-flex flex-column">
+		<div class="l-sidebar__content">
+			<ul class="nav flex-column nav-user">
+				<li class="nav-item nav-title">
+					<a> User details </a>
+				</li>
+			  <li class="nav-item">
+			    <a class="nav-link nav-user-link">
+			    	<i class="nav-icon flaticon-user align-middle"></i>
+			    	<span class="align-middle">dennis.novac</span>
+			    </a>
+			  </li>
+			  <li class="nav-item">
+			    <a class="nav-link nav-user-settings" href="#">
+			    	<i class="nav-icon flaticon-tool align-middle"></i>
+			    	<span class="align-middle">Settings</span>
+			    </a>
+			  </li>
+			  <li class="nav-item">
+			    <a class="nav-link" href="#">
+			    	<i class="nav-icon flaticon-logout align-middle"></i>
+			    	<span class="align-middle">Log out</span>
+			    </a>
+			  </li>
+			</ul>
+
+			<ul class="nav nav-interface flex-column">
+				<li class="nav-item nav-title">
+					<a> Campaign interface </a>
+				</li>
+			  <li class="nav-item">
+			    <a class="nav-link" href="index.html">
+			    	<i class="nav-icon flaticon-chart align-middle"></i>
+			    	<span class="align-middle">Simple</span>
+			    </a>
+			  </li>
+			  <li class="nav-item">
+			    <a class="nav-link" href="basic.html">
+			    	<i class="nav-icon flaticon-wand align-middle"></i>
+			    	<span class="align-middle">Basic</span>
+			    </a>
+			  </li>
+			  <li class="nav-item advanced">
+			    <a class="nav-link" href="dashboard.html">
+			    	<i class="nav-icon flaticon-puzzle align-middle"></i>
+			    	<span class="align-middle">Advanced</span>
+			    </a>
+			  </li>
+			</ul>
+
+			<ul class="nav nav-advanced flex-column">
+				<li class="nav-item nav-title">
+					<a> Advanced menu </a>
+				</li>
+			  <li class="nav-item">
+			    <a class="nav-link" href="dashboard.html">
+			    	<i class="nav-icon flaticon-dashboard align-middle"></i>
+			    	<span class="align-middle">Dashboard</span>
+			    </a>
+			  </li>
+			  <li class="nav-item">
+			    <a class="nav-link" data-toggle="collapse" href="#email-list">
+			    	<i class="nav-icon flaticon-mail align-middle"></i>
+			    	<span class="align-middle">Email list</span>
+			    </a>
+			    <ul class="list-unstyled nav-item-inner collapse" id="email-list">
+			    	<li class="nav-link-inner"><a href="advanced-list-management.html">List management</a></li>
+			    	<li class="nav-link-inner"><a href="#">List creation</a></li>
+			    	<li class="nav-link-inner"><a href="generate-counts.html">Generate counts</a></li>
+			    	<li class="nav-link-inner"><a href="#">Custom fields</a></li>
+			    	<li class="nav-link-inner"><a href="#">Signup forms</a></li>
+			    	<li class="nav-link-inner"><a href="#">Form storing rules</a></li>
+			    	<li class="nav-link-inner"><a href="#">Opt-in links</a></li>
+			    	<li class="nav-link-inner"><a href="#">Subscriber search</a></li>
+			    	<li class="nav-link-inner"><a href="#">Subscriber remove</a></li>
+			    	<li class="nav-link-inner"><a href="#">List manipulations</a></li>
+			    </ul>
+			  </li>
+			  <li class="nav-item">
+			    <a class="nav-link" data-toggle="collapse" href="#campaigns-list">
+			    	<i class="nav-icon flaticon-loud align-middle"></i>
+			    	<span class="align-middle">Campaigns</span>
+			    </a>
+			    <ul class="list-unstyled nav-item-inner collapse" id="campaigns-list">
+			    	<li class="nav-link-inner"><a href="campaign-management.html">Campaign management</a></li>
+			    	<li class="nav-link-inner"><a href="advanced-campaign.html">Campaign creation</a></li>
+			    	<li class="nav-link-inner"><a href="#">Content type</a></li>
+			    	<li class="nav-link-inner"><a href="#">Auto responders</a></li>
+			    	<li class="nav-link-inner"><a href="#">Emailing settings</a></li>
+			    	<li class="nav-link-inner"><a href="#">Form storing rules</a></li>
+			    	<li class="nav-link-inner"><a href="#">Unsubscribe list</a></li>
+			    </ul>
+			  </li>
+			  <li class="nav-item">
+			    <a class="nav-link" data-toggle="collapse" href="#reports-list">
+			    	<i class="nav-icon flaticon-report align-middle"></i>
+			    	<span class="align-middle">Reports</span>
+			    </a>
+			    <ul class="list-unstyled nav-item-inner collapse" id="reports-list">
+			    	<li class="nav-link-inner"><a href="reports.html">Emailings</a></li>
+			    	<li class="nav-link-inner"><a href="#">Auto responders</a></li>
+			    	<li class="nav-link-inner"><a href="#">Subscribers creation</a></li>
+			    	<li class="nav-link-inner"><a href="#">Import status</a></li>
+			    </ul>
+			  </li>
+			  <li class="nav-item">
+			    <a class="nav-link" data-toggle="collapse" href="#admin-list">
+			    	<i class="nav-icon fa fa-terminal align-middle"></i>
+			    	<span class="align-middle">Admin</span>
+			    </a>
+			    <ul class="list-unstyled nav-item-inner collapse" id="admin-list">
+			    	<a class="nav-link" data-toggle="collapse" href="#admin-sublist">
+				    	<i class="nav-icon fa fa-circle-o align-middle"></i>
+				    	<span class="align-middle">Users &amp; Permisions</span>
+				    </a>
+				    <li>
+					    <ul class="list-unstyled nav-item-inner collapse" id="admin-sublist">
+					    	<li class="nav-link-inner"><a href="#">Users</a></li>
+					    	<li class="nav-link-inner"><a href="admin__sub-users.html">Sub users</a></li>
+					    	<li class="nav-link-inner"><a href="admin__new-user-setup.html">Campaign setting</a></li>
+					    </ul>
+					  </li>
+
+					  <a class="nav-link" data-toggle="collapse" href="#queue-manager">
+				    	<i class="nav-icon fa fa-circle-o align-middle"></i>
+				    	<span class="align-middle">Queue manager</span>
+				    </a>
+				    <li>
+					    <ul class="list-unstyled nav-item-inner collapse" id="queue-manager">
+					    	<li class="nav-link-inner active"><a href="admin__queue-manager.html">Queue manager</a></li>
+					    	<li class="nav-link-inner"><a href="admin__import-status.html">Import status</a></li>
+					    	<li class="nav-link-inner"><a href="#">Export status</a></li>
+					    	<li class="nav-link-inner"><a href="#">Scheduler setup</a></li>
+					    </ul>
+					  </li>
+
+					  <a class="nav-link" data-toggle="collapse" href="#domains">
+				    	<i class="nav-icon fa fa-circle-o align-middle"></i>
+				    	<span class="align-middle">Domains</span>
+				    </a>
+				    <li>
+					    <ul class="list-unstyled nav-item-inner collapse" id="domains">
+					    	<li class="nav-link-inner"><a href="admin__domains-setup.html">Domains setup</a></li>
+					    	<li class="nav-link-inner"><a href="admin__domain-keys-setup.html">Domain keys setup</a></li>
+					    </ul>
+					  </li>
+
+					  <a class="nav-link" href="admin__broadcasters.html">
+					  	<i class="nav-icon fa fa-circle-do align-middle"></i>
+				    	<span class="align-middle">Broadcasters</span>
+				    </a>
+
+				    <a class="nav-link" data-toggle="collapse" href="#statistics">
+				    	<i class="nav-icon fa fa-circle-o align-middle"></i>
+				    	<span class="align-middle">Statistics</span>
+				    </a>
+				    <li>
+					    <ul class="list-unstyled nav-item-inner collapse" id="statistics">
+					    	<li class="nav-link-inner"><a href="admin__broadcast-speed.html">Broadcast speed</a></li>
+					    	<li class="nav-link-inner"><a href="admin__broadcast-speed-server.html">Broadcast speed <small>(per server)</small></a></li>
+					    	<li class="nav-link-inner"><a href="#">Domains connecting report</a></li>
+					    </ul>
+					  </li>
+
+					  <a class="nav-link" data-toggle="collapse" href="#globals">
+				    	<i class="nav-icon fa fa-circle-o align-middle"></i>
+				    	<span class="align-middle">Globals</span>
+				    </a>
+				    <li>
+					    <ul class="list-unstyled nav-item-inner collapse" id="globals">
+					    	<li class="nav-link-inner"><a href="admin__global-blacklist.html">Global blacklist</a></li>
+					    	<li class="nav-link-inner"><a href="#">Global domain blacklist</a></li>
+					    	<li class="nav-link-inner"><a href="#">Domain blocklist</a></li>
+					    	<li class="nav-link-inner"><a href="#">Global search</a></li>
+					    	<li class="nav-link-inner"><a href="#">Global unsubscribe</a></li>
+					    	<li class="nav-link-inner"><a href="#">Manual bouncing</a></li>
+					    </ul>
+					  </li>
+
+					  <a class="nav-link" data-toggle="collapse" href="#system">
+				    	<i class="nav-icon fa fa-circle-o align-middle"></i>
+				    	<span class="align-middle">System</span>
+				    </a>
+				    <li>
+					    <ul class="list-unstyled nav-item-inner collapse" id="system">
+					    	<li class="nav-link-inner"><a href="admin__dbm-advanced.html">DBM advanced setup</a></li>
+					    	<li class="nav-link-inner"><a href="admin__cleanup.html">Cleanup</a></li>
+					    	<li class="nav-link-inner"><a href="#">Complaints</a></li>
+					    </ul>
+					  </li>
+					</ul>
+			  </li>
+			</ul>
+		</div>
+	</div>
+	<div class="m-content d-inline-flex flex-column">
+		<div class="header row">
+			<div class="col d-flex align-items-center">
+				<i class="flaticon-hamburger pointer collapse-sidebar"></i>
+			</div>
+			<div class="col d-flex align-items-center justify-content-center">
+				<img class="logo" src="logo.png" alt="logo" />
+			</div>
+			<div class="col support-phone text-right d-flex align-items-center justify-content-end">
+				<i class="flaticon-support pointer support"></i>
+				<div class="phone d-flex align-items-center">
+					<a href="tel://+15612285630" class="no-dec"><i class="flaticon-phone"></i></a>
+					<div>
+						<div class="phone-number"> +1 561 228 5630 </div>
+						<div class="working-hours"> 9AM - 5PM (EST) </div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="content">
+			<div class="row">
+				<div class="col">
+				 <h2> Default queue manager settings </h2>
+				 <h4> This report shows your subscriber growth from month to month, the number of eMailings sent to your subscribers, and the number of different subscribers who were targeted by your emails. </h4>
+				 <div class="spacing-sm"></div>
+				</div>
+			</div>
+			<div class="spacing-xs"></div>
+			<ul class="nav nav-tabs" role="tablist">
+				<li class="nav-item">
+					<a class="nav-link active" href="#campaign-queue" role="tab" data-toggle="tab"> Campaign Queue </a>
+				</li>
+				<li class="nav-item">
+					<a class="nav-link" href="#auto-campaign-queue" role="tab" data-toggle="tab"> Auto Responder Campaign Queue </a>
+				</li>
+				<li class="nav-item">
+					<a class="nav-link" href="#scheduled-campaigns" role="tab" data-toggle="tab"> Scheduled Campaigns </a>
+				</li>
+			</ul>
+			<div class="spacing-sm"></div>
+			<div class="tab-content">
+				<div class="table-responsive tab-pane active" id="campaign-queue">
+					<table class="table table-striped secondary">
+					  <thead>
+					    <tr>
+					      <th>User Queue</th>
+					      <th>Name</th>
+					      <th>Mailer</th>
+					      <th>Messages left</th>
+					      <th>Date</th>
+					      <th>Option</th>
+					    </tr>
+					  </thead>
+					  <tbody>
+					    <tr>
+					      <th>dwirrelagor@accurance.com</th>
+					      <td><a href="#">CT_Open_STEdb_PWEB17111650_Info_SP101_Pt2-2</a></td>
+					      <td> </td>
+					      <td> <a href="#">8 </a>/ 6466</td>
+					      <td> <a href="#" class="mb-1 d-block">02/04/18</a><a href="#" class="mb-1 d-block">03/04/18</a><a href="#">04/04/18</a></td>
+					      <td>
+					      	<a class="fa fa-pencil fa-m-r text-muted"></a>
+					      	<a class="fa fa-trash-o text-muted"></a>
+					      </td>
+					    </tr>
+					  </tbody>
+					</table>
+				</div>
+				<div class="table-responsive tab-pane" id="auto-campaign-queue">
+					<table class="table table-striped secondary">
+					  <thead>
+					    <tr>
+					      <th>User Queue</th>
+					      <th>Campaign ID</th>
+					      <th>Messages left</th>
+					      <th>Priority</th>
+					    </tr>
+					  </thead>
+					  <tbody>
+					    <tr>
+					      <th>4</th>
+					      <td>515123</td>
+					      <td> <a href="#">8 </a>/ 6466</td>
+					      <td> 9</td>
+					    </tr>
+					  </tbody>
+					</table>
+				</div>
+				<div class="table-responsive tab-pane" id="scheduled-campaigns">
+					<table class="table table-striped secondary">
+					  <thead>
+					    <tr>
+					      <th>User Queue</th>
+					      <th>Campaign ID</th>
+					      <th>Messages (approx)</th>
+					      <th>Action</th>
+					      <th>Option</th>
+					    </tr>
+					  </thead>
+					  <tbody>
+					    <tr>
+					      <th>4</th>
+					      <td>515123</td>
+					      <td> <a href="#">6 </a>/ 8566</td>
+					      <td> Action sample</td>
+					      <td>
+					      	<a class="fa fa-pencil fa-m-r text-muted"></a>
+					      	<a class="fa fa-trash-o text-muted"></a>
+					      </td>
+					    </tr>
+					  </tbody>
+					</table>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+
+</body>
+
+</html>

@@ -187,28 +187,29 @@
           	if(loadEdits[i].indexOf(index.key)){
 	        		newEdits = loadEdits.filter(function(a){return a !== index.key;});
 	        		localStorage.setItem('edits', JSON.stringify(newEdits));
-	            localStorage.removeItem('template-'+index.key);
 	        	} else if(loadEdits.length == 1 && i == 0){
 							newEdits = [];
 	        		localStorage.setItem('edits', JSON.stringify(newEdits));
-
-	            localStorage.removeItem('template-'+index.key);
           	}
+          	localStorage.removeItem('template-'+index.key);
+		        localStorage.removeItem('metadata-'+index.key);
 	        }
 
-	        for(i=0; i < loadCampaigns.length; i++){
-          	if(loadCampaigns[i].indexOf(index.key)){
-	        		newCampaigns = loadCampaigns.filter(function(a){return a !== index.key;});
-	        		localStorage.setItem('campaigns', JSON.stringify(newCampaigns));
-	            localStorage.removeItem('template-'+index.key);
-	        	} else if(loadCampaigns.length == 1 && i == 0){
-							newCampaigns = [];
-	        		localStorage.setItem('campaigns', JSON.stringify(newCampaigns));
-
-	            localStorage.removeItem('template-'+index.key);
-          	}
+	        if (loadCampaigns !== null ){
+	        	for(i=0; i < loadCampaigns.length; i++){
+	          	if(loadCampaigns[i].indexOf(index.key)){
+		        		newCampaigns = loadCampaigns.filter(function(a){return a !== index.key;});
+		        		localStorage.setItem('campaigns', JSON.stringify(newCampaigns));
+		        	} else if(loadCampaigns.length == 1 && i == 0){
+								newCampaigns = [];
+		        		localStorage.setItem('campaigns', JSON.stringify(newCampaigns));
+	          	}
+		        }
+		        localStorage.removeItem('template-'+index.key);
+		        localStorage.removeItem('metadata-'+index.key);
 	        }
 	        
+	        $('.sent-campaigns a[href="code-campaign.html#'+index.key+'"]').parents('.template-row').remove();
           $('.sent-campaigns a[href="advanced-campaign.html#'+index.key+'"]').parents('.template-row').remove();
           $('#delete-template-modal').modal('hide');
         });
@@ -221,6 +222,16 @@
 
 				// Append drafts to campaigns
 				$('.drafts').children().appendTo('.campaigns');
+
+				$('.template-row').each(function(){
+					if($(this).find('h6[data-bind="text: desc"]').html() == "Code your own"){
+						var defaultLink = $(this).find('.template-image a').attr('href');
+						var middleLink = defaultLink.substr(0, defaultLink.indexOf('-'));
+						var finalLink = defaultLink.replace(middleLink, 'code');
+						console.log(finalLink);
+						$(this).find('.template-image a').attr('href', finalLink);
+					}
+				});
 
       });
   </script>
@@ -334,6 +345,93 @@
 			    	<li class="nav-link-inner"><a href="#">Import status</a></li>
 			    </ul>
 			  </li>
+			  <li class="nav-item">
+			    <a class="nav-link" data-toggle="collapse" href="#admin-list">
+			    	<i class="nav-icon fa fa-terminal align-middle"></i>
+			    	<span class="align-middle">Admin</span>
+			    </a>
+			    <ul class="list-unstyled nav-item-inner collapse" id="admin-list">
+			    	<a class="nav-link" data-toggle="collapse" href="#admin-sublist">
+				    	<i class="nav-icon fa fa-circle-o align-middle"></i>
+				    	<span class="align-middle">Users &amp; Permisions</span>
+				    </a>
+				    <li>
+					    <ul class="list-unstyled nav-item-inner collapse" id="admin-sublist">
+					    	<li class="nav-link-inner"><a href="#">Users</a></li>
+					    	<li class="nav-link-inner"><a href="admin__sub-users.html">Sub users</a></li>
+					    	<li class="nav-link-inner"><a href="admin__new-user-setup.html">Campaign setting</a></li>
+					    </ul>
+					  </li>
+
+					  <a class="nav-link" data-toggle="collapse" href="#queue-manager">
+				    	<i class="nav-icon fa fa-circle-o align-middle"></i>
+				    	<span class="align-middle">Queue manager</span>
+				    </a>
+				    <li>
+					    <ul class="list-unstyled nav-item-inner collapse" id="queue-manager">
+					    	<li class="nav-link-inner"><a href="admin__queue-manager.html">Queue manager</a></li>
+					    	<li class="nav-link-inner"><a href="admin__import-status.html">Import status</a></li>
+					    	<li class="nav-link-inner"><a href="#">Export status</a></li>
+					    	<li class="nav-link-inner"><a href="#">Scheduler setup</a></li>
+					    </ul>
+					  </li>
+
+					  <a class="nav-link" data-toggle="collapse" href="#domains">
+				    	<i class="nav-icon fa fa-circle-o align-middle"></i>
+				    	<span class="align-middle">Domains</span>
+				    </a>
+				    <li>
+					    <ul class="list-unstyled nav-item-inner collapse" id="domains">
+					    	<li class="nav-link-inner"><a href="admin__domains-setup.html">Domains setup</a></li>
+					    	<li class="nav-link-inner"><a href="admin__domain-keys-setup.html">Domain keys setup</a></li>
+					    </ul>
+					  </li>
+
+					  <a class="nav-link" href="admin__broadcasters.html">
+					  	<i class="nav-icon fa fa-circle-do align-middle"></i>
+				    	<span class="align-middle">Broadcasters</span>
+				    </a>
+
+				    <a class="nav-link" data-toggle="collapse" href="#statistics">
+				    	<i class="nav-icon fa fa-circle-o align-middle"></i>
+				    	<span class="align-middle">Statistics</span>
+				    </a>
+				    <li>
+					    <ul class="list-unstyled nav-item-inner collapse" id="statistics">
+					    	<li class="nav-link-inner"><a href="admin__broadcast-speed.html">Broadcast speed</a></li>
+					    	<li class="nav-link-inner"><a href="admin__broadcast-speed-server.html">Broadcast speed <small>(per server)</small></a></li>
+					    	<li class="nav-link-inner"><a href="#">Domains connecting report</a></li>
+					    </ul>
+					  </li>
+
+					  <a class="nav-link" data-toggle="collapse" href="#globals">
+				    	<i class="nav-icon fa fa-circle-o align-middle"></i>
+				    	<span class="align-middle">Globals</span>
+				    </a>
+				    <li>
+					    <ul class="list-unstyled nav-item-inner collapse" id="globals">
+					    	<li class="nav-link-inner"><a href="admin__global-blacklist.html">Global blacklist</a></li>
+					    	<li class="nav-link-inner"><a href="#">Global domain blacklist</a></li>
+					    	<li class="nav-link-inner"><a href="#">Domain blocklist</a></li>
+					    	<li class="nav-link-inner"><a href="#">Global search</a></li>
+					    	<li class="nav-link-inner"><a href="#">Global unsubscribe</a></li>
+					    	<li class="nav-link-inner"><a href="#">Manual bouncing</a></li>
+					    </ul>
+					  </li>
+
+					  <a class="nav-link" data-toggle="collapse" href="#system">
+				    	<i class="nav-icon fa fa-circle-o align-middle"></i>
+				    	<span class="align-middle">System</span>
+				    </a>
+				    <li>
+					    <ul class="list-unstyled nav-item-inner collapse" id="system">
+					    	<li class="nav-link-inner"><a href="admin__dbm-advanced.html">DBM advanced setup</a></li>
+					    	<li class="nav-link-inner"><a href="admin__cleanup.html">Cleanup</a></li>
+					    	<li class="nav-link-inner"><a href="#">Complaints</a></li>
+					    </ul>
+					  </li>
+					</ul>
+			  </li>
 			</ul>
 		</div>
 	</div>
@@ -430,7 +528,7 @@
 				  <tbody data-bind="foreach: campaigns" class="campaigns">
 				    <tr class="template-row">
 				      <th> <a data-bind="click: $root.newEdit.bind(undefined, name), attr: {href: 'advanced-campaign.html#'+key}, text: title" class="pointer"></a></th>
-				      <td><span class="text-success"> Scheduled </span></td>
+				      <td><span class="text-success" data-bind="text: desc"> </span></td>
 				      <td>0</td>
 				      <td>5</td>
 				      <td data-bind="text: created"></td>
@@ -444,7 +542,7 @@
 				  <tbody data-bind="foreach: edits" class="drafts">
 				    <tr class="template-row">
 				      <th><a data-bind="attr: {href: 'advanced-campaign.html#'+key}, text: title" class="pointer"></a></th>
-				      <td><span class="text-muted"> Draft </span></td>
+				      <td><span class="text-muted" data-bind="text: desc"> </span></td>
 				      <td>0</td>
 				      <td>0</td>
 				      <td data-bind="text: created"></td>

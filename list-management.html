@@ -270,13 +270,12 @@
 							<td class="media-items-block">
 								<div data-bind="css: iconClassNames(), click: openItem"></div>
 								<div class="media-name" data-bind="text: title(), click: openItem"></div>
+								<input type="text" class="grid-input" data-bind="value: title, valueUpdate: 'afterkeydown', enterPress: saveItem, escPress: cancelEditItem, hasfocus: isActive()" />
 							</td>
 							<td class="media-items-block">
 								<div class="media-name media-date" data-bind="text: date()"></div> 
 							</td>
 							<td class="media-edit-controls">
-								<input type="text" class="grid-input" data-bind="value: title, valueUpdate: 'afterkeydown', enterPress: saveItem, escPress: cancelEditItem, hasfocus: isActive()" />
-
 								<div class="media-inner-controls">
 									<button class="btn btn-success btn-sm" data-bind="click: saveItem">Save</button>
 									<button class="btn btn-danger btn-sm" data-bind="click: cancelEditItem">Cancel</button>
@@ -292,7 +291,7 @@
 					<span class="ui-button-icon-primary ui-icon fa fa-fw fa-times fa-lg fa-m-r"> </span> 
 					<span class="ui-button-text">Delete</span>
 				</button>
-    </div>
+    	</div>
 		</div>
 	</div>
 	<div class="r-sidebar r-sidebar-placeholder d-inline-flex flex-column"></div>

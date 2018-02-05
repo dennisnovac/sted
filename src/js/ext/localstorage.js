@@ -4,6 +4,16 @@ var console = require("console");
 var ko = require("knockout");
 var $ = require("jquery");
 
+// Set current date
+var d = new Date();
+
+var month = d.getMonth()+1;
+var day = d.getDate();
+
+var currentDate = d.getFullYear() + '/' +
+((''+month).length<2 ? '0' : '') + month + '/' +
+((''+day).length<2 ? '0' : '') + day;
+
 var lsLoader = function(hash_key, emailProcessorBackend) {
   var mdStr = global.localStorage.getItem("metadata-" + hash_key);
   if (mdStr !== null) {
@@ -37,21 +47,32 @@ var lsCommandPluginFactory = function(md, emailProcessorBackend) {
         viewModel.metadata.key = mdkey;
       }
       var edits = JSON.parse(global.localStorage.getItem('edits'));
-      if (edits.indexOf(mdkey) < 0 || typeof edits !== 'object'){
+      var templates = global.localStorage.getItem('templates');
+
+      if (edits.indexOf(mdkey) < 0 || typeof edits !== 'object' || templates.indexOf(mdkey) > 0){
 
         var newKey = Math.random().toString(36).substr(2, 7);
-
-        edits.push(newKey);
-
 
         global.localStorage.setItem('edits', JSON.stringify(edits));
         global.localStorage.setItem("metadata-" + newKey, viewModel.exportMetadata());
         global.localStorage.setItem("template-" + newKey, viewModel.exportJSON());
-        global.document.location = 'advanced-campaign.html#'+newKey;
+      
+        if($('#main-wysiwyg-area').html().length && $('.code-editor').length){
+          
+          var savedEdit = JSON.parse(global.localStorage.getItem("metadata-" + newKey, viewModel.exportMetadata()));
+          savedEdit.desc = 'Code your own';
+          savedEdit.key = newKey;
+          viewModel.edits.push({ created: currentDate, title: 'Untitled draft', key: newKey, name: 'versafix-1', template: 'templates/versafix-1/template-versafix-1.html', desc: 'Code your own' });
+
+          global.document.location = 'code-campaign.html#'+newKey;
+        } else {
+          global.document.location = 'advanced-campaign.html#'+newKey;
+        }
+        
+      } else {
+          global.localStorage.setItem("metadata-" + mdkey, viewModel.exportMetadata());
+          global.localStorage.setItem("template-" + mdkey, viewModel.exportJSON());
       }
- 
-      global.localStorage.setItem("metadata-" + mdkey, viewModel.exportMetadata());
-      global.localStorage.setItem("template-" + mdkey, viewModel.exportJSON());
       
       saveCmd.enabled(true);
     };

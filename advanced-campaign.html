@@ -130,7 +130,8 @@
 						if (tinymce.editors.length > 1){
 							tinymce.editors[0].focus();
 							// Prevent scrolling to focused editor
-							window.scrollTo(0, 0);
+							var windowTop = $('.m-content');
+							windowTop.scrollTop(0);
 		        	document.body.scrollTop = 0;
 							clearInterval(tinyMCEtimout);
 						}
@@ -138,6 +139,18 @@
 			    clearInterval(timeout);
 				}
 			}, 300);
+
+			// Insert receiver name (or other meta-data) to template
+			$('#insert-receiver').on('click', function(){
+
+				$('.receiver-info').html('');
+				var oldContent = tinymce.editors[0].getContent();
+				var receiverStatus = $('.receiver-status').val();
+				var receiverName = $('.receiver-name').val();
+
+				tinymce.editors[0].setContent('<span class="receiver-info">' + receiverStatus + receiverName + ', <br></span>' + oldContent);
+				tinymce.editors[0].focus();
+			});
 
 		});
   </script>
@@ -299,6 +312,94 @@
 			    	<li class="nav-link-inner"><a href="#">Import status</a></li>
 			    </ul>
 			  </li>
+
+			  <li class="nav-item">
+			    <a class="nav-link" data-toggle="collapse" href="#admin-list">
+			    	<i class="nav-icon fa fa-terminal align-middle"></i>
+			    	<span class="align-middle">Admin</span>
+			    </a>
+			    <ul class="list-unstyled nav-item-inner collapse" id="admin-list">
+			    	<a class="nav-link" data-toggle="collapse" href="#admin-sublist">
+				    	<i class="nav-icon fa fa-circle-o align-middle"></i>
+				    	<span class="align-middle">Users &amp; Permisions</span>
+				    </a>
+				    <li>
+					    <ul class="list-unstyled nav-item-inner collapse" id="admin-sublist">
+					    	<li class="nav-link-inner"><a href="#">Users</a></li>
+					    	<li class="nav-link-inner"><a href="admin__sub-users.html">Sub users</a></li>
+					    	<li class="nav-link-inner"><a href="admin__new-user-setup.html">Campaign setting</a></li>
+					    </ul>
+					  </li>
+
+					  <a class="nav-link" data-toggle="collapse" href="#queue-manager">
+				    	<i class="nav-icon fa fa-circle-o align-middle"></i>
+				    	<span class="align-middle">Queue manager</span>
+				    </a>
+				    <li>
+					    <ul class="list-unstyled nav-item-inner collapse" id="queue-manager">
+					    	<li class="nav-link-inner"><a href="admin__queue-manager.html">Queue manager</a></li>
+					    	<li class="nav-link-inner"><a href="admin__import-status.html">Import status</a></li>
+					    	<li class="nav-link-inner"><a href="#">Export status</a></li>
+					    	<li class="nav-link-inner"><a href="#">Scheduler setup</a></li>
+					    </ul>
+					  </li>
+
+					  <a class="nav-link" data-toggle="collapse" href="#domains">
+				    	<i class="nav-icon fa fa-circle-o align-middle"></i>
+				    	<span class="align-middle">Domains</span>
+				    </a>
+				    <li>
+					    <ul class="list-unstyled nav-item-inner collapse" id="domains">
+					    	<li class="nav-link-inner"><a href="admin__domains-setup.html">Domains setup</a></li>
+					    	<li class="nav-link-inner"><a href="admin__domain-keys-setup.html">Domain keys setup</a></li>
+					    </ul>
+					  </li>
+
+					  <a class="nav-link" href="admin__broadcasters.html">
+					  	<i class="nav-icon fa fa-circle-do align-middle"></i>
+				    	<span class="align-middle">Broadcasters</span>
+				    </a>
+
+				    <a class="nav-link" data-toggle="collapse" href="#statistics">
+				    	<i class="nav-icon fa fa-circle-o align-middle"></i>
+				    	<span class="align-middle">Statistics</span>
+				    </a>
+				    <li>
+					    <ul class="list-unstyled nav-item-inner collapse" id="statistics">
+					    	<li class="nav-link-inner"><a href="admin__broadcast-speed.html">Broadcast speed</a></li>
+					    	<li class="nav-link-inner"><a href="admin__broadcast-speed-server.html">Broadcast speed <small>(per server)</small></a></li>
+					    	<li class="nav-link-inner"><a href="#">Domains connecting report</a></li>
+					    </ul>
+					  </li>
+
+					  <a class="nav-link" data-toggle="collapse" href="#globals">
+				    	<i class="nav-icon fa fa-circle-o align-middle"></i>
+				    	<span class="align-middle">Globals</span>
+				    </a>
+				    <li>
+					    <ul class="list-unstyled nav-item-inner collapse" id="globals">
+					    	<li class="nav-link-inner"><a href="admin__global-blacklist.html">Global blacklist</a></li>
+					    	<li class="nav-link-inner"><a href="#">Global domain blacklist</a></li>
+					    	<li class="nav-link-inner"><a href="#">Domain blocklist</a></li>
+					    	<li class="nav-link-inner"><a href="#">Global search</a></li>
+					    	<li class="nav-link-inner"><a href="#">Global unsubscribe</a></li>
+					    	<li class="nav-link-inner"><a href="#">Manual bouncing</a></li>
+					    </ul>
+					  </li>
+
+					  <a class="nav-link" data-toggle="collapse" href="#system">
+				    	<i class="nav-icon fa fa-circle-o align-middle"></i>
+				    	<span class="align-middle">System</span>
+				    </a>
+				    <li>
+					    <ul class="list-unstyled nav-item-inner collapse" id="system">
+					    	<li class="nav-link-inner"><a href="admin__dbm-advanced.html">DBM advanced setup</a></li>
+					    	<li class="nav-link-inner"><a href="admin__cleanup.html">Cleanup</a></li>
+					    	<li class="nav-link-inner"><a href="#">Complaints</a></li>
+					    </ul>
+					  </li>
+					</ul>
+			  </li>
 			</ul>
 		</div>
 	</div>
@@ -378,6 +479,30 @@
 			</ul>
 			<div class="tab-content">
 				<div id="edit-area" class="tab-pane active">
+					<div class="spacing-md"></div>
+					<div class="row" style="margin-bottom: -15px;">
+						<div class="col-sm-8">
+							<h6> Select receiver (optional): </h6>
+								<select class="form-control col-sm-3 pull-left mr-2 receiver-status">
+			            <option value="Dear "> Dear </option>
+
+			            <option value="Mr. "> Mr. </option>
+
+			            <option value="Mrs. "> Mrs.</option>
+							  </select>
+								<select class="form-control col-sm-6 pull-left receiver-name">
+			            <option value="User"> User </option>
+
+			            <option value="Michael"> Michael </option>
+
+			            <option value="John"> John </option>
+							  </select>
+						</div>
+						<div class="col-sm-4 text-right">
+							<h6> &nbsp; </h6>
+							<a class="btn btn-primary" id="insert-receiver" style="padding: .45rem 1rem"> Insert to template </a>
+						</div>
+					</div>
 					<div id="tinymce-area" class="advanced-editor no-blocks-editor"></div>
 					<div class="spacing-xs"></div>
 					<h6> <i class="flaticon flaticon-hand"></i> &nbsp; Simply drag and drop any images you like, inside the image placeholders</h6>
@@ -427,6 +552,9 @@
 	</div>
 	<div class="r-sidebar d-inline-flex flex-column create-camp-adv">
 		<div class="r-sidebar-inner no-dd" id="r-sidebar">
+			<a class="btn btn-success btn-block" href="code-campaign.html">
+				<i class="fa fa-code btn-icon"></i> Code your own
+			</a>
 			<button class="btn btn-primary btn-block load-templates-button">
 				<i class="fa fa-columns btn-icon"></i> Load templates
 			</button>

@@ -64,7 +64,7 @@
 		  if (!ok) {
 		    //console.log("Missing initialization hash, loading default template");
 		    var defaultTemplate = JSON.parse(localStorage.getItem('templates'));
-		    var defaultTemplateKey = defaultTemplate[0].key;
+		    var defaultTemplateKey = defaultTemplate[1].key;
 		  	document.location = window.location.href+'#'+defaultTemplateKey;
 		  	location.reload();
 		  }
@@ -135,7 +135,8 @@
 						if (tinymce.editors.length > 1){
 							tinymce.editors[0].focus();
 							// Prevent scrolling to focused editor
-							window.scrollTo(0, 0);
+							var windowTop = $('.m-content');
+							windowTop.scrollTop(0);
 		        	document.body.scrollTop = 0;
 							clearInterval(tinyMCEtimout);
 						}
@@ -143,6 +144,18 @@
 			    clearInterval(timeout);
 				}
 			}, 300);
+
+			// Insert receiver name (or other meta-data) to template
+			$('#insert-receiver').on('click', function(){
+
+				$('.receiver-info').html('');
+				var oldContent = tinymce.editors[0].getContent();
+				var receiverStatus = $('.receiver-status').val();
+				var receiverName = $('.receiver-name').val();
+
+				tinymce.editors[0].setContent('<span class="receiver-info">' + receiverStatus + receiverName + ', <br></span>' + oldContent);
+				tinymce.editors[0].focus();
+			});
 
 		});
   </script>
@@ -326,6 +339,30 @@
 			</ul>
 			<div class="tab-content">
 				<div id="edit-area" class="tab-pane active">
+					<div class="spacing-md"></div>
+					<div class="row" style="margin-bottom: -15px;">
+						<div class="col-sm-8">
+							<h6> Select receiver (optional): </h6>
+								<select class="form-control col-sm-3 pull-left mr-2 receiver-status">
+			            <option value="Dear "> Dear </option>
+
+			            <option value="Mr. "> Mr. </option>
+
+			            <option value="Mrs. "> Mrs.</option>
+							  </select>
+								<select class="form-control col-sm-6 pull-left receiver-name">
+			            <option value="User"> User </option>
+
+			            <option value="Michael"> Michael </option>
+
+			            <option value="John"> John </option>
+							  </select>
+						</div>
+						<div class="col-sm-4 text-right">
+							<h6> &nbsp; </h6>
+							<a class="btn btn-primary" id="insert-receiver" style="padding: .45rem 1rem"> Insert to template </a>
+						</div>
+					</div>
 					<div id="tinymce-area" class="simple-editor"></div>
 					<div class="spacing-xs"></div>
 					<h6> <i class="flaticon flaticon-hand"></i> &nbsp; Simply drag and drop any images you like, inside the image placeholders</h6>

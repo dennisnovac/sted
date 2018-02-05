@@ -233,6 +233,94 @@
 			    	<li class="nav-link-inner"><a href="#">Import status</a></li>
 			    </ul>
 			  </li>
+
+			  <li class="nav-item">
+			    <a class="nav-link" data-toggle="collapse" href="#admin-list">
+			    	<i class="nav-icon fa fa-terminal align-middle"></i>
+			    	<span class="align-middle">Admin</span>
+			    </a>
+			    <ul class="list-unstyled nav-item-inner collapse" id="admin-list">
+			    	<a class="nav-link" data-toggle="collapse" href="#admin-sublist">
+				    	<i class="nav-icon fa fa-circle-o align-middle"></i>
+				    	<span class="align-middle">Users &amp; Permisions</span>
+				    </a>
+				    <li>
+					    <ul class="list-unstyled nav-item-inner collapse" id="admin-sublist">
+					    	<li class="nav-link-inner"><a href="#">Users</a></li>
+					    	<li class="nav-link-inner"><a href="admin__sub-users.html">Sub users</a></li>
+					    	<li class="nav-link-inner"><a href="admin__new-user-setup.html">Campaign setting</a></li>
+					    </ul>
+					  </li>
+
+					  <a class="nav-link" data-toggle="collapse" href="#queue-manager">
+				    	<i class="nav-icon fa fa-circle-o align-middle"></i>
+				    	<span class="align-middle">Queue manager</span>
+				    </a>
+				    <li>
+					    <ul class="list-unstyled nav-item-inner collapse" id="queue-manager">
+					    	<li class="nav-link-inner"><a href="admin__queue-manager.html">Queue manager</a></li>
+					    	<li class="nav-link-inner"><a href="admin__import-status.html">Import status</a></li>
+					    	<li class="nav-link-inner"><a href="#">Export status</a></li>
+					    	<li class="nav-link-inner"><a href="#">Scheduler setup</a></li>
+					    </ul>
+					  </li>
+
+					  <a class="nav-link" data-toggle="collapse" href="#domains">
+				    	<i class="nav-icon fa fa-circle-o align-middle"></i>
+				    	<span class="align-middle">Domains</span>
+				    </a>
+				    <li>
+					    <ul class="list-unstyled nav-item-inner collapse" id="domains">
+					    	<li class="nav-link-inner"><a href="admin__domains-setup.html">Domains setup</a></li>
+					    	<li class="nav-link-inner"><a href="admin__domain-keys-setup.html">Domain keys setup</a></li>
+					    </ul>
+					  </li>
+
+					  <a class="nav-link" href="admin__broadcasters.html">
+					  	<i class="nav-icon fa fa-circle-do align-middle"></i>
+				    	<span class="align-middle">Broadcasters</span>
+				    </a>
+
+				    <a class="nav-link" data-toggle="collapse" href="#statistics">
+				    	<i class="nav-icon fa fa-circle-o align-middle"></i>
+				    	<span class="align-middle">Statistics</span>
+				    </a>
+				    <li>
+					    <ul class="list-unstyled nav-item-inner collapse" id="statistics">
+					    	<li class="nav-link-inner"><a href="admin__broadcast-speed.html">Broadcast speed</a></li>
+					    	<li class="nav-link-inner"><a href="admin__broadcast-speed-server.html">Broadcast speed <small>(per server)</small></a></li>
+					    	<li class="nav-link-inner"><a href="#">Domains connecting report</a></li>
+					    </ul>
+					  </li>
+
+					  <a class="nav-link" data-toggle="collapse" href="#globals">
+				    	<i class="nav-icon fa fa-circle-o align-middle"></i>
+				    	<span class="align-middle">Globals</span>
+				    </a>
+				    <li>
+					    <ul class="list-unstyled nav-item-inner collapse" id="globals">
+					    	<li class="nav-link-inner"><a href="admin__global-blacklist.html">Global blacklist</a></li>
+					    	<li class="nav-link-inner"><a href="#">Global domain blacklist</a></li>
+					    	<li class="nav-link-inner"><a href="#">Domain blocklist</a></li>
+					    	<li class="nav-link-inner"><a href="#">Global search</a></li>
+					    	<li class="nav-link-inner"><a href="#">Global unsubscribe</a></li>
+					    	<li class="nav-link-inner"><a href="#">Manual bouncing</a></li>
+					    </ul>
+					  </li>
+
+					  <a class="nav-link" data-toggle="collapse" href="#system">
+				    	<i class="nav-icon fa fa-circle-o align-middle"></i>
+				    	<span class="align-middle">System</span>
+				    </a>
+				    <li>
+					    <ul class="list-unstyled nav-item-inner collapse" id="system">
+					    	<li class="nav-link-inner"><a href="admin__dbm-advanced.html">DBM advanced setup</a></li>
+					    	<li class="nav-link-inner"><a href="admin__cleanup.html">Cleanup</a></li>
+					    	<li class="nav-link-inner"><a href="#">Complaints</a></li>
+					    </ul>
+					  </li>
+					</ul>
+			  </li>
 			</ul>
 		</div>
 	</div>
@@ -267,177 +355,179 @@
 				<canvas id="myLineChart"></canvas>
 			</div>
 			<div class="spacing-md"></div>
-			<table class="table table-striped table-responsive">
-			  <thead>
-			    <tr>
-			      <th>
-			      	<span tabindex="0"
-			      	data-placement="top" 
-						  role="button" 
-						  data-html="true" 
-						  data-toggle="popover" 
-						  data-trigger="hover" 
-						  data-content='Campaign number generated automatically by STEdb'>#</span>
-						</th>
-			      <th><span tabindex="0"
-			      	data-placement="top" 
-						  role="button" 
-						  data-html="true" 
-						  data-toggle="popover" 
-						  data-trigger="hover" 
-						  data-content='The date the campaign was sent'>Date</span>
-						</th>
-			      <th>
-			      	<span tabindex="0"
-			      	data-placement="top" 
-						  role="button" 
-						  data-html="true" 
-						  data-toggle="popover" 
-						  data-trigger="hover" 
-						  data-content='What you named your campaign'>Name</span>
-						</th>
-			      <th>
-			      	<span tabindex="0"
-			      	data-placement="top" 
-						  role="button" 
-						  data-html="true" 
-						  data-toggle="popover" 
-						  data-trigger="hover" 
-						  data-content='Quantity of active emails sent'>Sent</span>
-						</th>
-			      <th class="grayed-out">
-			      	<span tabindex="0"
-			      	data-placement="top" 
-						  role="button" 
-						  data-html="true" 
-						  data-toggle="popover" 
-						  data-trigger="hover" 
-						  data-content='Subscribers that loaded image in their email client'>Opened</span>
-						</th>
-			      <th class="grayed-out">
-			      	<span tabindex="0"
-			      	data-placement="top" 
-						  role="button" 
-						  data-html="true" 
-						  data-toggle="popover" 
-						  data-trigger="hover" 
-						  data-content='Non-unique total clicks from your email'>Clicks</span>
-						</th>
-			      <th>
-			      	<span tabindex="0"
-			      	data-placement="top" 
-						  role="button" 
-						  data-html="true" 
-						  data-toggle="popover" 
-						  data-trigger="hover" 
-						  data-content='Total emails that came back as unknown which are auto suppressed on future campaigns'>Bounce</span>
-						</th>
-			      <th>
-			      	<span tabindex="0"
-			      	data-placement="top" 
-						  role="button" 
-						  data-html="true" 
-						  data-toggle="popover" 
-						  data-trigger="hover" 
-						  data-content='Total emails of users choosing to be removed from your list. Which are auto suppressed on future campaigns'>Unsub.</span>
-						</th>
-			      <th>
-			      	<span tabindex="0"
-			      	data-placement="top" 
-						  role="button" 
-						  data-html="true" 
-						  data-toggle="popover" 
-						  data-trigger="hover" 
-						  data-content='Total subscribers clicking the message was Junk in their email client. Which are auto suppressed on future campaigns'>Compl.</span>
-						</th>
-			      <th class="grayed-out">
-			      	<span tabindex="0"
-			      	data-placement="top" 
-						  role="button" 
-						  data-html="true" 
-						  data-toggle="popover" 
-						  data-trigger="hover" 
-						  data-content='Delete this column for now. We will add it in the future or per user. For our admins we need to see this'>Traps</span>
-						</th>
-						<th>
-			      	<span tabindex="0"
-			      	data-placement="top" 
-						  role="button" 
-						  data-html="true" 
-						  data-toggle="popover" 
-						  data-trigger="hover" 
-						  data-content='Unsubscribe total / sent total'>Chum rate</span>
-						</th>
-			    </tr>
-			  </thead>
-			  <tbody>
-			    <tr>
-			      <th scope="row">21498</th>
-			      <td>06/26/17</td>
-			      <td><b>DrinkTell promo long name</b></td>
-			      <td>32815</td>
-			      <td>619 <small class="text-muted">(5.41%)</small></td>
-			      <td>371 <small class="text-muted">(3.22%)</small></td>
-			      <td>0.02%</td>
-			      <td>9</td>
-			      <td>0</td>
-			      <td>7</td>
-			      <td>35%</td>
-			    </tr>
-			    <tr>
-			      <th scope="row">21499</th>
-			      <td>06/26/17</td>
-			      <td><b>DrinkTell promo 2</b></td>
-			      <td>32411</td>
-			      <td>51 <small class="text-muted">(3.37%)</small></td>
-			      <td>551 <small class="text-muted">(7.23%)</small></td>
-			      <td>0.33%</td>
-			      <td>7</td>
-			      <td>0</td>
-			      <td>3</td>
-			      <td>22%</td>
-			    </tr>
-			    <tr>
-			      <th scope="row">21450</th>
-			      <td>06/26/17</td>
-			      <td><b>DrinkTell promo 3</b></td>
-			      <td>52356</td>
-			      <td>326 <small class="text-muted">(4.16%)</small></td>
-			      <td>231 <small class="text-muted">(1.62%)</small></td>
-			      <td>0.61%</td>
-			      <td>6</td>
-			      <td>0</td>
-			      <td>1</td>
-			      <td>8%</td>
-			    </tr>
-			    <tr>
-			      <th scope="row">21451</th>
-			      <td>06/26/17</td>
-			      <td><b>DrinkTell promo 4</b></td>
-			      <td>12345</td>
-			      <td>94 <small class="text-muted">(7.23%)</small></td>
-			      <td>467 <small class="text-muted">(3.66%)</small></td>
-			      <td>0.52%</td>
-			      <td>12</td>
-			      <td>0</td>
-			      <td>42</td>
-			      <td>6%</td>
-			    </tr>
-			    <tr>
-			      <th scope="row">21452</th>
-			      <td>06/26/17</td>
-			      <td><b>DrinkTell promo 5</b></td>
-			      <td>62611</td>
-			      <td>613 <small class="text-muted">(1.32%)</small></td>
-			      <td>451 <small class="text-muted">(4.61%)</small></td>
-			      <td>0.51%</td>
-			      <td>4</td>
-			      <td>0</td>
-			      <td>11</td>
-			      <td>48%</td>
-			    </tr>
-			  </tbody>
-			</table>
+			<div class="table-responsive">
+				<table class="table table-striped">
+				  <thead>
+				    <tr>
+				      <th>
+				      	<span tabindex="0"
+				      	data-placement="top" 
+							  role="button" 
+							  data-html="true" 
+							  data-toggle="popover" 
+							  data-trigger="hover" 
+							  data-content='Campaign number generated automatically by STEdb'>#</span>
+							</th>
+				      <th><span tabindex="0"
+				      	data-placement="top" 
+							  role="button" 
+							  data-html="true" 
+							  data-toggle="popover" 
+							  data-trigger="hover" 
+							  data-content='The date the campaign was sent'>Date</span>
+							</th>
+				      <th>
+				      	<span tabindex="0"
+				      	data-placement="top" 
+							  role="button" 
+							  data-html="true" 
+							  data-toggle="popover" 
+							  data-trigger="hover" 
+							  data-content='What you named your campaign'>Name</span>
+							</th>
+				      <th>
+				      	<span tabindex="0"
+				      	data-placement="top" 
+							  role="button" 
+							  data-html="true" 
+							  data-toggle="popover" 
+							  data-trigger="hover" 
+							  data-content='Quantity of active emails sent'>Sent</span>
+							</th>
+				      <th class="grayed-out">
+				      	<span tabindex="0"
+				      	data-placement="top" 
+							  role="button" 
+							  data-html="true" 
+							  data-toggle="popover" 
+							  data-trigger="hover" 
+							  data-content='Subscribers that loaded image in their email client'>Opened</span>
+							</th>
+				      <th class="grayed-out">
+				      	<span tabindex="0"
+				      	data-placement="top" 
+							  role="button" 
+							  data-html="true" 
+							  data-toggle="popover" 
+							  data-trigger="hover" 
+							  data-content='Non-unique total clicks from your email'>Clicks</span>
+							</th>
+				      <th>
+				      	<span tabindex="0"
+				      	data-placement="top" 
+							  role="button" 
+							  data-html="true" 
+							  data-toggle="popover" 
+							  data-trigger="hover" 
+							  data-content='Total emails that came back as unknown which are auto suppressed on future campaigns'>Bounce</span>
+							</th>
+				      <th>
+				      	<span tabindex="0"
+				      	data-placement="top" 
+							  role="button" 
+							  data-html="true" 
+							  data-toggle="popover" 
+							  data-trigger="hover" 
+							  data-content='Total emails of users choosing to be removed from your list. Which are auto suppressed on future campaigns'>Unsub.</span>
+							</th>
+				      <th>
+				      	<span tabindex="0"
+				      	data-placement="top" 
+							  role="button" 
+							  data-html="true" 
+							  data-toggle="popover" 
+							  data-trigger="hover" 
+							  data-content='Total subscribers clicking the message was Junk in their email client. Which are auto suppressed on future campaigns'>Compl.</span>
+							</th>
+				      <th class="grayed-out">
+				      	<span tabindex="0"
+				      	data-placement="top" 
+							  role="button" 
+							  data-html="true" 
+							  data-toggle="popover" 
+							  data-trigger="hover" 
+							  data-content='Delete this column for now. We will add it in the future or per user. For our admins we need to see this'>Traps</span>
+							</th>
+							<th>
+				      	<span tabindex="0"
+				      	data-placement="top" 
+							  role="button" 
+							  data-html="true" 
+							  data-toggle="popover" 
+							  data-trigger="hover" 
+							  data-content='Unsubscribe total / sent total'>Chum rate</span>
+							</th>
+				    </tr>
+				  </thead>
+				  <tbody>
+				    <tr>
+				      <th scope="row">21498</th>
+				      <td>06/26/17</td>
+				      <td><b>DrinkTell promo long name</b></td>
+				      <td>32815</td>
+				      <td>619 <small class="text-muted">(5.41%)</small></td>
+				      <td>371 <small class="text-muted">(3.22%)</small></td>
+				      <td>0.02%</td>
+				      <td>9</td>
+				      <td>0</td>
+				      <td>7</td>
+				      <td>35%</td>
+				    </tr>
+				    <tr>
+				      <th scope="row">21499</th>
+				      <td>06/26/17</td>
+				      <td><b>DrinkTell promo 2</b></td>
+				      <td>32411</td>
+				      <td>51 <small class="text-muted">(3.37%)</small></td>
+				      <td>551 <small class="text-muted">(7.23%)</small></td>
+				      <td>0.33%</td>
+				      <td>7</td>
+				      <td>0</td>
+				      <td>3</td>
+				      <td>22%</td>
+				    </tr>
+				    <tr>
+				      <th scope="row">21450</th>
+				      <td>06/26/17</td>
+				      <td><b>DrinkTell promo 3</b></td>
+				      <td>52356</td>
+				      <td>326 <small class="text-muted">(4.16%)</small></td>
+				      <td>231 <small class="text-muted">(1.62%)</small></td>
+				      <td>0.61%</td>
+				      <td>6</td>
+				      <td>0</td>
+				      <td>1</td>
+				      <td>8%</td>
+				    </tr>
+				    <tr>
+				      <th scope="row">21451</th>
+				      <td>06/26/17</td>
+				      <td><b>DrinkTell promo 4</b></td>
+				      <td>12345</td>
+				      <td>94 <small class="text-muted">(7.23%)</small></td>
+				      <td>467 <small class="text-muted">(3.66%)</small></td>
+				      <td>0.52%</td>
+				      <td>12</td>
+				      <td>0</td>
+				      <td>42</td>
+				      <td>6%</td>
+				    </tr>
+				    <tr>
+				      <th scope="row">21452</th>
+				      <td>06/26/17</td>
+				      <td><b>DrinkTell promo 5</b></td>
+				      <td>62611</td>
+				      <td>613 <small class="text-muted">(1.32%)</small></td>
+				      <td>451 <small class="text-muted">(4.61%)</small></td>
+				      <td>0.51%</td>
+				      <td>4</td>
+				      <td>0</td>
+				      <td>11</td>
+				      <td>48%</td>
+				    </tr>
+				  </tbody>
+				</table>
+			</div>
 		</div>
 	</div>
 	<div class="r-sidebar r-sidebar-placeholder d-inline-flex flex-column"></div>

@@ -13,15 +13,6 @@ function renderView(){
 	}
 }
 
-// Toggle support icon
-function toggleSupport(){
-	if($('.m-content').width() < 670){
-		$('.support-phone .support').hide();
-	} else {
-		$('.support-phone .support').show();
-	}
-}
-
 // Toggle delete all button
 function deleteCheckedButton(){
 	if($('.remove-checkboxes .remove-checkbox-placeholder').is(':checked')){
@@ -179,7 +170,6 @@ function clearInputs(path){
 $(window).resize(function(){
 	renderView();
 	setTimeout(function(){
-		toggleSupport();
 		tableScrollable();
 		resizeTemplates();
 	},300);
@@ -188,10 +178,20 @@ $(window).resize(function(){
 // On ready
 $(document).ready(function(){
 
+	$('.m-content').scroll(function() {
+		var scroll = $(this).scrollTop();
+
+	  if ($('#main-toolbox').length && scroll >= 75) {
+	  	$('#edit-area').on('mouseenter', function(){
+	  		$(this).addClass('hovered');
+				$('#main-toolbox').addClass('visible');
+			});
+	  }
+	});
+
 	grayoutColumn();
 	renderView();
 	setTimeout(function(){
-		toggleSupport();
 		tableScrollable();
 		resizeTemplates();
 	},300);
@@ -207,7 +207,6 @@ $(document).ready(function(){
 		$('.l-sidebar .nav-item > .nav-link:not([data-toggle="collapse"]), .l-sidebar .nav-link-inner > a').on('click', function(){
 			$('.l-sidebar').addClass('collapsed');
 			document.cookie = "sidebarCollapsed=false; expires=Fri, 31 Dec 9999 23:59:59 GMT";
-			console.log('bl');
 		});
 	}
 
@@ -227,7 +226,11 @@ $(document).ready(function(){
 
 	// Keep nav li expanded and active if child is active;
   if ($('.nav-link-inner').hasClass('active')){ 
-  	$('.nav-link-inner.active').parent('.collapse').addClass('show');
+  	$('.nav-link-inner.active').parents('.collapse').addClass('show');
+  }
+
+  if ($('.nav-link').hasClass('active')){
+  	$('.nav-link.active').parents('.collapse').addClass('show');
   }
 
   // Settings modal opt
@@ -458,15 +461,4 @@ $(document).keydown(function(e){
       deleteCheckedButton();
     }
    }
-});
-
-$(window).scroll(function() {    
-  var scroll = $(window).scrollTop();
-
-  if ($('#main-toolbox').length && scroll >= 75) {
-  	$('#edit-area').on('mouseenter', function(){
-  		$(this).addClass('hovered');
-			$('#main-toolbox').addClass('visible');
-		});
-  }
 });
